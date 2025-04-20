@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qaraqalpaq_sózlik</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .login, .search, .categories {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .categories select, .search input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login input[type="text"], .login input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login button:hover {
+            background-color: #45a049;
+        }
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Qaraqalpaq_sózlik - Interaktiv So'zlik</h1>
+</header>
+<!-- Navbar -->
+<nav class="navbar">
+    <ul>
+        <a href="fikir1.html">Pikir hám usınıs</a>
+        <a href="baylanıs.html">Dizimnen ótiw</a>
+<div class="container">
+    <!-- Login Panel -->
+    <div class="login">
+        <h2>Tizimga kirish</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Foydalanuvchi nomi" required>
+            <input type="password" id="password" placeholder="Parol" required>
+            <button type="submit">Kirish</button>
+        </form>
+    </div>
+
+    <!-- Search and Categories -->
+    <div>
+        <div class="search">
+            <h2>So'z qidirish</h2>
+            <input type="text" id="searchInput" placeholder="So'zni kiriting..." onkeyup="searchWord()">
+            <div id="searchResults"></div>
+        </div>
+
+        <div class="categories">
+            <h2>Kategoriyalar</h2>
+          <div class="categories">
+   <h2>Pikir</h2>
+            <select id="categorySelect">
+                <option value="all">Barchasi</option>
+                <option value="science">Ilm-fan</option>
+                <option value="medicine">Tibbiyot</option>
+                <option value="technology">Texnologiya</option>
+                <option value="literature">Adabiyot</option>
+            </select>
+        </div>
+    </div>
+</div>
+ 
+<footer>
+    <p>&copy; 2025 Qaraqalpaq_sózlik. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<script>
+    // Simulate data for search results
+    const wordsData = [
+        { word: "kompyuter", category: "technology", definition: "Elektron hisoblash mashinasi." },
+        { word: "dasturlash", category: "technology", definition: "Kompyuter dasturlari yaratish jarayoni." },
+        { word: "yordam", category: "literature", definition: "Boshqalarga yordam berish." },
+        { word: "sog'liq", category: "medicine", definition: "Tibbiy holat." },
+        { word: "fizika", category: "science", definition: "Tabiatshunoslik fanlaridan biri." },
+    ];
+
+    // Function to search word
+    function searchWord() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const results = wordsData.filter(wordObj => wordObj.word.toLowerCase().includes(input));
+        displaySearchResults(results);
+    }
+
+    // Display search results
+    function displaySearchResults(results) {
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = ''; // Clear previous results
+        if (results.length === 0) {
+            resultsDiv.innerHTML = '<p>Hech narsa topilmadi.</p>';
+        } else {
+            results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.innerHTML = `<strong>${result.word}</strong> (${result.category}): ${result.definition}`;
+                resultsDiv.appendChild(resultItem);
+            });
+        }
+    }
+
+    // Handle login functionality (Simulated for demo)
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username === "admin" && password === "1234") {
+            alert("Tizimga muvaffaqiyatli kirildi!");
+        } else {
+            alert("Foydalanuvchi nomi yoki parol xato.");
+        }
+    });
+</script>
+
+</body>
+</html>

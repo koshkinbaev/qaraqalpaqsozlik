@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fikr-Mulohazalar va Reyting</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="feedback-container">
+        <header>
+            <h1>Fikr-Mulohazalar va Reyting</h1>
+            <p>Saytimizni yaxshilash uchun fikrlaringizni bildiring.</p>
+        </header>
+
+        <div class="feedback-form">
+            <h2>Fikr-Mulohaza Qoldirish</h2>
+            <form id="feedbackForm">
+                <label for="userName">Ismingiz:</label>
+                <input type="text" id="userName" name="userName" placeholder="Ismingizni kiriting" required>
+
+                <label for="rating">Reyting:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1 - Juda yomon</option>
+                    <option value="2">2 - Yomon</option>
+                    <option value="3">3 - O'rtacha</option>
+                    <option value="4">4 - Yaxshi</option>
+                    <option value="5">5 - Ajoyib</option>
+                </select>
+
+                <label for="comment">Fikr-Mulohaza:</label>
+                <textarea id="comment" name="comment" placeholder="Fikrlaringizni yozing..." required></textarea>
+
+                <button type="submit" class="submit-btn">Yuborish</button>
+            </form>
+        </div>
+
+        <div class="feedback-list">
+            <h2>Fikr-Mulohazalar Ro'yxati</h2>
+            <ul id="feedbackList">
+                <!-- Fikrlar bu yerda ko'rsatiladi -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
