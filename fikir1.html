@@ -1,44 +1,97 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
+    <style>
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          height: 100vh;
+          background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+        }
+    
+        .rain {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          pointer-events: none;
+        }
+    
+        .drop {
+          position: absolute;
+          bottom: 100%;
+          width: 2px;
+          height: 20px;
+          background: rgba(174, 148, 193, 0.948);
+          animation: fall linear infinite;
+        }
+    
+        @keyframes fall {
+          to {
+            transform: translateY(110vh);
+            opacity: 0;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="rain"></div>
+    
+      <script>
+        const rain = document.querySelector('.rain');
+        const numDrops = 150;
+    
+        for (let i = 0; i < numDrops; i++) {
+          const drop = document.createElement('div');
+          drop.classList.add('drop');
+          drop.style.left = Math.random() * window.innerWidth + 'px';
+          drop.style.animationDuration = 0.5 + Math.random() + 's';
+          drop.style.animationDelay = Math.random() * 5 + 's';
+          rain.appendChild(drop);
+        }
+      </script>
+    </body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fikr-Mulohazalar va Reyting</title>
+    <title>Pikir-usınıslar hám reyting</title>
     <link rel="stylesheet" href="style.css">
 </head>
+ 
 <body>
     <div class="feedback-container">
         <header>
-            <h1>Fikr-Mulohazalar va Reyting</h1>
-            <p>Saytimizni yaxshilash uchun fikrlaringizni bildiring.</p>
+            <h1>Pikir-usınıslar hám reyting</h1>
+            <p>Saytımızdı jaqsılaw ushın pikirlerińizdi bildiriń..</p>
         </header>
 
         <div class="feedback-form">
-            <h2>Fikr-Mulohaza Qoldirish</h2>
+            <h2>Pikir-usınıs qaldırıw</h2>
             <form id="feedbackForm">
-                <label for="userName">Ismingiz:</label>
-                <input type="text" id="userName" name="userName" placeholder="Ismingizni kiriting" required>
+                <label for="userName">Atıńız:</label>
+                <input type="text" id="userName" name="userName" placeholder="Atıńızdı kirgiziń" required>
 
                 <label for="rating">Reyting:</label>
                 <select id="rating" name="rating" required>
-                    <option value="1">1 - Juda yomon</option>
-                    <option value="2">2 - Yomon</option>
-                    <option value="3">3 - O'rtacha</option>
-                    <option value="4">4 - Yaxshi</option>
-                    <option value="5">5 - Ajoyib</option>
+                    <option value="1">1 - Júdá jaman</option>
+                    <option value="2">2 - Jaman</option>
+                    <option value="3">3 - Ortasha</option>
+                    <option value="4">4 - Jaqsı</option>
+                    <option value="5">5 - Ájayıp</option>
                 </select>
 
-                <label for="comment">Fikr-Mulohaza:</label>
-                <textarea id="comment" name="comment" placeholder="Fikrlaringizni yozing..." required></textarea>
+                <label for="comment">Pikir-usınıs:</label>
+                <textarea id="comment" name="comment" placeholder="Pikirlerińizdi jazıń..." required></textarea>
 
-                <button type="submit" class="submit-btn">Yuborish</button>
+                <button type="submit" class="submit-btn">Jiberiw</button>
             </form>
         </div>
 
         <div class="feedback-list">
-            <h2>Fikr-Mulohazalar Ro'yxati</h2>
+            <h2>Pikir-usınıslar dizimi</h2>
             <ul id="feedbackList">
-                <!-- Fikrlar bu yerda ko'rsatiladi -->
+                <!-- Pikirler bul jerde kórsetiledi -->
             </ul>
         </div>
     </div>

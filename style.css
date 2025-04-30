@@ -6,16 +6,16 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    color: #333;
+    background-color: #a51818;
+    color: #b3a2a2;
 }
 
 .feedback-container {
     max-width: 900px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: rgb(79, 52, 7);
+    box-shadow: 0 4px 6px rgba(118, 98, 98, 0.1);
     border-radius: 8px;
 }
 
@@ -31,7 +31,7 @@ header h1 {
 
 header p {
     font-size: 1rem;
-    color: #666;
+    color: #ceacac;
 }
 
 .feedback-form {
@@ -40,7 +40,7 @@ header p {
 
 .feedback-form h2 {
     font-size: 1.5rem;
-    color: #333;
+    color: #5b8061;
     margin-bottom: 10px;
 }
 

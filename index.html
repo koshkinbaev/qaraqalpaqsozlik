@@ -6,7 +6,8 @@
     <title>Qaraqalpaq_sózlik</title>
     
     <style>
-        body {
+     
+           {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -68,59 +69,161 @@
 <body>
 
 <header>
-    <h1>Qaraqalpaq_sózlik - Interaktiv So'zlik</h1>
+    <style>
+        body {
+          margin: 0;
+          font-family: 'Segoe UI', sans-serif;
+        }
+    
+        .header {
+          background-image: url('naǵıs.jpg'); /* Rasm nomi shu bo‘lishi kerak */
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          color: rgba(245, 236, 247, 0.907);
+          padding: 50px 0;
+          text-align: center;
+          position: relative;
+        }
+    
+        .header h1 {
+          font-size: 32px;
+          background-color: rgba(0, 0, 0, 0.6); /* qora shaffof fon */
+          display: inline-block;
+          padding: 15px 30px;
+          border-radius: 12px;
+          font-weight: bold;
+        }
+      </style>
+    </head>
+    <body>
+    
+      <div class="header">
+        <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
+      </div>
+    
+    </body>
+    </html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <title>Qaraqalpaq_sózlik - Navbar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .top-navbar {
+      background-color: #af4c7f; /* yashil fon */
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .menu-links {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .menu-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 6px 10px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-links a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: white;
+      transition: width 0.3s ease;
+    }
+
+    .menu-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-links a:hover {
+      color: #ffffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-navbar">
+    <div class="menu-links">
+      <a href="fikir1.html">Pikir hám usınıs</a>
+      <a href="baylanıs.html">Dizimnen ótiw</a>
+        <a href="izlew.html">Sózlerdi izlew</a>
+        <a href="ovoz1.html">Esitiw</a>
+        <a href="qosiq.html">Sózliklerdiń audiosı</a>
+
+    </div>
+  </div>
+
+</body>
+
+
 </header>
-<!-- Navbar -->
-<nav class="navbar">
-    <ul>
-        <a href="fikir1.html">Pikir hám usınıs</a>
-        <a href="baylanıs.html">Dizimnen ótiw</a>
+
 <div class="container">
     <!-- Login Panel -->
     <div class="login">
-        <h2>Tizimga kirish</h2>
+        <h2>Sistemaǵa kiriw</h2>
         <form id="loginForm">
-            <input type="text" id="username" placeholder="Foydalanuvchi nomi" required>
+            <input type="text" id="username" placeholder="Paydalanıwshı atı" required>
             <input type="password" id="password" placeholder="Parol" required>
-            <button type="submit">Kirish</button>
+            <button type="submit">Kiriw</button>
         </form>
     </div>
 
     <!-- Search and Categories -->
     <div>
         <div class="search">
-            <h2>So'z qidirish</h2>
-            <input type="text" id="searchInput" placeholder="So'zni kiriting..." onkeyup="searchWord()">
+            <h2>Sóz izlew</h2>
+            <input type="text" id="searchInput" placeholder="Sózdi kirgiziń..." onkeyup="searchWord()">
             <div id="searchResults"></div>
         </div>
 
         <div class="categories">
             <h2>Kategoriyalar</h2>
           <div class="categories">
-   <h2>Pikir</h2>
+  
             <select id="categorySelect">
-                <option value="all">Barchasi</option>
-                <option value="science">Ilm-fan</option>
-                <option value="medicine">Tibbiyot</option>
+                <option value="all">Hámmesi</option>
+                <option value="science">Ilim-pán</option>
+                <option value="medicine">Medicina</option>
                 <option value="technology">Texnologiya</option>
-                <option value="literature">Adabiyot</option>
+                <option value="literature">Ádebiyat</option>
             </select>
         </div>
     </div>
 </div>
  
 <footer>
-    <p>&copy; 2025 Qaraqalpaq_sózlik. Barcha huquqlar himoyalangan.</p>
+    <p>&copy; 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.</p>
 </footer>
 
 <script>
     // Simulate data for search results
     const wordsData = [
-        { word: "kompyuter", category: "technology", definition: "Elektron hisoblash mashinasi." },
-        { word: "dasturlash", category: "technology", definition: "Kompyuter dasturlari yaratish jarayoni." },
-        { word: "yordam", category: "literature", definition: "Boshqalarga yordam berish." },
-        { word: "sog'liq", category: "medicine", definition: "Tibbiy holat." },
-        { word: "fizika", category: "science", definition: "Tabiatshunoslik fanlaridan biri." },
+        { word: "Kompyuter", category: "technology", definition: "Elektron esaplaw mashinası." },
+        { word: "Programmalastırıw", category: "technology", definition: "Kompyuter programmaların jaratıw procesi." },
+        { word: "Járdem", category: "literature", definition: "Basqalarga járdem beriw." },
+        { word: "Densawlıq", category: "medicine", definition: "Medicinalıq jaǵday." },
+        { word: "Fizika", category: "science", definition: "Tábiyattanıw pánlerinen biri." },
     ];
 
     // Function to search word
@@ -135,7 +238,7 @@
         const resultsDiv = document.getElementById('searchResults');
         resultsDiv.innerHTML = ''; // Clear previous results
         if (results.length === 0) {
-            resultsDiv.innerHTML = '<p>Hech narsa topilmadi.</p>';
+            resultsDiv.innerHTML = '<p>Hesh nárse tabılmadı.</p>';
         } else {
             results.forEach(result => {
                 const resultItem = document.createElement('div');
@@ -152,9 +255,9 @@
         const password = document.getElementById('password').value;
 
         if (username === "admin" && password === "1234") {
-            alert("Tizimga muvaffaqiyatli kirildi!");
+            alert("Sistemaǵa tabıslı kirildi!");
         } else {
-            alert("Foydalanuvchi nomi yoki parol xato.");
+            alert("Paydalanıwshı atı yamasa parol qáte.");
         }
     });
 </script>
