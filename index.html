@@ -195,36 +195,6 @@
 </footer>
 
 <script>
-    // Simulate data for search results
-    const wordsData = [
-        { word: "Kompyuter", category: "technology", definition: "Elektron esaplaw mashinası." },
-        { word: "Programmalastırıw", category: "technology", definition: "Kompyuter programmaların jaratıw procesi." },
-        { word: "Járdem", category: "literature", definition: "Basqalarga járdem beriw." },
-        { word: "Densawlıq", category: "medicine", definition: "Medicinalıq jaǵday." },
-        { word: "Fizika", category: "science", definition: "Tábiyattanıw pánlerinen biri." },
-    ];
-
-    // Function to search word
-    function searchWord() {
-        const input = document.getElementById('searchInput').value.toLowerCase();
-        const results = wordsData.filter(wordObj => wordObj.word.toLowerCase().includes(input));
-        displaySearchResults(results);
-    }
-
-    // Display search results
-    function displaySearchResults(results) {
-        const resultsDiv = document.getElementById('searchResults');
-        resultsDiv.innerHTML = ''; // Clear previous results
-        if (results.length === 0) {
-            resultsDiv.innerHTML = '<p>Hesh nárse tabılmadı.</p>';
-        } else {
-            results.forEach(result => {
-                const resultItem = document.createElement('div');
-                resultItem.innerHTML = `<strong>${result.word}</strong> (${result.category}): ${result.definition}`;
-                resultsDiv.appendChild(resultItem);
-            });
-        }
-    }
 
     // Handle login functionality (Simulated for demo)
     document.getElementById('loginForm').addEventListener('submit', function(event) {
@@ -352,32 +322,6 @@
     }
   </style>
 </head>
-
-<footer class="footer">
-  <div class="footer-container">
-    <footer class="footer">
-  <div class="footer-container">
-    <div class="footer-column">
-      <h3>Sayt haqqında</h3>
-      <p>Qaraqalpaq_sózlik – bu interaktiv onlayn sózlik. Talabalar, o‘qituvchilar hám málimatlar izlewshi ushın qollanıladı.</p>
-    </div>
-    <div class="footer-column">
-      <h3>Este saqlań!</h3>
-      <p>"Niyetli adam bolsa maqsetke jetedi!"<br>– Köshkinbaev Atabek</p>
-    </div>
-    <div class="footer-column">
-      <h3>Sorawıńız bolsa??</h3>
-      <p>Biz benen baylanısıń:<br>Web developer:<br>Kóshkinbaev Atabek<br>✉️ koshkinbaevatabek222@gmail.com</p>
-    </div>
-    <div class="footer-column">
-      <h3>BIZ TELEGRAMDA!</h3>
-      <p>@kompyuter_ustasi 24/7 kanali<br>@atabek_official<br>@atabekkoshkinbaevbot</p>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2014 - 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.</p>
-  </div>
-</footer>
 
     <div>
       <h3>📌 Sayt haqqında</h3>
