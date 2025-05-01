@@ -159,35 +159,70 @@
       <button type="submit">Kiriw</button>
     </form>
   </div>
+<footer class="footer">
+  <style>
+    .footer {
+      background-color: #222;
+      color: #eee;
+      padding: 30px 20px;
+    }
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div>
-        <h3>📌 Sayt haqqında</h3>
-        <p>Qaraqalpaq_sózlik – bu onlayn sózlik platformasi, talabalar, o‘qituvchilar hám izlewshiler ushın.</p>
-      </div>
-      <div>
-        <h3>📖 Este saqlań!</h3>
-        <p class="quote">"Niyetiń shın bolsa maqsetińe jeteseń!"</p>
-        <p>– Kóshkinbaev Atabek</p>
-      </div>
-      <div>
-        <h3>📬 Sorawıńız bolsa?</h3>
-        <p><a href="mailto:koshkinbaevatabek222@gmail.com">koshkinbaevatabek222@gmail.com</a></p>
-      </div>
-      <div>
-        <h3>📲 Biz Telegramda!</h3>
-        <p><a href="#">@kompyuter_ustasi</a></p>
-        <p><a href="#">@atabek_official</a></p>
-        <p><a href="#">@atabekkoshkinbaevbot</a></p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      &copy; 2014 - 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.
-    </div>
-  </footer>
+    .footer-container {
+      display: flex;
+      flex-direction: column; /* pastma-past joylashtirish */
+      gap: 20px;
+    }
 
+    .footer-container h3 {
+      margin-bottom: 10px;
+    }
+
+    .footer-container a {
+      color: #90cdf4;
+      text-decoration: none;
+    }
+
+    .footer-container a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      border-top: 1px solid #444;
+      padding-top: 10px;
+    }
+  </style>
+
+  <div class="footer-container">
+    <div>
+      <h3>📌 Sayt haqqında</h3>
+      <p>Qaraqalpaq_sózlik – bu onlayn sózlik platformasi, talabalar, o‘qituvchilar hám izlewshiler ushın.</p>
+    </div>
+    <div>
+      <h3>📖 Este saqlań!</h3>
+      <p class="quote">"Niyetiń shın bolsa maqsetińe jeteseń!"</p>
+      <p>– Kóshkinbaev Atabek</p>
+    </div>
+    <div>
+      <h3>📬 Sorawıńız bolsa?</h3>
+      <p><a href="mailto:koshkinbaevatabek222@gmail.com">koshkinbaevatabek222@gmail.com</a></p>
+    </div>
+    <div>
+      <h3>📲 Biz Telegramda!</h3>
+      <p><a href="#">@kompyuter_ustasi</a></p>
+      <p><a href="#">@atabek_official</a></p>
+      <p><a href="#">@atabekkoshkinbaevbot</a></p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    &copy; 2014 - 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.
+  </div>
+</footer>
+
+  
   <!-- JAVASCRIPT -->
   <script>
     document.getElementById('loginForm').addEventListener('submit', function(event) {
