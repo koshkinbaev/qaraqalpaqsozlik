@@ -116,34 +116,7 @@
 </footer>
 
 <script>
-    function searchWord() {
-    const input = document.getElementById('searchInput').value.trim().toLowerCase();
-    const resultsContainer = document.getElementById('resultsContainer');
-    resultsContainer.innerHTML = '';
-
-    if (input === '') {
-        resultsContainer.innerHTML = '<p>Izlew ushın sóz kiritiń.</p>';
-        return;
-    }
-
-    const filteredWords = words.filter(entry =>
-        entry.word.toLowerCase().includes(input) ||
-        (entry.meaning && entry.meaning.toLowerCase().includes(input))
-    );
-
-    if (filteredWords.length === 0) {
-        resultsContainer.innerHTML = '<p>So‘z tabılmadı.</p>';
-    } else {
-        filteredWords.forEach(entry => {
-            const card = document.createElement('div');
-            card.className = 'word-card';
-            card.innerHTML = `<h3>${entry.word}</h3><p><strong>Máni:</strong> ${entry.meaning}</p><p><strong>Misal:</strong> ${entry.experience}</p>`;
-            resultsContainer.appendChild(card);
-        });
-    }
-}
-
-// Sóz hám olardıń mánilerin saqlaw
+    // Sóz hám olardıń mánilerin saqlaw
 const words = [
     { word: "АБАЙ", meaning: "Қорғаныш, саклық, ес, абай-сиясат. ", experience: ". Сен билмейсен менин жайым, Оның менен тең кудайым, Керек емес бос абайың. Тек тур, деди Айдос баба (Бердак)." },
     { word: "АБАЙЛАМАЙ ", meaning: "Сезбей, серлемей, билмей", experience: "Оксананын кайсы есикке кирип кеткенин абайламай да калдым (М.Нызанов)" },
@@ -196,37 +169,33 @@ const words = [
     // Bu yerda boshqa 1000 ta so‘zni qo‘shishingiz mumkin...
 ];
 
-// Sózlerdi izlew funkciyası
-function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    const filteredWords = words.filter(word => word.word.toLowerCase().includes(searchTerm));
+    // So'z qidirish funktsiyasi
+    function searchWord() {
+        const input = document.getElementById('searchInput').value.trim().toLowerCase();
+        const resultsContainer = document.getElementById('resultsContainer');
+        resultsContainer.innerHTML = '';
 
-    displayResults(filteredWords);
-}
+        if (input === '') {
+            resultsContainer.innerHTML = '<p>Izlew ushın sóz kiritiń.</p>';
+            return;
+        }
 
-// Sózlerdi ekranda kórsetiw
-function displayResults(wordsList) {
-    const resultsContainer = document.getElementById("resultsContainer");
-    resultsContainer.innerHTML = "";
+        const filteredWords = words.filter(entry =>
+            entry.word.toLowerCase().includes(input) ||
+            (entry.meaning && entry.meaning.toLowerCase().includes(input))
+        );
 
-    if (wordsList.length === 0) {
-        resultsContainer.innerHTML = "<p>Hesh qanday nátiyje tabılmadı.</p>";
-        return;
+        if (filteredWords.length === 0) {
+            resultsContainer.innerHTML = '<p>So‘z tabılmadı.</p>';
+        } else {
+            filteredWords.forEach(entry => {
+                const card = document.createElement('div');
+                card.className = 'word-card';
+                card.innerHTML = `<h3>${entry.word}</h3><p><strong>Máni:</strong> ${entry.meaning}</p><p><strong>Misal:</strong> ${entry.experience}</p>`;
+                resultsContainer.appendChild(card);
+            });
+        }
     }
-
-    wordsList.forEach(wordObj => {
-        const wordCard = document.createElement("div");
-        wordCard.classList.add("word-card");
-
-        wordCard.innerHTML = `
-            <h3>${wordObj.word}</h3>
-            <p><strong>Mánisi:</strong> ${wordObj.meaning}</p>
-            <p><strong>Mısal:</strong> ${wordObj.experience}</p>
-        `;
-
-        resultsContainer.appendChild(wordCard);
-    });
-}
 </script>
 
 </body>
