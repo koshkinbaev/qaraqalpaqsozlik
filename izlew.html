@@ -5,91 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qoraqalpoq So‘zlik</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-        }
+       * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        header {
-            background-color: #2e3b4e;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
 
-        .container {
-            width: 80%;
-            margin: 20px auto;
-        }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .search-box {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-        }
+    header h1 {
+      font-size: 1.8em;
+      color: #2c3e50;
+    }
 
-        .search-box input {
-            padding: 10px;
-            width: 50%;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
+    .search-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+    }
 
-        .search-box button {
-            padding: 10px;
-            background-color: #2e3b4e;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+    .search-container input[type="text"] {
+      padding: 10px;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
 
-        .search-box button:hover {
-            background-color: #1a2434;
-        }
+    .word-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-        .results {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
+    .word-card {
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
 
-        .word-card {
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            padding: 15px;
-            width: 23%;
-            border-radius: 8px;
-            transition: all 0.3s ease-in-out;
-        }
+    .word-card:hover {
+      transform: translateY(-4px);
+    }
 
-        .word-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+    .word-card h3 {
+      margin-bottom: 8px;
+      color: #2980b9;
+    }
 
-        .word-card h3 {
-            margin: 0;
-            color: #2e3b4e;
-        }
+    .word-card p {
+      margin-bottom: 5px;
+    }
 
-        .word-card p {
-            color: #555;
-        }
+    .word-card p:last-child {
+      font-style: italic;
+      color: #888;
+    }
 
-        footer {
-            background-color: #2e3b4e;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
+    @media screen and (max-width: 600px) {
+      header h1 {
+        font-size: 1.5em;
+      }
+
+      .search-container input[type="text"] {
+        font-size: 14px;
+      }
+    }
+  
 
     </style>
 </head>
