@@ -1,43 +1,121 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <body>
-        <script>
-        <!-- Hamma HTML tugagach -->
-<script src="auth.js">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dizimnen Ótiw</title>
+</head>
+<body>
 
-<script type="module">
-  // Modular SDK uslubi
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  <!-- Ro'yxatdan o'tish Formasi -->
+  <section class="register-section">
+    <div class="register-wrapper">
+      <h2>Dizimnen ótiw</h2>
+      <form class="register-form">
+        <div class="form-group">
+          <label for="email">Elektron pochta</label>
+          <input type="email" id="email" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Parol</label>
+          <input type="password" id="password" required />
+        </div>
+        <button type="submit">Dizimnen ótiw</button>
+      </form>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
-    authDomain: "dizimnen-otiw.firebaseapp.com",
-    projectId: "dizimnen-otiw",
-    storageBucket: "dizimnen-otiw.firebasestorage.app",
-    messagingSenderId: "254101190553",
-    appId: "1:254101190553:web:446332fe4c63973ea4c508",
-    measurementId: "G-Y6JEDTY148"
-  };
+      <hr>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+      <!-- Google orqali tizimga kirish -->
+      <button id="google-login-btn">Google orqali kirish</button>
 
-  document.querySelector(".register-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      alert("Ro'yxatdan muvaffaqiyatli o'tildi: " + userCredential.user.email);
-    } catch (error) {
-      alert("Xatolik: " + error.message);
-    }
-  });
-</script>
-    
+      <!-- Tizimdan chiqish -->
+      <button id="logout-btn" style="display: none;">Chiqish</button>
+
+      <!-- Foydalanuvchi holati -->
+      <p id="user-info">Foydalanuvchi tizimga kirmagan</p>
+    </div>
+  </section>
+
+  <!-- Firebase JS -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithPopup,
+      GoogleAuthProvider,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    // Firebase sozlamalari
+    const firebaseConfig = {
+      apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+      authDomain: "dizimnen-otiw.firebaseapp.com",
+      projectId: "dizimnen-otiw",
+      storageBucket: "dizimnen-otiw.firebasestorage.app",
+      messagingSenderId: "254101190553",
+      appId: "1:254101190553:web:446332fe4c63973ea4c508",
+      measurementId: "G-Y6JEDTY148"
+    };
+
+    // Firebase'ni ishga tushirish
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector(".register-form");
+      const googleBtn = document.getElementById("google-login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+      const userInfo = document.getElementById("user-info");
+
+      // Ro'yxatdan o'tish
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          alert("Ro'yxatdan o'tildi: " + userCredential.user.email);
+        } catch (error) {
+          alert("Xatolik: " + error.message);
+        }
+      });
+
+      // Google orqali kirish
+      googleBtn.addEventListener("click", async () => {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          alert("Google orqali tizimga kirildi: " + result.user.email);
+        } catch (error) {
+          alert("Google xatosi: " + error.message);
+        }
+      });
+
+      // Tizimdan chiqish
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          alert("Tizimdan chiqildi");
+        } catch (error) {
+          alert("Chiqishda xatolik: " + error.message);
+        }
+      });
+
+      // Foydalanuvchi holatini kuzatish
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userInfo.textContent = "Tizimga kirgan foydalanuvchi: " + user.email;
+          logoutBtn.style.display = "inline-block";
+        } else {
+          userInfo.textContent = "Foydalanuvchi tizimga kirmagan";
+          logoutBtn.style.display = "none";
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
