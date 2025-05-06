@@ -4,24 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dizimnen Ótiw</title>
+      <link rel="stylesheet" href="style1.css">
 </head>
 <body>
 
-  <!-- Ro'yxatdan o'tish Formasi -->
-  <section class="register-section">
-    <div class="register-wrapper">
-      <h2>Dizimnen ótiw</h2>
-      <form class="register-form">
-        <div class="form-group">
-          <label for="email">Elektron pochta</label>
-          <input type="email" id="email" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Parol</label>
-          <input type="password" id="password" required />
-        </div>
-        <button type="submit">Dizimnen ótiw</button>
-      </form>
+  <!-- Ro'yxatdan O'tish Bo'limi -->
+<section class="register-section" id="register">
+  <div class="register-wrapper">
+    <h2>Dizimnen ótiw</h2>
+    <form class="register-form">
+      <div class="form-group">
+        <label for="name">Atıńız</label>
+        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Elektron pochta mánzilińiz</label>
+        <input type="email" id="email" placeholder="example@mail.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Parol</label>
+        <input type="password" id="password" placeholder="Parolińiz" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Paroldı tastıyıqlaw</label>
+        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
+      </div>
+      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
+    </form>
 
       <hr>
 
