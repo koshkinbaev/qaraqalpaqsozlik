@@ -164,7 +164,6 @@ const words = [
     { word: "АҚТУБА", meaning: "Жердин, көлдиң аты, географиялық атама.", experience: "Актубаның аккан сууы ылайды, Еки дийқан үн салысып жылайды, Казы ийшанға бизди шатқан қудайды, Дийқан аштан өлер болды Қазы ийшан («Қазы ийшан»)."},
     { word: "АҚ ШАБАҚ", meaning: "Балықтың бир түри, майдарақ болады.", experience: "Барып көрсе қазаға, ақ шабақ пенен ақсазан, Сыйғанынша толыпты (А.Дабылов)."},
 
-    { word: "", meaning: "", experience: ""},
     // Bu yerda boshqa 1000 ta so‘zni qo‘shishingiz mumkin...
 ];
     
@@ -187,8 +186,8 @@ function searchWord() {
         card.className = 'word-card';
         card.innerHTML = `
             <h3>${item.word}</h3>
-            <p><strong>Máni:</strong> ${item.meaning}</p>
-            <p><strong>Másele:</strong> ${item.experience}</p>
+            <p><strong>Mánisi:</strong> ${item.meaning}</p>
+            <p><strong>Mısal:</strong> ${item.experience}</p>
         `;
         resultsContainer.appendChild(card);
     });
