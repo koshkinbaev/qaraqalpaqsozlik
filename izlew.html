@@ -167,36 +167,30 @@ const words = [
     { word: "", meaning: "", experience: ""},
     // Bu yerda boshqa 1000 ta so‘zni qo‘shishingiz mumkin...
 ];
-
-// Sózlerdi izlew funkciyası
+    
 function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    const filteredWords = words.filter(word => word.word.toLowerCase().includes(searchTerm));
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const resultsContainer = document.getElementById('resultsContainer');
+    resultsContainer.innerHTML = ''; // oldingi natijalarni tozalash
 
-    displayResults(filteredWords);
-}
+    const filteredWords = words.filter(item =>
+        item.word.toLowerCase().includes(input)
+    );
 
-// Sózlerdi ekranda kórsetiw
-function displayResults(wordsList) {
-    const resultsContainer = document.getElementById("resultsContainer");
-    resultsContainer.innerHTML = "";
-
-    if (wordsList.length === 0) {
-        resultsContainer.innerHTML = "<p>Hesh qanday nátiyje tabılmadı.</p>";
+    if (filteredWords.length === 0) {
+        resultsContainer.innerHTML = '<p>Hech qanday sóz tabılmadı.</p>';
         return;
     }
 
-    wordsList.forEach(wordObj => {
-        const wordCard = document.createElement("div");
-        wordCard.classList.add("word-card");
-
-        wordCard.innerHTML = `
-            <h3>${wordObj.word}</h3>
-            <p><strong>Mánisi:</strong> ${wordObj.meaning}</p>
-            <p><strong>Mısal:</strong> ${wordObj.experience}</p>
+    filteredWords.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `
+            <h3>${item.word}</h3>
+            <p><strong>Máni:</strong> ${item.meaning}</p>
+            <p><strong>Másele:</strong> ${item.experience}</p>
         `;
-
-        resultsContainer.appendChild(wordCard);
+        resultsContainer.appendChild(card);
     });
 }
 </script>
