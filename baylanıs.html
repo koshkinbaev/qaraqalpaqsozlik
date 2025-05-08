@@ -35,13 +35,13 @@
       <hr>
 
       <!-- Google orqali tizimga kirish -->
-      <button id="google-login-btn">Google orqali kirish</button>
+      <button id="google-login-btn">Google arqalı kiriw</button>
 
       <!-- Tizimdan chiqish -->
-      <button id="logout-btn" style="display: none;">Chiqish</button>
+      <button id="logout-btn" style="display: none;">Shıǵıw</button>
 
       <!-- Foydalanuvchi holati -->
-      <p id="user-info">Foydalanuvchi tizimga kirmagan</p>
+      <p id="user-info">Paydalanıwshı sistemaǵa kirmegen</p>
     </div>
   </section>
 
@@ -116,10 +116,10 @@
       // Foydalanuvchi holatini kuzatish
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          userInfo.textContent = "Tizimga kirgan foydalanuvchi: " + user.email;
+          userInfo.textContent = "Sistemaǵa kirgen paydalanıwshı: " + user.email;
           logoutBtn.style.display = "inline-block";
         } else {
-          userInfo.textContent = "Foydalanuvchi tizimga kirmagan";
+          userInfo.textContent = "Paydalanıwshı sistemaǵa kirmegen";
           logoutBtn.style.display = "none";
         }
       });
