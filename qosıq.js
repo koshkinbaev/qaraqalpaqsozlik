@@ -2,6 +2,10 @@
 
 const songs = [
     { title: "Abaylaw", category: "modern", file: "songs/Abaylaw.m4a" },
+        { title: "Abbazı", category: "modern", file: "songs/Abbazı.m4a" },
+            { title: "Agronomiya", category: "modern", file: "songs/Agronomiya.m4a" },
+
+
   { title: "Jalg'an muxabbat", artist: " Islam Muratbaev", category: "folk", file: "Jalg'an muxabbat.m4a" },
   { title: "Men seni söyemin", artist: "Zhanarbek", category: "modern", file: "songs/menseni.mp3" },
   { title: "Ana kel", artist: "Dilnaz", category: "classic", file: "ana.mp3" },
