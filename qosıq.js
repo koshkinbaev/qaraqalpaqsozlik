@@ -4,6 +4,7 @@ const songs = [
     { title: "Abaylaw", category: "modern", file: "songs/Abaylaw.m4a" },
         { title: "Abbazı", category: "modern", file: "songs/Abbazı.m4a" },
             { title: "Agronomiya", category: "modern", file: "songs/Agronomiya.m4a" },
+  { title: "Abaylaw", artist: "", category: "modern", file: "songs/Abaylaw.m4a" },
 
 
   { title: "Jalg'an muxabbat", artist: " Islam Muratbaev", category: "folk", file: "Jalg'an muxabbat.m4a" },
