@@ -1,13 +1,11 @@
 // script.js
 
 const songs = [
-    { title: "Abaylaw", category: "modern", file: "songs/Abaylaw.m4a" },
-        { title: "Abbazı", category: "modern", file: "songs/Abbazı.m4a" },
-            { title: "Agronomiya", category: "modern", file: "songs/Agronomiya.m4a" },
-  { title: "Abaylaw", artist: "", category: "modern", file: "songs/Abaylaw.m4a" },
-
 
   { title: "Abaylaw", artist: "", category: "folk", file: "Abaylaw.m4a" },
+  { title: "Abarıya", artist: "", category: "folk", file: "Abarıya.m4a" },
+  { title: "Abbazı", artist: "", category: "folk", file: "Abbazı.m4a" },
+
   { title: "Men seni söyemin", artist: "Zhanarbek", category: "modern", file: "songs/menseni.mp3" },
   { title: "Ana kel", artist: "Dilnaz", category: "classic", file: "ana.mp3" },
   { title: "Ay Yar", artist: "Aybek", category: "modern", file: "songs/ayyar.mp3" },
