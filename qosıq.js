@@ -25,6 +25,15 @@ const songs = [
   { title: "Aǵzam", artist: "", category: "modern", file: "Aǵzam.m4a" },  
   { title: "Ana kel", artist: "Dilnaz", category: "classic", file: "ana.mp3" },
   { title: "Ay Yar", artist: "Aybek", category: "modern", file: "songs/ayyar.mp3" },
+  { title: "Babay", artist: " Islam Muratbaev", category: "folk", file: "Babay.m4a" },
+  { title: "Badam", artist: " Islam Muratbaev", category: "folk", file: "Badam.m4a" },
+  { title: "Badıya", artist: " Islam Muratbaev", category: "folk", file: "Badıya.m4a" },
+  { title: "Baja", artist: " Islam Muratbaev", category: "folk", file: "Baja.m4a" },
+  { title: "Bajban", artist: " Islam Muratbaev", category: "folk", file: "Bajban.m4a" },
+  { title: "Bajı", artist: " Islam Muratbaev", category: "folk", file: "Bajı.m4a" },
+  { title: "Bay", artist: " Islam Muratbaev", category: "folk", file: "Bay.m4a" },
+  { title: "Baysımaq", artist: " Islam Muratbaev", category: "folk", file: "Baysımaq.m4a" },
+  { title: "Baytal", artist: " Islam Muratbaev", category: "folk", file: "Baytal.m4a" },
   { title: "Boz Oyg‘ar", artist: "Unknown", category: "folk", file: "songs/bozoigar.mp3" },
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
