@@ -1,7 +1,6 @@
 // script.js
 
 const songs = [
-  { title: "Jalg'an muxabbat", artist: " Islam Muratbaev", category: "folk", file: "Jalg'an muxabbat.m4a" },
   { title: "Abarıya", artist: "", category: "modern", file: "Abarıya.m4a" },
   { title: "Abaylaw", artist: "", category: "modern", file: "Abaylaw.m4a" },
   { title: "Abbazı", artist: "", category: "modern", file: "Abbazı.m4a" },
@@ -45,6 +44,7 @@ const songs = [
   { title: "Baǵdarlama", artist: "", category: "folk", file: "Baǵdarlama.m4a" },
   { title: "Baǵman", artist: "", category: "folk", file: "Baǵman.m4a" },
   { title: "Baǵındırıw", artist: "", category: "folk", file: "Baǵındırıw.m4a" },
+  { title: "", artist: "", category: "folk", file: ".m4a" },
   
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
