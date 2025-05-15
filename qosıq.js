@@ -44,7 +44,12 @@ const songs = [
   { title: "Baǵdarlama", artist: "", category: "folk", file: "Baǵdarlama.m4a" },
   { title: "Baǵman", artist: "", category: "folk", file: "Baǵman.m4a" },
   { title: "Baǵındırıw", artist: "", category: "folk", file: "Baǵındırıw.m4a" },
-  { title: "", artist: "", category: "folk", file: ".m4a" },
+  { title: "Galstuk", artist: "", category: "classic", file: "Galstuk.m4a" },
+  { title: "Gametalar", artist: "", category: "classic", file: "Gametalar.m4a" },
+  { title: "Gamma", artist: "", category: "classic", file: "Gamma.m4a" },
+  { title: "Gandbol", artist: "", category: "classic", file: "Gandbol.m4a" },
+  { title: "Gangster", artist: "", category: "classic", file: "Gangster.m4a" },
+  { title: "Gansh", artist: "", category: "classic", file: "Gansh.m4a" },
   
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
