@@ -50,6 +50,12 @@ const songs = [
   { title: "Gandbol", artist: "", category: "classic", file: "Gandbol.m4a" },
   { title: "Gangster", artist: "", category: "classic", file: "Gangster.m4a" },
   { title: "Gansh", artist: "", category: "classic", file: "Gansh.m4a" },
+  { title: "Garaj", artist: "", category: "classic", file: "Garaj.m4a" },
+  { title: "Garantiya", artist: "", category: "classic", file: "Garantiya.m4a" },
+  { title: "Garderov", artist: "", category: "classic", file: "Garderov.m4a" },
+  { title: "Gayka", artist: "", category: "classic", file: "Gayka.m4a" },
+  { title: "Gazeta", artist: "", category: "classic", file: "Gazeta.m4a" },
+  { title: "Gazetashı", artist: "", category: "classic", file: "Gazetashı.m4a" },
   
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
