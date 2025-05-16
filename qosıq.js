@@ -76,7 +76,17 @@ const songs = [
   { title: "Gayka", artist: "", category: "classic", file: "Gayka.m4a" },
   { title: "Gazeta", artist: "", category: "classic", file: "Gazeta.m4a" },
   { title: "Gazetashı", artist: "", category: "classic", file: "Gazetashı.m4a" },
-  
+  { title: "Ǵajaw", artist: "", category: "classic", file: "Ǵajaw.m4a" },
+  { title: "Ǵajıw", artist: "", category: "classic", file: "Ǵajıw.m4a" },
+  { title: "Ǵarǵa", artist: "", category: "classic", file: "Ǵarǵa.m4a" },
+  { title: "Ǵaylı", artist: "", category: "classic", file: "Ǵaylı.m4a" },
+  { title: "Ǵayrat", artist: "", category: "classic", file: "Ǵayrat.m4a" },
+  { title: "Ǵayrı", artist: "", category: "classic", file: "Ǵayrı.m4a" },
+  { title: "Ǵayzaw", artist: "", category: "classic", file: "Ǵayzaw.m4a" },
+  { title: "Ǵayıp", artist: "", category: "classic", file: "Ǵayıp.m4a" },
+  { title: "Ǵazep", artist: "", category: "classic", file: "Ǵazep.m4a" },
+  { title: "Ǵazna", artist: "", category: "classic", file: "Ǵazna.m4a" },
+
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
 
