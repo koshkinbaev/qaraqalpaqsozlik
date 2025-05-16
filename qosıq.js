@@ -44,7 +44,7 @@ const songs = [
   { title: "Baǵdarlama", artist: "", category: "folk", file: "Baǵdarlama.m4a" },
   { title: "Baǵman", artist: "", category: "folk", file: "Baǵman.m4a" },
   { title: "Baǵındırıw", artist: "", category: "folk", file: "Baǵındırıw.m4a" },
-  { title: "Dabıl", artist: "", category: "jaz", file: "Davıl.m4a" },
+  { title: "Dabıl", artist: "", category: "jaz", file: "Dabıl.m4a" },
   { title: "Dadlaw", artist: "", category: "jaz", file: "Dadlaw.m4a" },
   { title: "Dal", artist: "", category: "jaz", file: "Dal.m4a" },
   { title: "Dala", artist: "", category: "jaz", file: "Dala.m4a" },
