@@ -22,8 +22,6 @@ const songs = [
   { title: "Aǵla", artist: "", category: "modern", file: "Aǵla.m4a" },
   { title: "Aǵza", artist: "", category: "modern", file: "Aǵza.m4a" },
   { title: "Aǵzam", artist: "", category: "modern", file: "Aǵzam.m4a" },  
-  { title: "Ana kel", artist: "Dilnaz", category: "classic", file: "ana.mp3" },
-  { title: "Ay Yar", artist: "Aybek", category: "modern", file: "songs/ayyar.mp3" },
   { title: "Babay", artist: "", category: "folk", file: "Babay.m4a" },
   { title: "Badam", artist: "", category: "folk", file: "Badam.m4a" },
   { title: "Badıya", artist: "", category: "folk", file: "Badıya.m4a" },
