@@ -86,6 +86,21 @@ const songs = [
   { title: "Ǵayıp", artist: "", category: "jozeff", file: "Ǵayıp.m4a" },
   { title: "Ǵazep", artist: "", category: "jozeff", file: "Ǵazep.m4a" },
   { title: "Ǵazna", artist: "", category: "jozeff", file: "Ǵazna.m4a" },
+  { title: "Jaba", artist: "", category: "fill", file: "Jaba.m4a" },
+  { title: "Jaban", artist: "", category: "fill", file: "Jaban.m4a" },
+  { title: "Jabayı", artist: "", category: "fill", file: "Jabayı.m4a" },
+  { title: "Jabaǵı", artist: "", category: "fill", file: "Jabaǵı.m4a" },
+  { title: "Jabbar", artist: "", category: "fill", file: "Jabbar.m4a" },
+  { title: "Jalaqor", artist: "", category: "fill", file: "Jalaqor.m4a" },
+  { title: "Jalatay", artist: "", category: "fill", file: "Jalatay.m4a" },
+  { title: "Jalatpa", artist: "", category: "fill", file: "Jalatpa.m4a" },
+  { title: "Jalǵan", artist: "", category: "fill", file: "Jalǵan.m4a" },
+  { title: "Jaylaw", artist: "", category: "fill", file: "Jaylaw.m4a" },
+  { title: "Jaza", artist: "", category: "fill", file: "Jaza.m4a" },
+  { title: "Jazlıq", artist: "", category: "fill", file: "Jazlıq.m4a" },
+  { title: "Jazıq", artist: "", category: "fill", file: "Jazıq.m4a" },
+  { title: "Jazıw", artist: "", category: "fill", file: "Jazıw.m4a" },
+  { title: "Jaǵal", artist: "", category: "fill", file: "Jaǵal.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
