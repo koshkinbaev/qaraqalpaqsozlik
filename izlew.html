@@ -176,7 +176,13 @@ function searchWord() {
 
     displayResults(filteredWords);
 }
-
+ // Enter tugmasi bosilganda qidiruvni ishga tushirish
+    searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            searchWord();
+        }
+    });
+    
 // Sózlerdi ekranda kórsetiw
 function displayResults(wordsList) {
     const resultsContainer = document.getElementById("resultsContainer");
