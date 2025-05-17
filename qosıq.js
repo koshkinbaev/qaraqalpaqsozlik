@@ -128,6 +128,10 @@ const songs = [
   { title: "Iytbalıq", artist: "", category: "click", file: "Iytbalıq.m4a" },
   { title: "Iyun", artist: "", category: "click", file: "Iyun.m4a" },
   { title: "Izleniw", artist: "", category: "click", file: "Izleniw.m4a" },
+  { title: "Yod", artist: "", category: "click", pen: "Yod.m4a" },
+  { title: "Yoga", artist: "", category: "click", pen: "Yoga.m4a" },
+  { title: "Yosh", artist: "", category: "click", pen: "Yosh.m4a" },
+  { title: "Yoshlı", artist: "", category: "click", pen: "Yoshlı.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
