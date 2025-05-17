@@ -116,6 +116,18 @@ const songs = [
   { title: "Zámberek", artist: "", category: "note", file: "Zámberek.m4a" },
   { title: "Zárde", artist: "", category: "note", file: "Zárde.m4a" },
   { title: "Záńgi", artist: "", category: "note", file: "Záńgi.m4a" },
+  { title: "Idealizm", artist: "", category: "click", file: "Idealizm.m4a" },
+  { title: "Iyek", artist: "", category: "click", file: "Iyek.m4a" },
+  { title: "Iyis", artist: "", category: "click", file: "Iyis.m4a" },
+  { title: "Iyiskew", artist: "", category: "click", file: "Iyiskew.m4a" },
+  { title: "Iylew", artist: "", category: "click", file: "Iylew.m4a" },
+  { title: "Iymanlı", artist: "", category: "click", file: "Iymanlı.m4a" },
+  { title: "Iyne", artist: "", category: "click", file: "Iyne.m4a" },
+  { title: "Iyrim", artist: "", category: "click", file: "Iyrim.m4a" },
+  { title: "Iyshan", artist: "", category: "click", file: "Iyshan.m4a" },
+  { title: "Iytbalıq", artist: "", category: "click", file: "Iytbalıq.m4a" },
+  { title: "Iyun", artist: "", category: "click", file: "Iyun.m4a" },
+  { title: "Izleniw", artist: "", category: "click", file: "Izleniw.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
