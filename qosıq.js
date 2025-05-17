@@ -101,6 +101,21 @@ const songs = [
   { title: "Jazıq", artist: "", category: "fill", file: "Jazıq.m4a" },
   { title: "Jazıw", artist: "", category: "fill", file: "Jazıw.m4a" },
   { title: "Jaǵal", artist: "", category: "fill", file: "Jaǵal.m4a" },
+  { title: "Zapas", artist: "", category: "note", file: "Zapas.m4a" },
+  { title: "Zar", artist: "", category: "note", file: "Zar.m4a" },
+  { title: "Zawıq", artist: "", category: "note", file: "Zawıq.m4a" },
+  { title: "Zań", artist: "", category: "note", file: "Zań.m4a" },
+  { title: "Zańǵar", artist: "", category: "note", file: "Zańǵar.m4a" },
+  { title: "Zildey", artist: "", category: "note", file: "Zildey.m4a" },
+  { title: "Zindan", artist: "", category: "note", file: "Zindan.m4a" },
+  { title: "Ziyapat", artist: "", category: "note", file: "Ziyapat.m4a" },
+  { title: "Zona", artist: "", category: "note", file: "Zona.m4a" },
+  { title: "Záhmet", artist: "", category: "note", file: "Záhmet.m4a" },
+  { title: "Záhár", artist: "", category: "note", file: "Záhár.m4a" },
+  { title: "Zámber", artist: "", category: "note", file: "Zámber.m4a" },
+  { title: "Zámberek", artist: "", category: "note", file: "Zámberek.m4a" },
+  { title: "Zárde", artist: "", category: "note", file: "Zárde.m4a" },
+  { title: "Záńgi", artist: "", category: "note", file: "Záńgi.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
