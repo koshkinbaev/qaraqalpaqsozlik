@@ -132,6 +132,21 @@ const songs = [
   { title: "Yoga", artist: "", category: "click", pen: "Yoga.m4a" },
   { title: "Yosh", artist: "", category: "click", pen: "Yosh.m4a" },
   { title: "Yoshlı", artist: "", category: "click", pen: "Yoshlı.m4a" },
+  { title: "Yoshlı", artist: "", category: "click", pen: "Yoshlı.m4a" },
+  { title: "Kadastr", artist: "", category: "click", krish: "Kadastr.m4a" },
+  { title: "Kadr", artist: "", category: "click", krish: "Kadr.m4a" },
+  { title: "Kaktus", artist: "", category: "click", krish: "Kaktus.m4a" },
+  { title: "Kalendar", artist: "", category: "click", krish: "Kalendar.m4a" },
+  { title: "Kamzol", artist: "", category: "click", krish: "Kamzol.m4a" },
+  { title: "Kapitan", artist: "", category: "click", krish: "Kapitan.m4a" },
+  { title: "Kapusta", artist: "", category: "click", krish: "Kapusta.m4a" },
+  { title: "Kassir", artist: "", category: "click", krish: "Kassir.m4a" },
+  { title: "Kazarma", artist: "", category: "click", krish: "Kazarma.m4a" },
+  { title: "Kegey", artist: "", category: "click", krish: "Kegey.m4a" },
+  { title: "Keme", artist: "", category: "click", krish: "Keme.m4a" },
+  { title: "Kvartal", artist: "", category: "click", krish: "Kvartal.m4a" },
+  { title: "Kápir", artist: "", category: "click", krish: "Kápir.m4a" },
+  { title: "Kárxana", artist: "", category: "click", krish: "Kárxana.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
