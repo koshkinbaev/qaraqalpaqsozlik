@@ -146,6 +146,16 @@ const songs = [
   { title: "Kvartal", artist: "", category: "krish", file: "Kvartal.m4a" },
   { title: "Kápir", artist: "", category: "krish", file: "Kápir.m4a" },
   { title: "Kárxana", artist: "", category: "krish", file: "Kárxana.m4a" },
+  { title: "Qabaǵan", artist: "", category: "quen", file: "Qabaǵan.m4a" },
+  { title: "Qabırshaq", artist: "", category: "quen", file: "Qabırshaq.m4a" },
+  { title: "Qabırǵa", artist: "", category: "quen", file: "Qabırǵa.m4a" },
+  { title: "Qaltıs", artist: "", category: "quen", file: "Qaltıs.m4a" },
+  { title: "Qaraqshı", artist: "", category: "quen", file: "Qaraqshı.m4a" },
+  { title: "Qaraǵay", artist: "", category: "quen", file: "Qaraǵay.m4a" },
+  { title: "Qaraǵım", artist: "", category: "quen", file: "Qaraǵım.m4a" },
+  { title: "Qarındas", artist: "", category: "quen", file: "Qarındas.m4a" },
+  { title: "Qazan", artist: "", category: "quen", file: "Qazan.m4a" },
+  { title: "Qaǵaz", artist: "", category: "quen", file: "Qaǵaz.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
