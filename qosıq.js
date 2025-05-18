@@ -156,6 +156,20 @@ const songs = [
   { title: "Qarındas", artist: "", category: "quen", file: "Qarındas.m4a" },
   { title: "Qazan", artist: "", category: "quen", file: "Qazan.m4a" },
   { title: "Qaǵaz", artist: "", category: "quen", file: "Qaǵaz.m4a" },
+  { title: "Lala", artist: "", category: "lirika", file: "Lala.m4a" },
+  { title: "Lampa", artist: "", category: "lirika", file: "Lampa.m4a" },
+  { title: "Lampamay", artist: "", category: "lirika", file: "Lampamay.m4a" },
+  { title: "Lamposhka", artist: "", category: "lirika", file: "Lamposhka.m4a" },
+  { title: "Lapgóy", artist: "", category: "lirika", file: "Lapgóy.m4a" },
+  { title: "Laqap", artist: "", category: "lirika", file: "Laqap.m4a" },
+  { title: "Laqat", artist: "", category: "lirika", file: "Laqat.m4a" },
+  { title: "Lashın", artist: "", category: "lirika", file: "Lashın.m4a" },
+  { title: "Legion", artist: "", category: "lirika", file: "Legion.m4a" },
+  { title: "Lenta", artist: "", category: "lirika", file: "Lenta.m4a" },
+  { title: "Lider", artist: "", category: "lirika", file: "Lider.m4a" },
+  { title: "Lipas", artist: "", category: "lirika", file: "Lipas.m4a" },
+  { title: "Lárzem", artist: "", category: "lirika", file: "Lárzem.m4a" },
+  { title: "Láshker", artist: "", category: "lirika", file: "Láshker.m4a" },
 
   // ✳️ Shu tarzda 100 ta qo‘shiq qo‘shiladi
 ];
