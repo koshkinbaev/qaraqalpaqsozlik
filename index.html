@@ -8,11 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
 
-    * {
-      box-sizing: border-box;
+    body {
       margin: 0;
-      padding: 0;
       font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #f4f8fb, #e6f0fa);
+      color: #333;
     }
 
     body {
@@ -27,22 +27,149 @@
       padding: 20px 10px;
     }
 
-    .top-navbar {
-      background-color: #333;
-      overflow: hidden;
+    .main-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 15px 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .top-navbar .menu-links a {
-      float: left;
-      display: block;
-      color: #fff;
-      text-align: center;
-      padding: 14px 20px;
+    .logo {
+      font-weight: bold;
+      font-size: 22px;
+      color: #003366;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Merriweather', serif;
+    }
+
+    .logo img {
+      height: 30px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
       text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 6px 10px;
+      transition: 0.3s ease;
+      border-bottom: 2px solid transparent;
     }
 
-    .top-navbar .menu-links a:hover {
-      background-color: #575757;
+    .nav-links li a:hover {
+      color: #0056b3;
+      border-bottom: 2px solid #0056b3;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 35px;
+      left: 0;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      display: none;
+      flex-direction: column;
+      min-width: 160px;
+      z-index: 999;
+      border-radius: 6px;
+    }
+
+    .dropdown a {
+      padding: 10px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.2s ease;
+    }
+
+    .dropdown a:hover {
+      background-color: #f7faff;
+    }
+
+    .nav-links li:hover .dropdown {
+      display: flex;
+    }
+
+    .right-items {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .language-select {
+      font-size: 14px;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    .user-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .menu-toggle {
+      display: none;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        background-color: #fff;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 200px;
+        display: none;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        border-radius: 8px;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    main {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    main h1 {
+      font-size: 36px;
+      color: #003366;
+      font-family: 'Merriweather', serif;
+      margin-bottom: 15px;
+    }
+
+    main p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
     .container {
@@ -140,18 +267,49 @@
     <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
   </div>
 
-  <!-- NAVIGATION BAR -->
-  <div class="top-navbar">
-    <div class="menu-links">
-      <a href="janaliq.html">Jańalıqlar</a>
-      <a href="fikir1.html">Pikir hám usınıs</a>
-      <a href="baylanıs.html">Dizimnen ótiw</a>
-      <a href="izlew.html">Sózlerdi izlew</a>
-      <a href="ovoz1.html">Esitiw</a>
-      <a href="qosiq.html">Sózliklerdiń audiosı</a>
-      <a href="komanda.html">Biziń komanda</a>
-    </div>
-  </div>
+  <body>
+
+    <nav class="main-navbar">
+      <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Books-aj.svg_aj_ashton_01.svg/120px-Books-aj.svg_aj_ashton_01.svg.png" alt="Logo">
+        Qaraqalpaq Sozlik
+      </div>
+  
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  
+      <ul class="nav-links" id="menu">
+        <li><a href="janaliq.html">Jańalıqlar</a></li>
+        <li><a href="fikir1.html">Pikir hám usınıs</a></li>
+        <li>
+          <a href="#">Sózlikler ▼</a>
+          <div class="dropdown">
+            <a href="baylanıs.html">Dizimnen ótiw</a>
+            <a href="izlew.html">Sózlerdi izlew</a>
+            <a href="qosiq.html">Sózliklerdiń audiosı</a>
+          </div>
+        </li>
+        <li><a href="ovoz1.html">Esitiw</a>
+        <li><a href="komanda.html">Biziń komanda</a></li>
+      </ul>
+  
+      <div class="right-items">
+        <select class="language-select">
+          <option value="kk">Qaraqalpaqsha</option>
+          <option value="uz">O'zbekcha</option>
+          <option value="ru">Русский</option>
+        </select>
+        <div class="user-icon">👤</div>
+      </div>
+    </nav>
+  
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('active');
+      }
+    </script>
+  
+  </body>
 
   <!-- LOGIN FORM -->
   <div class="container">
