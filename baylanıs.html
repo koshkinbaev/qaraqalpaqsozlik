@@ -4,105 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dizimnen Ótiw</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f0f2f5;
-      color: #333;
-    }
-    .register-wrapper, .dashboard-wrapper {
-      max-width: 400px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    .submit-btn, #google-login-btn, #logout-btn {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background-color: #4a90e2;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #logout-btn {
-      background-color: #e94e4e;
-    }
-    .hidden {
-      display: none;
-    }
-    .dashboard-wrapper h3 {
-      margin-top: 0;
-    }
-    .user-data p {
-      margin: 6px 0;
-    }
-  </style>
+      <link rel="stylesheet" href="style1.css">
 </head>
 <body>
 
   <!-- Ro'yxatdan O'tish Bo'limi -->
-  <section class="register-section" id="register">
-    <div class="register-wrapper">
-      <h2>Dizimnen ótiw</h2>
-      <form class="register-form">
-        <div class="form-group">
-          <label for="name">Atıńız</label>
-          <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Elektron pochta mánzilińiz</label>
-          <input type="email" id="email" placeholder="example@mail.com" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Parol</label>
-          <input type="password" id="password" placeholder="Parolińiz" required>
-        </div>
-        <div class="form-group">
-          <label for="confirm-password">Paroldı tastıyıqlaw</label>
-          <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
-        </div>
-        <button type="submit" class="submit-btn">Dizimnen ótiw</button>
-      </form>
+<section class="register-section" id="register">
+  <div class="register-wrapper">
+    <h2>Dizimnen ótiw</h2>
+    <form class="register-form">
+      <div class="form-group">
+        <label for="name">Atıńız</label>
+        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Elektron pochta mánzilińiz</label>
+        <input type="email" id="email" placeholder="example@mail.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Parol</label>
+        <input type="password" id="password" placeholder="Parolińiz" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Paroldı tastıyıqlaw</label>
+        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
+      </div>
+      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
+    </form>
+
       <hr>
+
+      <!-- Google orqali tizimga kirish -->
       <button id="google-login-btn">Google arqalı kiriw</button>
+
+      <!-- Tizimdan chiqish -->
+      <button id="logout-btn" style="display: none;">Shıǵıw</button>
+
+      <!-- Foydalanuvchi holati -->
       <p id="user-info">Paydalanıwshı sistemaǵa kirmegen</p>
     </div>
-  </section>
-
-  <!-- Shaxsiy Kabinet -->
-  <section id="dashboard" class="dashboard-wrapper hidden">
-    <h2>Shaxsiy Kabinet</h2>
-    <div class="user-data">
-      <p><strong>Atıńız:</strong> <span id="display-name">-</span></p>
-      <p><strong>Email:</strong> <span id="display-email">-</span></p>
-    </div>
-    <button id="logout-btn">Shıǵıw</button>
   </section>
 
   <!-- Firebase JS -->
@@ -117,15 +57,19 @@
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+    // Firebase sozlamalari
     const firebaseConfig = {
       apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
       authDomain: "dizimnen-otiw.firebaseapp.com",
+      databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
       projectId: "dizimnen-otiw",
-      storageBucket: "dizimnen-otiw.appspot.com",
+      storageBucket: "dizimnen-otiw.firebasestorage.app",
       messagingSenderId: "254101190553",
-      appId: "1:254101190553:web:446332fe4c63973ea4c508"
+      appId: "1:254101190553:web:446332fe4c63973ea4c508",
+      measurementId: "G-Y6JEDTY148"
     };
 
+    // Firebase'ni ishga tushirish
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
@@ -136,27 +80,14 @@
       const logoutBtn = document.getElementById("logout-btn");
       const userInfo = document.getElementById("user-info");
 
-      const dashboard = document.getElementById("dashboard");
-      const registerSection = document.getElementById("register");
-      const displayName = document.getElementById("display-name");
-      const displayEmail = document.getElementById("display-email");
-
       // Ro'yxatdan o'tish
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        const confirmPassword = document.getElementById("confirm-password").value;
-
-        if (password !== confirmPassword) {
-          alert("Parollar mos emas!");
-          return;
-        }
 
         try {
           const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          localStorage.setItem("fullName", name);
           alert("Ro'yxatdan o'tildi: " + userCredential.user.email);
         } catch (error) {
           alert("Xatolik: " + error.message);
@@ -167,36 +98,30 @@
       googleBtn.addEventListener("click", async () => {
         try {
           const result = await signInWithPopup(auth, provider);
-          localStorage.setItem("fullName", result.user.displayName || "Google foydalanuvchisi");
           alert("Google orqali tizimga kirildi: " + result.user.email);
         } catch (error) {
           alert("Google xatosi: " + error.message);
         }
       });
 
-      // Chiqish
+      // Tizimdan chiqish
       logoutBtn.addEventListener("click", async () => {
         try {
           await signOut(auth);
-          localStorage.removeItem("fullName");
           alert("Tizimdan chiqildi");
         } catch (error) {
           alert("Chiqishda xatolik: " + error.message);
         }
       });
 
-      // Auth holati
+      // Foydalanuvchi holatini kuzatish
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          registerSection.classList.add("hidden");
-          dashboard.classList.remove("hidden");
-          userInfo.textContent = "";
-          displayEmail.textContent = user.email;
-          displayName.textContent = localStorage.getItem("fullName") || "Noma'lum";
+          userInfo.textContent = "Sistemaǵa kirgen paydalanıwshı: " + user.email;
+          logoutBtn.style.display = "inline-block";
         } else {
-          registerSection.classList.remove("hidden");
-          dashboard.classList.add("hidden");
           userInfo.textContent = "Paydalanıwshı sistemaǵa kirmegen";
+          logoutBtn.style.display = "none";
         }
       });
     });
