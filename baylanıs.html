@@ -1,131 +1,292 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dizimnen Ótiw</title>
-      <link rel="stylesheet" href="style1.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shaxsiy Kabinet</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* Reset va asosiy stil */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f0f4f8;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+  }
+  .container {
+    background: #fff;
+    max-width: 480px;
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 32px 32px 40px 32px;
+  }
+  h1 {
+    margin-top: 0;
+    font-weight: 700;
+    font-size: 28px;
+    color: #1a202c;
+    text-align: center;
+  }
+  .profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #cbd5e0;
+    background-size: cover;
+    background-position: center;
+    margin-right: 20px;
+    flex-shrink: 0;
+  }
+  .profile-info {
+    flex-grow: 1;
+  }
+  .profile-info h2 {
+    margin: 0 0 6px 0;
+    font-weight: 600;
+    font-size: 22px;
+    color: #2d3748;
+  }
+  .profile-info p {
+    margin: 0;
+    color: #718096;
+    font-size: 14px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-size: 14px;
+  }
+  textarea, input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1.8px solid #e2e8f0;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+  }
+  textarea:focus, input[type="text"]:focus {
+    border-color: #3182ce;
+    outline: none;
+  }
+  button {
+    background-color: #3182ce;
+    border: none;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #2c5282;
+  }
+  hr {
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+  }
+  .favorites-section h3 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    color: #2d3748;
+  }
+  .fav-input-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .fav-input-group input[type="text"] {
+    flex-grow: 1;
+  }
+  ul.favorites-list {
+    list-style: none;
+    padding-left: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    background: #f7fafc;
+  }
+  ul.favorites-list li {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    color: #2d3748;
+  }
+  ul.favorites-list li:last-child {
+    border-bottom: none;
+  }
+  .remove-btn {
+    background-color: #e53e3e;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .remove-btn:hover {
+    background-color: #9b2c2c;
+  }
+  .status-msg {
+    margin-top: 8px;
+    color: #38a169;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    min-height: 20px;
+  }
+  #logout-btn {
+    background-color: #e53e3e;
+    margin-top: 30px;
+  }
+  #logout-btn:hover {
+    background-color: #9b2c2c;
+  }
+  @media (max-width: 520px) {
+    .container {
+      padding: 24px 20px 32px 20px;
+    }
+    .profile {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .profile-info {
+      margin-top: 12px;
+    }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Ro'yxatdan O'tish Bo'limi -->
-<section class="register-section" id="register">
-  <div class="register-wrapper">
-    <h2>Dizimnen ótiw</h2>
-    <form class="register-form">
-      <div class="form-group">
-        <label for="name">Atıńız</label>
-        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Elektron pochta mánzilińiz</label>
-        <input type="email" id="email" placeholder="example@mail.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Parol</label>
-        <input type="password" id="password" placeholder="Parolińiz" required>
-      </div>
-      <div class="form-group">
-        <label for="confirm-password">Paroldı tastıyıqlaw</label>
-        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
-      </div>
-      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
-    </form>
+<div class="container">
+  <h1>Shaxsiy Kabinet</h1>
 
-      <hr>
-
-      <!-- Google orqali tizimga kirish -->
-      <button id="google-login-btn">Google arqalı kiriw</button>
-
-      <!-- Tizimdan chiqish -->
-      <button id="logout-btn" style="display: none;">Shıǵıw</button>
-
-      <!-- Foydalanuvchi holati -->
-      <p id="user-info">Paydalanıwshı sistemaǵa kirmegen</p>
+  <div class="profile">
+    <div id="avatar" class="avatar" style="background-image: url('https://cdn-icons-png.flaticon.com/512/149/149071.png')"></div>
+    <div class="profile-info">
+      <h2 id="user-name">Ism Familiya</h2>
+      <p id="user-email">email@misol.uz</p>
     </div>
+  </div>
+
+  <label for="about">Haqqimda</label>
+  <textarea id="about" rows="4" placeholder="O'zingiz haqingizda yozing..."></textarea>
+  <button id="save-about-btn">Saqlash</button>
+  <p id="save-about-status" class="status-msg"></p>
+
+  <hr />
+
+  <section class="favorites-section">
+    <h3>Sevimli So'zlaringiz</h3>
+    <div class="fav-input-group">
+      <input type="text" id="new-fav-word" placeholder="Yangi sevimli so'zni kiriting" />
+      <button id="add-fav-btn">Qo'shish</button>
+    </div>
+    <ul id="favorites-list" class="favorites-list">
+      <li>Sevimli so'zlar yo'q</li>
+    </ul>
   </section>
 
-  <!-- Firebase JS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithPopup,
-      GoogleAuthProvider,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  <button id="logout-btn">Chiqish</button>
+</div>
 
-    // Firebase sozlamalari
-    const firebaseConfig = {
-      apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
-      authDomain: "dizimnen-otiw.firebaseapp.com",
-      databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
-      projectId: "dizimnen-otiw",
-      storageBucket: "dizimnen-otiw.firebasestorage.app",
-      messagingSenderId: "254101190553",
-      appId: "1:254101190553:web:446332fe4c63973ea4c508",
-      measurementId: "G-Y6JEDTY148"
-    };
+<script type="module">
+// Firebase SDK importlari
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase'ni ishga tushirish
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+// Firebase konfiguratsiyasi
+const firebaseConfig = {
+  apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+  authDomain: "dizimnen-otiw.firebaseapp.com",
+  projectId: "dizimnen-otiw",
+  storageBucket: "dizimnen-otiw.appspot.com",
+  messagingSenderId: "254101190553",
+  appId: "1:254101190553:web:446332fe4c63973ea4c508",
+  measurementId: "G-Y6JEDTY148"
+};
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector(".register-form");
-      const googleBtn = document.getElementById("google-login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const userInfo = document.getElementById("user-info");
+// Firebase ishga tushurish
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-      // Ro'yxatdan o'tish
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+// DOM elementlari
+const avatar = document.getElementById('avatar');
+const userNameEl = document.getElementById('user-name');
+const userEmailEl = document.getElementById('user-email');
+const aboutTextarea = document.getElementById('about');
+const saveAboutBtn = document.getElementById('save-about-btn');
+const saveAboutStatus = document.getElementById('save-about-status');
+const newFavWordInput = document.getElementById('new-fav-word');
+const addFavBtn = document.getElementById('add-fav-btn');
+const favoritesList = document.getElementById('favorites-list');
+const logoutBtn = document.getElementById('logout-btn');
 
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          alert("Ro'yxatdan o'tildi: " + userCredential.user.email);
-        } catch (error) {
-          alert("Xatolik: " + error.message);
-        }
-      });
+let currentUser = null;
 
-      // Google orqali kirish
-      googleBtn.addEventListener("click", async () => {
-        try {
-          const result = await signInWithPopup(auth, provider);
-          alert("Google orqali tizimga kirildi: " + result.user.email);
-        } catch (error) {
-          alert("Google xatosi: " + error.message);
-        }
-      });
+// Foydalanuvchi holatini kuzatish
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    // Profilni yangilash
+    userNameEl.textContent = user.displayName || "Foydalanuvchi";
+    userEmailEl.textContent = user.email || "";
+    avatar.style.backgroundImage = user.photoURL ? `url(${user.photoURL})` : "url('https://cdn-icons-png.flaticon.com/512/149/149071.png')";
 
-      // Tizimdan chiqish
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          alert("Tizimdan chiqildi");
-        } catch (error) {
-          alert("Chiqishda xatolik: " + error.message);
-        }
-      });
+    // Firestore'dan foydalanuvchi ma'lumotlarini yuklash
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      const data = userDoc.data();
+      aboutTextarea.value = data.about || "";
+      renderFavorites(data.favorites || []);
+    } else {
+      aboutTextarea.value = "";
+      renderFavorites([]);
+    }
+  } else {
+    // Agar foydalanuvchi tizimga kirmagan bo'lsa
+    currentUser = null;
+    userNameEl.textContent = "Tizimga kirilmagan";
+    userEmailEl.textContent = "";
+    avatar.style.backgroundImage = "url('https://cdn-icons-png.flaticon.com/512/149/149071.png')";
+    aboutTextarea.value = "";
+    renderFavorites([]);
+  }
+});
 
-      // Foydalanuvchi holatini kuzatish
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userInfo.textContent = "Sistemaǵa kirgen paydalanıwshı: " + user.email;
-          logoutBtn.style.display = "inline-block";
-        } else {
-          userInfo.textContent = "Paydalanıwshı sistemaǵa kirmegen";
-          logoutBtn.style.display = "none";
-        }
-      });
-    });
-  </script>
-
-</body>
-</html>
+// "Haqqimda" ma'lumotini saqlash
+saveAboutBtn.addEventListener('click', async () => {
+  if (!currentUser) {
+    alert("Iltimos, avval tizimga kiring!");
+    return
