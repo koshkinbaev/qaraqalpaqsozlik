@@ -1,131 +1,209 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dizimnen Ótiw</title>
-      <link rel="stylesheet" href="style1.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pikir-usınıslar hám reyting</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style2.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      font-family: sans-serif;
+    }
+
+    .rain {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .drop {
+      position: absolute;
+      bottom: 100%;
+      width: 2px;
+      height: 20px;
+      background: rgba(174, 148, 193, 0.948);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    .feedback-container {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 3rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .feedback-form textarea {
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background-color: #3b82f6;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #2563eb;
+    }
+
+  </style>
 </head>
 <body>
+  <div class="rain"></div>
 
-  <!-- Ro'yxatdan O'tish Bo'limi -->
-<section class="register-section" id="register">
-  <div class="register-wrapper">
-    <h2>Dizimnen ótiw</h2>
-    <form class="register-form">
-      <div class="form-group">
-        <label for="name">Atıńız</label>
-        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Elektron pochta mánzilińiz</label>
-        <input type="email" id="email" placeholder="example@mail.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Parol</label>
-        <input type="password" id="password" placeholder="Parolińiz" required>
-      </div>
-      <div class="form-group">
-        <label for="confirm-password">Paroldı tastıyıqlaw</label>
-        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
-      </div>
-      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
-    </form>
+  <div class="feedback-container">
+    <header>
+      <h1 class="text-2xl font-bold mb-2">Pikir-usınıslar hám reyting</h1>
+      <p class="text-gray-600 mb-4">Saytımızdı jaqsılaw ushın pikirlerińizdi bildiriń..</p>
+    </header>
 
-      <hr>
+    <div class="feedback-form mb-6">
+      <h2 class="text-xl font-semibold mb-2">Pikir-usınıs qaldırıw</h2>
+      <form id="feedbackForm" class="space-y-3">
+        <div>
+          <label for="userName">Atıńız:</label>
+          <input type="text" id="userName" name="userName" placeholder="Atıńızdı kirgiziń" required class="w-full p-2 border rounded"/>
+        </div>
 
-      <!-- Google orqali tizimga kirish -->
-      <button id="google-login-btn">Google arqalı kiriw</button>
+        <div>
+          <label for="rating">Reyting:</label>
+          <select id="rating" name="rating" required class="w-full p-2 border rounded">
+            <option value="1">1 - Júdá jaman</option>
+            <option value="2">2 - Jaman</option>
+            <option value="3">3 - Ortasha</option>
+            <option value="4">4 - Jaqsı</option>
+            <option value="5">5 - Ájayıp</option>
+          </select>
+        </div>
 
-      <!-- Tizimdan chiqish -->
-      <button id="logout-btn" style="display: none;">Shıǵıw</button>
+        <div>
+          <label for="comment">Pikir-usınıs:</label>
+          <textarea id="comment" name="comment" placeholder="Pikirlerińizdi jazıń..." required class="w-full p-2 border rounded"></textarea>
+        </div>
 
-      <!-- Foydalanuvchi holati -->
-      <p id="user-info">Paydalanıwshı sistemaǵa kirmegen</p>
+        <button type="submit" class="submit-btn">Jiberiw</button>
+      </form>
     </div>
-  </section>
 
-  <!-- Firebase JS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithPopup,
-      GoogleAuthProvider,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    <div class="feedback-list">
+      <h2 class="text-lg font-semibold mb-2">Pikir-usınıslar dizimi</h2>
+      <ul id="feedbackList" class="space-y-2">
+        <!-- Pikirler bul jerde kórsetiledi -->
+      </ul>
+    </div>
+  </div>
+ <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 
-    // Firebase sozlamalari
+  <script>
+    // 1. Firebase konfiguratsiyasi — BU YERNI O‘ZGARTIRING!
     const firebaseConfig = {
-      apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
-      authDomain: "dizimnen-otiw.firebaseapp.com",
-      databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
-      projectId: "dizimnen-otiw",
-      storageBucket: "dizimnen-otiw.firebasestorage.app",
-      messagingSenderId: "254101190553",
-      appId: "1:254101190553:web:446332fe4c63973ea4c508",
-      measurementId: "G-Y6JEDTY148"
-    };
+      apiKey: "AIzaSyDAY094J109dWXSPbLDgz14spcsm-L3jVU",
+  authDomain: "pikir-usinis.firebaseapp.com",
+  projectId: "pikir-usinis",
+  storageBucket: "pikir-usinis.firebasestorage.app",
+  messagingSenderId: "103211868669",
+  appId: "1:103211868669:web:d995961d91430255b6f994",
+  measurementId: "G-L5FSSGL6YQ"
+};
 
-    // Firebase'ni ishga tushirish
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+    // 2. Firebase va Firestore’ni ishga tushirish
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector(".register-form");
-      const googleBtn = document.getElementById("google-login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const userInfo = document.getElementById("user-info");
+    const form = document.getElementById('feedbackForm');
+    const list = document.getElementById('feedbackList');
 
-      // Ro'yxatdan o'tish
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          alert("Ro'yxatdan o'tildi: " + userCredential.user.email);
-        } catch (error) {
-          alert("Xatolik: " + error.message);
-        }
+      const name = document.getElementById('userName').value;
+      const rating = document.getElementById('rating').value;
+      const comment = document.getElementById('comment').value;
+
+      if (name && rating && comment) {
+        await db.collection("feedbacks").add({
+          name,
+          rating,
+          comment,
+          timestamp: new Date()
+        });
+
+        form.reset();
+      }
+    });
+
+    // 3. Fikrlarni real vaqtda ko‘rsatish
+    db.collection("feedbacks")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        list.innerHTML = "";
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const li = document.createElement('li');
+          li.className = "bg-white shadow p-3 rounded";
+          li.innerHTML = `<strong>${data.name}</strong> (${data.rating} ⭐)<br><span>${data.comment}</span>`;
+          list.appendChild(li);
+        });
       });
+  </script>
+  <script>
+    // Yomg‘ir animatsiyasi
+    const rain = document.querySelector('.rain');
+    const numDrops = 100;
 
-      // Google orqali kirish
-      googleBtn.addEventListener("click", async () => {
-        try {
-          const result = await signInWithPopup(auth, provider);
-          alert("Google orqali tizimga kirildi: " + result.user.email);
-        } catch (error) {
-          alert("Google xatosi: " + error.message);
-        }
-      });
+    for (let i = 0; i < numDrops; i++) {
+      const drop = document.createElement('div');
+      drop.classList.add('drop');
+      drop.style.left = Math.random() * window.innerWidth + 'px';
+      drop.style.animationDuration = 0.5 + Math.random() + 's';
+      drop.style.animationDelay = Math.random() * 5 + 's';
+      rain.appendChild(drop);
+    }
 
-      // Tizimdan chiqish
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          alert("Tizimdan chiqildi");
-        } catch (error) {
-          alert("Chiqishda xatolik: " + error.message);
-        }
-      });
+    // Fikr-mulohaza tizimi
+    const form = document.getElementById('feedbackForm');
+    const list = document.getElementById('feedbackList');
 
-      // Foydalanuvchi holatini kuzatish
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userInfo.textContent = "Sistemaǵa kirgen paydalanıwshı: " + user.email;
-          logoutBtn.style.display = "inline-block";
-        } else {
-          userInfo.textContent = "Paydalanıwshı sistemaǵa kirmegen";
-          logoutBtn.style.display = "none";
-        }
-      });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('userName').value;
+      const rating = document.getElementById('rating').value;
+      const comment = document.getElementById('comment').value;
+
+      const li = document.createElement('li');
+      li.classList.add('bg-gray-100', 'p-3', 'rounded');
+      li.innerHTML = `<strong>${name}</strong> (${rating} ⭐)<br><span>${comment}</span>`;
+      list.prepend(li);
+
+      form.reset();
     });
   </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
