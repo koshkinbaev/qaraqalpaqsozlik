@@ -1,65 +1,93 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dizimnen Ótiw</title>
-      <link rel="stylesheet" href="style1.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shaxsiy kabinet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Ro'yxatdan O'tish Bo'limi -->
-<section class="register-section" id="register">
-  <div class="register-wrapper">
-    <h2>Dizimnen ótiw</h2>
-    <form class="register-form">
-      <div class="form-group">
-        <label for="name">Atıńız</label>
-        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Elektron pochta mánzilińiz</label>
-        <input type="email" id="email" placeholder="example@mail.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Parol</label>
-        <input type="password" id="password" placeholder="Parolińiz" required>
-      </div>
-      <div class="form-group">
-        <label for="confirm-password">Paroldı tastıyıqlaw</label>
-        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
-      </div>
-      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
-    </form>
+<div class="container">
+  <h2>Shaxsiy kabinet</h2>
+  <form id="foydaForm">
+    <label for="ism">Ismingiz:</label>
+    <input type="text" id="ism" required>
 
-      <hr>
+    <label for="familiya">Familiyangiz:</label>
+    <input type="text" id="familiya" required>
 
-      <!-- Google orqali tizimga kirish -->
-      <button id="google-login-btn">Google arqalı kiriw</button>
+    <label for="talim">Qayerda tahsil olasiz?</label>
+    <input type="text" id="talim" required>
 
-      <!-- Tizimdan chiqish -->
-      <button id="logout-btn" style="display: none;">Shıǵıw</button>
+    <label for="tuman">Qaysi tumanda tug‘ilgansiz?</label>
+    <input type="text" id="tuman" required>
 
-      <!-- Foydalanuvchi holati -->
-      <p id="user-info">Paydalanıwshı sistemaǵa kirmegen</p>
-    </div>
-  </section>
+    <label for="sana">Tug‘ilgan sana:</label>
+    <input type="date" id="sana" required>
 
-  <!-- Firebase JS -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithPopup,
-      GoogleAuthProvider,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    <label for="rasm">Rasm yuklang:</label>
+    <input type="file" id="rasm" accept="image/*">
 
-    // Firebase sozlamalari
-    const firebaseConfig = {
-      apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+    <label for="izoh">Qo‘shimcha ma’lumot:</label>
+    <textarea id="izoh" rows="4"></textarea>
+
+    <button type="submit">Saqlash</button>
+  </form>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase konfiguratsiyasi (o‘z ma’lumotlaringiz bilan to‘ldiring)
+  const firebaseConfig = {
+    apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
       authDomain: "dizimnen-otiw.firebaseapp.com",
       databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
       projectId: "dizimnen-otiw",
@@ -68,64 +96,53 @@
       appId: "1:254101190553:web:446332fe4c63973ea4c508",
       measurementId: "G-Y6JEDTY148"
     };
+  // Firebase ishga tushurish
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-    // Firebase'ni ishga tushirish
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
+  // Forma yuborish
+  document.getElementById('foydaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector(".register-form");
-      const googleBtn = document.getElementById("google-login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const userInfo = document.getElementById("user-info");
+    const ism = document.getElementById('ism').value;
+    const familiya = document.getElementById('familiya').value;
+    const talim = document.getElementById('talim').value;
+    const tuman = document.getElementById('tuman').value;
+    const sana = document.getElementById('sana').value;
+    const izoh = document.getElementById('izoh').value;
+    const rasmInput = document.getElementById('rasm');
 
-      // Ro'yxatdan o'tish
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
+    if (rasmInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        const rasm = reader.result;
+        saqlash(ism, familiya, talim, tuman, sana, izoh, rasm);
+      };
+      reader.readAsDataURL(rasmInput.files[0]);
+    } else {
+      saqlash(ism, familiya, talim, tuman, sana, izoh, '');
+    }
+  });
 
-        try {
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          alert("Ro'yxatdan o'tildi: " + userCredential.user.email);
-        } catch (error) {
-          alert("Xatolik: " + error.message);
-        }
-      });
-
-      // Google orqali kirish
-      googleBtn.addEventListener("click", async () => {
-        try {
-          const result = await signInWithPopup(auth, provider);
-          alert("Google orqali tizimga kirildi: " + result.user.email);
-        } catch (error) {
-          alert("Google xatosi: " + error.message);
-        }
-      });
-
-      // Tizimdan chiqish
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          alert("Tizimdan chiqildi");
-        } catch (error) {
-          alert("Chiqishda xatolik: " + error.message);
-        }
-      });
-
-      // Foydalanuvchi holatini kuzatish
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          userInfo.textContent = "Sistemaǵa kirgen paydalanıwshı: " + user.email;
-          logoutBtn.style.display = "inline-block";
-        } else {
-          userInfo.textContent = "Paydalanıwshı sistemaǵa kirmegen";
-          logoutBtn.style.display = "none";
-        }
-      });
+  function saqlash(ism, familiya, talim, tuman, sana, izoh, rasm) {
+    db.collection("foydalanuvchilar").add({
+      ism,
+      familiya,
+      talim,
+      tuman,
+      sana,
+      izoh,
+      rasm
+    })
+    .then(() => {
+      alert("Ma’lumotlaringiz muvaffaqiyatli saqlandi!");
+      document.getElementById('foydaForm').reset();
+    })
+    .catch((error) => {
+      alert("Xatolik yuz berdi: " + error.message);
     });
-  </script>
+  }
+</script>
 
 </body>
 </html>
