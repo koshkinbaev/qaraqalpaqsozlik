@@ -95,6 +95,7 @@
         <div>
           <label for="rating">Reyting:</label>
           <select id="rating" name="rating" required class="w-full p-2 border rounded">
+            <option value="">Tańlańız</option>
             <option value="1">1 - Júdá jaman</option>
             <option value="2">2 - Jaman</option>
             <option value="3">3 - Ortasha</option>
@@ -120,7 +121,10 @@
     </div>
   </div>
 
-  <!-- JS: Yomg‘ir + Izohlar -->
+  <!-- Firebase SDK va JS kodi -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script>
     // 🌧 Yomg‘ir animatsiyasi
     const rain = document.querySelector('.rain');
@@ -134,38 +138,67 @@
       rain.appendChild(drop);
     }
 
-    // 💬 Real vaqt fikrlar tizimi (localStorage asosida)
+    // ===================
+    // Firebase konfiguratsiyasi
+    // ===================
+    const firebaseConfig = {
+      apiKey: "AIzaSyAm89VWmzax9IZl42cEd1B53_xoUoy9K_M",
+  authDomain: "pikirreytingapp.firebaseapp.com",
+  databaseURL: "https://pikirreytingapp-default-rtdb.firebaseio.com",
+  projectId: "pikirreytingapp",
+  storageBucket: "pikirreytingapp.firebasestorage.app",
+  messagingSenderId: "809064080199",
+  appId: "1:809064080199:web:0aff9c292187166f0c6262",
+  measurementId: "G-PX1R2MT5KZ"
+};
+
+    // Firebase ishga tushurish
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Form va ro'yxat elementlarini olish
     const form = document.getElementById('feedbackForm');
     const list = document.getElementById('feedbackList');
 
-    function loadFeedbacks() {
+    // Firebase'dan real vaqt fikrlarni olish va ko'rsatish
+    db.ref('feedbacks').on('value', (snapshot) => {
+      const feedbacks = snapshot.val();
       list.innerHTML = '';
-      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
-      feedbacks.reverse().forEach(feedback => {
-        const li = document.createElement('li');
-        li.classList.add('bg-gray-100', 'p-3', 'rounded');
-        li.innerHTML = `<strong>${feedback.name}</strong> (${feedback.rating} ⭐)<br><span>${feedback.comment}</span>`;
-        list.appendChild(li);
-      });
-    }
 
-    form.addEventListener('submit', function (e) {
+      if (feedbacks) {
+        // Oxirgi fikrlarni yuqoriga chiqarish uchun Object.values().reverse()
+        Object.values(feedbacks).reverse().forEach(feedback => {
+          const li = document.createElement('li');
+          li.classList.add('bg-gray-100', 'p-3', 'rounded');
+          li.innerHTML = `<strong>${feedback.name}</strong> (${feedback.rating} ⭐)<br><span>${feedback.comment}</span>`;
+          list.appendChild(li);
+        });
+      }
+    });
+
+    // Form yuborilganda Firebase'ga yozish
+    form.addEventListener('submit', e => {
       e.preventDefault();
-      const name = document.getElementById('userName').value;
+
+      const name = document.getElementById('userName').value.trim();
       const rating = document.getElementById('rating').value;
-      const comment = document.getElementById('comment').value;
+      const comment = document.getElementById('comment').value.trim();
+
+      if (!name || !rating || !comment) {
+        alert('Iltimos, barcha maydonlarni to‘ldiring.');
+        return;
+      }
 
       const feedback = { name, rating, comment };
 
-      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
-      feedbacks.push(feedback);
-      localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
-
-      form.reset();
-      loadFeedbacks();
+      db.ref('feedbacks').push(feedback)
+        .then(() => {
+          form.reset();
+        })
+        .catch((error) => {
+          alert('Xatolik yuz berdi: ' + error.message);
+        });
     });
-
-    window.addEventListener('load', loadFeedbacks);
   </script>
 </body>
 </html>
