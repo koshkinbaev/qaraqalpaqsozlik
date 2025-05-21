@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fikr va Reytinglar</title>
+  <title>Pikir hám usınıslar</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Firebase SDK -->
@@ -16,14 +16,14 @@
 
   <form id="feedbackForm" class="w-full max-w-lg bg-white p-6 rounded shadow space-y-4">
     <div>
-      <label for="userName" class="block font-semibold mb-1">Ismingiz:</label>
+      <label for="userName" class="block font-semibold mb-1">Atı fámilyası</label>
       <input id="userName" name="userName" type="text" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
     </div>
 
     <div>
-      <label for="rating" class="block font-semibold mb-1">Reyting (1-5):</label>
+      <label for="rating" class="block font-semibold mb-1">Bahalaw (1-5):</label>
       <select id="rating" name="rating" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Baholang</option>
+        <option value="">Bahalań</option>
         <option value="1">1 ⭐</option>
         <option value="2">2 ⭐⭐</option>
         <option value="3">3 ⭐⭐⭐</option>
@@ -35,21 +35,21 @@
     <div>
       <label for="category" class="block font-semibold mb-1">Kategoriya:</label>
       <select id="category" name="category" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Kategoriya tanlang</option>
+        <option value="">Kategoriya tanlań</option>
         <option value="Sayt dizayni">Sayt dizayni</option>
-        <option value="Foydalanuvchi tajribasi">Foydalanuvchi tajribasi</option>
-        <option value="Texnik muammolar">Texnik muammolar</option>
-        <option value="Boshqa">Boshqa</option>
+        <option value="Foydalanuvchi tajribasi">Paydalanıwshı tájiriybesi</option>
+        <option value="Texnik muammolar">Texnik mashqalalar</option>
+        <option value="Boshqa">Basqa</option>
       </select>
     </div>
 
     <div>
-      <label for="comment" class="block font-semibold mb-1">Izoh:</label>
+      <label for="comment" class="block font-semibold mb-1">Pikir:</label>
       <textarea id="comment" name="comment" rows="4" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
     </div>
 
     <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
-      Fikrni Jo'natish
+      Pikirdi jiberiw
     </button>
   </form>
 
@@ -80,7 +80,7 @@
   document.querySelector('.feedback-list').innerHTML = `
     <div class="mb-4 flex flex-wrap gap-4 items-center justify-between bg-white p-4 rounded shadow">
       <div>
-        <label for="filterCategory" class="mr-2 font-semibold">Kategoriya bo‘yicha:</label>
+        <label for="filterCategory" class="mr-2 font-semibold">Kategoriya boyınsha:</label>
         <select id="filterCategory" class="p-2 border rounded">
           <option value="all">Hammasi</option>
           <option value="Sayt dizayni">Sayt dizayni</option>
