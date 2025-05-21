@@ -1,168 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pikir-usınıslar hám reyting</title>
-  <link rel="stylesheet" href="style2.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background: linear-gradient(to bottom right, #e0f7fa, #e1bee7);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 20px;
       margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      font-family: sans-serif;
     }
 
-    .container {
+    .rain {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .drop {
+      position: absolute;
+      bottom: 100%;
+      width: 2px;
+      height: 20px;
+      background: rgba(174, 148, 193, 0.948);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    .feedback-container {
+      position: relative;
+      z-index: 1;
       max-width: 600px;
-      margin: 0 auto;
-      padding: 30px;
-      background-color: #ffffffcc;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      margin: 3rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
 
-    h1 {
-      text-align: center;
-      color: #4a148c;
+    .feedback-form textarea {
+      resize: vertical;
     }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: 600;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 12px;
-      background-color: #7b1fa2;
+    .submit-btn {
+      background-color: #3b82f6;
       color: white;
+      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 0.5rem;
       cursor: pointer;
     }
 
-    button:hover {
-      background-color: #6a1b9a;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 30px;
-    }
-
-    li {
-      background-color: #f3e5f5;
-      margin-bottom: 15px;
-      padding: 15px;
-      border-radius: 8px;
-    }
-
-    small {
-      color: gray;
-      font-size: 12px;
+    .submit-btn:hover {
+      background-color: #2563eb;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Pikir-usınıslar hám reyting</h1>
-    <form id="feedback-form">
-      <label for="userName">Atingiz:</label>
-      <input type="text" id="userName" name="userName" required>
-
-      <label for="rating">Reyting (1-5):</label>
-      <input type="number" id="rating" name="rating" min="1" max="5" required>
-
-      <label for="comment">Pikir-úsınıs:</label>
-      <textarea id="comment" name="comment" required></textarea>
-
-      <button type="submit">Jo'nat</button>
-    </form>
-
-    <div id="avgRating" style="text-align:center; margin-top: 20px; font-weight: bold;"></div>
-
-    <ul id="feedback-list"></ul>
+  <!-- 🎵 YouTube jonli musiqa -->
+  <div style="display:none">
+    <iframe width="0" height="0" src="https://www.youtube.com/embed/DxnDcH2NS5c?si=WSwq3SW5Wa5tLMQU&autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- 🌧 Yomg‘ir animatsiyasi -->
+  <div class="rain"></div>
 
+  <!-- 💬 Fikr-mulohaza formasi -->
+  <div class="feedback-container">
+    <header>
+      <h1 class="text-2xl font-bold mb-2">Pikir-usınıslar hám reyting</h1>
+      <p class="text-gray-600 mb-4">Saytımızdı jaqsılaw ushın pikirlerińizdi bildiriń..</p>
+    </header>
+
+    <div class="feedback-form mb-6">
+      <h2 class="text-xl font-semibold mb-2">Pikir-usınıs qaldırıw</h2>
+      <form id="feedbackForm" class="space-y-3">
+        <div>
+          <label for="userName">Atıńız:</label>
+          <input type="text" id="userName" name="userName" placeholder="Atıńızdı kirgiziń" required class="w-full p-2 border rounded"/>
+        </div>
+
+        <div>
+          <label for="rating">Reyting:</label>
+          <select id="rating" name="rating" required class="w-full p-2 border rounded">
+            <option value="1">1 - Júdá jaman</option>
+            <option value="2">2 - Jaman</option>
+            <option value="3">3 - Ortasha</option>
+            <option value="4">4 - Jaqsı</option>
+            <option value="5">5 - Ájayıp</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="comment">Pikir-usınıs:</label>
+          <textarea id="comment" name="comment" placeholder="Pikirlerińizdi jazıń..." required class="w-full p-2 border rounded"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Jiberiw</button>
+      </form>
+    </div>
+
+    <div class="feedback-list">
+      <h2 class="text-lg font-semibold mb-2">Pikir-usınıslar dizimi</h2>
+      <ul id="feedbackList" class="space-y-2">
+        <!-- Real vaqt izohlar bu yerda -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- JS: Yomg‘ir + Izohlar -->
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDAY094J109dWXSPbLDgz14spcsm-L3jVU",
-  authDomain: "pikir-usinis.firebaseapp.com",
-  projectId: "pikir-usinis",
-  storageBucket: "pikir-usinis.firebasestorage.app",
-  messagingSenderId: "103211868669",
-  appId: "1:103211868669:web:d995961d91430255b6f994",
-  measurementId: "G-L5FSSGL6YQ"
-};
+    // 🌧 Yomg‘ir animatsiyasi
+    const rain = document.querySelector('.rain');
+    const numDrops = 100;
+    for (let i = 0; i < numDrops; i++) {
+      const drop = document.createElement('div');
+      drop.classList.add('drop');
+      drop.style.left = Math.random() * window.innerWidth + 'px';
+      drop.style.animationDuration = 0.5 + Math.random() + 's';
+      drop.style.animationDelay = Math.random() * 5 + 's';
+      rain.appendChild(drop);
+    }
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // 💬 Real vaqt fikrlar tizimi (localStorage asosida)
+    const form = document.getElementById('feedbackForm');
+    const list = document.getElementById('feedbackList');
 
-    const form = document.getElementById('feedback-form');
-    const feedbackList = document.getElementById('feedback-list');
-    const avgRating = document.getElementById('avgRating');
+    function loadFeedbacks() {
+      list.innerHTML = '';
+      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+      feedbacks.reverse().forEach(feedback => {
+        const li = document.createElement('li');
+        li.classList.add('bg-gray-100', 'p-3', 'rounded');
+        li.innerHTML = `<strong>${feedback.name}</strong> (${feedback.rating} ⭐)<br><span>${feedback.comment}</span>`;
+        list.appendChild(li);
+      });
+    }
 
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
       const name = document.getElementById('userName').value;
-      const rating = parseInt(document.getElementById('rating').value);
+      const rating = document.getElementById('rating').value;
       const comment = document.getElementById('comment').value;
 
-      if (name && rating && comment) {
-        await db.collection("feedbacks").add({
-          name,
-          rating,
-          comment,
-          timestamp: new Date()
-        });
-        form.reset();
-      }
+      const feedback = { name, rating, comment };
+
+      const feedbacks = JSON.parse(localStorage.getItem('feedbacks') || '[]');
+      feedbacks.push(feedback);
+      localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
+      form.reset();
+      loadFeedbacks();
     });
 
-    db.collection("feedbacks").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-      feedbackList.innerHTML = "";
-      let total = 0, count = 0;
-
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const li = document.createElement('li');
-        const time = data.timestamp?.toDate().toLocaleString("uz-UZ") || "";
-        li.innerHTML = `<strong>${data.name}</strong> (${data.rating} ⭐)<br><span>${data.comment}</span><br><small>${time}</small>`;
-        feedbackList.appendChild(li);
-
-        total += data.rating;
-        count++;
-      });
-
-      if (count > 0) {
-        const avg = (total / count).toFixed(1);
-        avgRating.textContent = `Ortalama reyting: ${avg} ⭐`;
-      } else {
-        avgRating.textContent = "Háli pikir jo'natilmagan.";
-      }
-    });
+    window.addEventListener('load', loadFeedbacks);
   </script>
 </body>
-
 </html>
