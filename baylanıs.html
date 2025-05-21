@@ -1,33 +1,121 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baylanıs</title>
-    <link rel="stylesheet" href="style1.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dizimnen ótiw</title>
+  <link rel="stylesheet" href="style1.css">
+  <style>
+    .google-btn {
+      background-color: #fff;
+      color: #444;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
 </head>
-<!-- Ro'yxatdan O'tish Bo'limi -->
+<body>
+
+<!-- Ro'yxatdan o'tish bo'limi -->
 <section class="register-section" id="register">
   <div class="register-wrapper">
     <h2>Dizimnen ótiw</h2>
-    <form class="register-form">
+    <form class="register-form" id="registerForm">
       <div class="form-group">
         <label for="name">Atıńız</label>
-        <input type="text" id="name" placeholder="Atınızdı kirgiziń" required>
+        <input type="text" id="name" name="name" placeholder="Atınızdı kirgiziń" required>
       </div>
       <div class="form-group">
         <label for="email">Elektron pochta mánzilińiz</label>
-        <input type="email" id="email" placeholder="example@mail.com" required>
+        <input type="email" id="email" name="email" placeholder="example@mail.com" required>
       </div>
       <div class="form-group">
         <label for="password">Parol</label>
-        <input type="password" id="password" placeholder="Parolińiz" required>
+        <input type="password" id="password" name="password" placeholder="Parolińiz" required>
       </div>
       <div class="form-group">
         <label for="confirm-password">Paroldı tastıyıqlaw</label>
-        <input type="password" id="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
       </div>
       <button type="submit" class="submit-btn">Dizimnen ótiw</button>
     </form>
+
+    <div style="text-align: center; margin: 20px 0;">— yoki —</div>
+
+    <button class="google-btn" id="googleLoginBtn">
+      <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo">
+      Google arqalı kirıw
+    </button>
   </div>
 </section>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+<script>
+  // Firebase konfiguratsiyasi
+  const firebaseConfig = {
+    apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+    authDomain: "dizimnen-otiw.firebaseapp.com",
+    databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
+    projectId: "dizimnen-otiw",
+    storageBucket: "dizimnen-otiw.firebasestorage.app",
+    messagingSenderId: "254101190553",
+    appId: "1:254101190553:web:b6590cddbba1491da4c508",
+    measurementId: "G-R50M9DDWQH"
+  };
+
+  // Firebase ishga tushurish
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // Email orqali ro'yxatdan o'tish
+  document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (password !== confirmPassword) {
+      alert("Parollar mos kelmeydi!");
+      return;
+    }
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert("Ro'yxatdan muvaffaqiyatli o'tildi!");
+        console.log(userCredential.user);
+      })
+      .catch((error) => {
+        alert("Xatolik: " + error.message);
+      });
+  });
+
+  // Google orqali tizimga kirish
+  document.getElementById('googleLoginBtn').addEventListener('click', function () {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        alert("Google orqali tizimge kirildi!");
+        console.log(result.user);
+      })
+      .catch((error) => {
+        alert("Google orqali kirishda xatolik: " + error.message);
+      });
+  });
+</script>
+
+</body>
+</html>
