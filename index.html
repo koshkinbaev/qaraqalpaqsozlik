@@ -324,16 +324,55 @@
     </script>
   
   </body>
-
-  <!-- LOGIN FORM -->
+<!-- LOGIN FORM -->
   <div class="container">
     <h2>Sistemaǵa kiriw</h2>
     <form id="loginForm">
-      <input type="text" id="email" placeholder="Paydalanıwshı atı" required>
+      <input type="email" id="email" placeholder="Email" required>
       <input type="password" id="password" placeholder="Parol" required>
       <button type="submit">Kiriw</button>
     </form>
+    <p id="error" style="color:red;"></p>
   </div>
+
+  <!-- Firebase Auth Scripts -->
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    // Firebase config
+    const firebaseConfig = {
+       apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+  authDomain: "dizimnen-otiw.firebaseapp.com",
+  databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
+  projectId: "dizimnen-otiw",
+  storageBucket: "dizimnen-otiw.firebasestorage.app",
+  messagingSenderId: "254101190553",
+  appId: "1:254101190553:web:446332fe4c63973ea4c508",
+  measurementId: "G-Y6JEDTY148"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Form login ishlovi
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Tizimga muvaffaqiyatli kirdi
+          window.location.href = "dashboard.html"; // Shaxsiy kabinetga o‘tadi
+        })
+        .catch((error) => {
+          document.getElementById("error").innerText = "Xato: " + error.message;
+        });
+    });
+    
 <footer class="footer">
   <style>
     .footer {
