@@ -506,6 +506,54 @@ const firebaseConfig = {
         alert("Paydalanıwshı atı yamasa parol qáte.");
       }
     });
+    const auth = firebase.auth();
+
+  const loginForm = document.getElementById('loginForm');
+  const loginContainer = document.getElementById('loginContainer');
+  const dashboard = document.getElementById('dashboard');
+  const welcomeMessage = document.getElementById('welcomeMessage');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  // Kirish
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        showDashboard(user);
+      })
+      .catch((error) => {
+        alert("Xato: " + error.message);
+      });
+  });
+
+  // Foydalanuvchini ko‘rsatish
+  function showDashboard(user) {
+    loginContainer.style.display = 'none';
+    dashboard.style.display = 'block';
+    welcomeMessage.textContent = `Xush kelibsiz, ${user.email}`;
+  }
+
+  // Chiqish
+  logoutBtn.addEventListener('click', () => {
+    auth.signOut().then(() => {
+      dashboard.style.display = 'none';
+      loginContainer.style.display = 'block';
+    });
+  });
+
+  // Kirgan foydalanuvchini avtomatik aniqlash
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      showDashboard(user);
+    } else {
+      dashboard.style.display = 'none';
+      loginContainer.style.display = 'block';
+    }
+  });
   </script>
 
 </body>
