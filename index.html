@@ -281,9 +281,7 @@
   <div class="header">
     <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
   </div>
-
-  <body>
-
+  
     <nav class="main-navbar">
       <div class="logo">
         <img src="pon21.png" alt="Logo">
@@ -323,17 +321,25 @@
       }
     </script>
   
-  </body>
 <!-- LOGIN FORM -->
-  <div class="container">
-    <h2>Sistemaǵa kiriw</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Parol" required>
-      <button type="submit">Kiriw</button>
-    </form>
-    <p id="error" style="color:red;"></p>
-  </div>
+<div class="container" id="loginContainer">
+  <h2>Sistemaǵa kiriw</h2>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Parol" required>
+    <button type="submit">Kiriw</button>
+  </form>
+</div>
+
+<!-- DASHBOARD (SHAXSIY KABINET) -->
+<div class="container" id="dashboard" style="display: none;">
+  <h2>Shaxsiy kabinet</h2>
+  <p id="welcomeMessage"></p>
+  <button id="logoutBtn">Chiqiw</button>
+</div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+
 <footer class="footer">
   <style>
     .footer {
@@ -477,6 +483,19 @@
 
   <!-- JAVASCRIPT -->
   <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+  authDomain: "dizimnen-otiw.firebaseapp.com",
+  databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
+  projectId: "dizimnen-otiw",
+  storageBucket: "dizimnen-otiw.firebasestorage.app",
+  messagingSenderId: "254101190553",
+  appId: "1:254101190553:web:446332fe4c63973ea4c508",
+  measurementId: "G-Y6JEDTY148"
+};
+
+  // Firebase ni ishga tushuramiz
+  firebase.initializeApp(firebaseConfig);
     document.getElementById('loginForm').addEventListener('submit', function(event) {
       event.preventDefault();
       const username = document.getElementById('username').value;
