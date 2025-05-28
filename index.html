@@ -5,157 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Qaraqalpaq_sózlik - Kirish</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-
     body {
-      margin: 0;
       font-family: 'Roboto', sans-serif;
       background: linear-gradient(to right, #f4f8fb, #e6f0fa);
       color: #333;
-    }
-    
-    body {
-      background-color: #f4f4f4;
-      color: #333;
+      margin: 0;
     }
 
-    .header {
-      background-color: #007BFF;
-      color: blue;
-      text-align: center;
-      padding: 20px 10px;
-    }
     .header {
       background-image: url("naǵıs.jpg");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-       padding: 60px 20px;
-      color: lch(93.5% 2.14 19.26);
+      padding: 60px 20px;
+      color: white;
       text-align: center;
       text-shadow: 5px 5px 5px #000;
     }
+
     .header h1 {
       font-size: 3em;
       margin: 0;
-    }
-
-    .main-navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #ffffff;
-      padding: 15px 30px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 32px;
-      color: #003366;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-family: 'Merriweather', serif;
-    }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 25px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .nav-links li {
-      position: relative;
-    }
-
-    .nav-links li a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      font-size: 16px;
-      padding: 6px 10px;
-      transition: 0.3s ease;
-      border-bottom: 2px solid transparent;
-    }
-
-    .nav-links li a:hover {
-      color: #0056b3;
-      border-bottom: 2px solid #0056b3;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 35px;
-      left: 0;
-      background-color: #fff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: none;
-      flex-direction: column;
-      min-width: 160px;
-      z-index: 999;
-      border-radius: 6px;
-    }
-
-    .dropdown a {
-      padding: 10px;
-      border-bottom: 1px solid #f0f0f0;
-      transition: background 0.2s ease;
-    }
-
-    .dropdown a:hover {
-      background-color: #f7faff;
     }
 
     .nav-links li:hover .dropdown {
       display: flex;
     }
 
-    .right-items {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .language-select {
-      font-size: 14px;
-      padding: 5px;
-      border-radius: 4px;
-    }
-
-    .user-icon {
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .menu-toggle {
+    .dropdown {
       display: none;
-      cursor: pointer;
-      font-size: 22px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 100px) {
       .nav-links {
         flex-direction: column;
-        background-color: #fff;
         position: absolute;
-        top: 70px;
+        top: 50px;
         right: 0;
-        width: 200px;
+        width: 100px;
         display: none;
+        background: white;
         padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         border-radius: 8px;
       }
 
@@ -168,189 +62,10 @@
       }
     }
 
-    main {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    main h1 {
-      font-size: 36px;
-      color: #003366;
-      font-family: 'Merriweather', serif;
-      margin-bottom: 15px;
-    }
-
-    main p {
-      font-size: 18px;
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 30px;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 10px;
-    }
-
-    .container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    form input {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    form button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    form button:hover {
-      background-color: #0056b3;
-    }
-
-    .footer {
-      background-color: #222;
-      color: #eee;
-      padding: 30px 20px;
-    }
-
     .footer-container {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .footer-container > div {
-      flex: 1 1 200px;
-      margin: 10px;
-    }
-
-    .footer-container h3 {
-      margin-bottom: 10px;
-    }
-
-    .footer-container a {
-      color: #90cdf4;
-      text-decoration: none;
-    }
-
-    .footer-container a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-      border-top: 1px solid #444;
-      padding-top: 10px;
-    }
-
-    @media (max-width: 600px) {
-      .top-navbar .menu-links a {
-        float: none;
-        display: block;
-        text-align: left;
-      }
-
-      .footer-container {
-        flex-direction: column;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- HEADER -->
-  <div class="header">
-    <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
-  </div>
-  
-    <nav class="main-navbar">
-      <div class="logo">
-        <img src="pon21.png" alt="Logo">
-        Qaraqalpaq Sózlik
-      </div>
-  
-      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-  
-      <ul class="nav-links" id="menu">
-        <li><a href="janaliq.html">Jańalıqlar</a></li>
-        <li><a href="fikir1.html">Pikir hám usınıs</a></li>
-        <li><a href="izlew.html">Sózlikler</a></li>
-        <li><a href="qosiq.html">Sózliklerdiń audiosı</a></li>
-        <li><a href="baylanıs.html">Dizimnen ótiw</a></li>
-        <li><a href="komanda.html">Biziń komanda</a></li>
-      </ul>
-  
-      <div class="right-items">
-        <select class="language-select">
-          <option value="kk">Qaraqalpaqsha</option>
-          <option value="uz">O'zbekcha</option>
-          <option value="ru">Русский</option>
-        </select>
-        <div class="user-icon">📖</div>
-      </div>
-    </nav>
-  
-    <script>
-      function toggleMenu() {
-        const menu = document.getElementById('menu');
-        menu.classList.toggle('active');
-      }
-    </script>
-  
-<!-- LOGIN FORM -->
-<div class="container" id="loginContainer">
-  <h2>Sistemaǵa kiriw</h2>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Parol" required>
-    <button type="submit">Kiriw</button>
-  </form>
-</div>
-
-<!-- DASHBOARD (SHAXSIY KABINET) -->
-<div class="container" id="dashboard" style="display: none;">
-  <h2>Shaxsiy kabinet</h2>
-  <p id="welcomeMessage"></p>
-  <button id="logoutBtn">Chiqiw</button>
-</div>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-
-<footer class="footer">
-  <style>
-    .footer {
-      background-color: #f4f8fb;
-      color: #f4ebeb;
-      padding: 30px 20px;
-    }
-
-    .footer-container {
-      display: flex;
-      flex-direction: column; /* pastma-past joylashtirish */
+      flex-direction: column;
       gap: 20px;
-    }
-
-    .footer-container h3 {
-      margin-bottom: 10px;
     }
 
     .footer-container a {
@@ -369,22 +84,7 @@
       border-top: 1px solid #444;
       padding-top: 10px;
     }
-  </style>
-<style>
-  .footer {
-      background-color: #1c89dc;
-      color: #000000;
-      padding: 30px 20px;
-    }
-  .footer-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; /* vertikal joylashuv uchun */
-  text-align: center;
-  padding: 40px;
-  background-color: #f4f8fb;
-}
+
     .contact-cards {
       display: flex;
       justify-content: center;
@@ -393,23 +93,7 @@
       font-family: sans-serif;
       flex-wrap: wrap;
     }
-  .news-card {
-      background: rgb(192, 171, 171);
-      padding: 30px;
-      max-width: 700px;
-      width: 90%;
-      text-align: center;
-      border-radius: 15px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-  .center-image {
-      width: 250px;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 6px solid #ccc;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
+
     .card {
       background: #fff;
       border-radius: 15px;
@@ -420,30 +104,144 @@
       padding-top: 25px;
       transition: 0.3s;
     }
-  
+
     .card i {
       font-size: 30px;
-      color: #0077b6;
+      color: #1478d0;
     }
-  
+
     .card:hover {
       transform: scale(1.1);
-      background: #0077b6;
+      background: #567281;
     }
-  
+
     .card:hover i {
       color: white;
-    } 
- </style>
-    <div class="contact-cards">
-<a href="https://t.me/atabek_offical01" class="card" target="_blank">
-<i class="fab fa-telegram"></i><div>Telegram</div></a>
-    <a href="https://instagram.com/atabekkoshkinbaev?igsh=MTYweGdmZTJ2eTM2ZA==" class="card"><i class="fab fa-instagram"></i><div>Instagram</div></a>
-    <a href="https://facebook.com/share/15FSXUZmzg/" target="_blank"
-" class="card"><i class="fab fa-facebook"></i><div>Facebook</div></a>
-    <a href="https://youtube.com/@karsu_news" target="_blank" class="card"><i class="fab fa-youtube"></i><div>YouTube</div></a>
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
   </div>
 
+  <!-- NAVBAR -->
+  <nav class="main-navbar flex justify-between items-center bg-white px-6 py-4 shadow-md sticky top-0 z-50">
+    <div class="logo flex items-center gap-4 text-blue-900 text-2xl font-bold">
+      <img src="pon21.png" alt="Logo" class="h-10"> Qaraqalpaq Sózlik
+    </div>
+    <div class="menu-toggle text-2xl md:hidden cursor-pointer" onclick="toggleMenu()">☰</div>
+    <ul class="nav-links hidden md:flex gap-6 items-center" id="menu">
+      <li><a href="janaliq.html" class="hover:text-blue-600">Jańalıqlar</a></li>
+      <li><a href="fikir1.html" class="hover:text-blue-600">Pikir hám usınıs</a></li>
+      <li><a href="baylanıs.html" class="hover:text-blue-600">Dizimnen ótiw</a></li>
+      <li><a href="komanda.html" class="hover:text-blue-600">Komanda</a></li>
+    </ul>
+    <div class="right-items flex items-center gap-4">
+      <div class="user-icon text-xl cursor-pointer">📖</div>
+    </div>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.classList.toggle('active');
+    }
+  </script>
+
+  <!-- MAIN SECTION -->
+  <main class="flex flex-col items-center justify-center px-4 py-12">
+    <h1 class="text-3xl font-bold text-blue-800 mb-8">Sózlikler</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+      <a href="izlew.html" class="bg-white border border-blue-300 hover:border-blue-500 shadow-md rounded-lg p-6 text-center transition">
+        <h2 class="text-xl text-blue-700 font-semibold mb-2">📕 Sózlikler</h2>
+        <p class="text-gray-600 text-sm">Turli so‘zlarning ma’nolari, izoh va sinonimlari</p>
+      </a>
+      <a href="qosiq.html" class="bg-white border border-blue-300 hover:border-blue-500 shadow-md rounded-lg p-6 text-center transition">
+        <h2 class="text-xl text-blue-700 font-semibold mb-2">🔊 Audiosi</h2>
+        <p class="text-gray-600 text-sm">So‘zlarning to‘g‘ri talaffuzlarini tinglang</p>
+      </a>
+    </div>
+  </main>
+
+  <!-- CONTACT CARDS -->
+  <div class="contact-cards">
+    <a href="https://t.me/atabek_offical01" class="card" target="_blank">
+      <i class="fab fa-telegram"></i><div>Telegram</div></a>
+    <a href="https://instagram.com/atabekkoshkinbaev" class="card" target="_blank">
+      <i class="fab fa-instagram"></i><div>Instagram</div></a>
+    <a href="https://facebook.com/share/15FSXUZmzg/" class="card" target="_blank">
+      <i class="fab fa-facebook"></i><div>Facebook</div></a>
+    <a href="https://youtube.com/@karsu_news" class="card" target="_blank">
+      <i class="fab fa-youtube"></i><div>YouTube</div></a>
+  </div>
+  <style>
+  .footer {
+    background-color: #f4f8fb;
+    color: #00000000;
+    padding: 30px 20px;
+  }
+.footer-container {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column; /* vertikal joylashuv uchun */
+text-align: center;
+padding: 40px;
+background-color: #f4f8fb;
+}
+  .contact-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+    font-family: sans-serif;
+    flex-wrap: wrap;
+  }
+.news-card {
+    background: rgb(192, 171, 171);
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+.center-image {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 6px solid #ccc;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  }
+  .card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 120px;
+    height: 120px;
+    text-align: center;
+    padding-top: 25px;
+    transition: 0.3s;
+  }
+
+  .card i {
+    font-size: 30px;
+    color: #0077b6;
+  }
+
+  .card:hover {
+    transform: scale(1.1);
+    background: #0077b6;
+  }
+
+  .card:hover i {
+    color: white;
+  } 
+  </style>
   <div class="footer-container">
     <div>
       <h3>📌 Sayt haqqında</h3>
@@ -475,81 +273,6 @@
     &copy; 2024 - 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.
   </div>
 </footer>
-
-  <!-- JAVASCRIPT -->
-  <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
-  authDomain: "dizimnen-otiw.firebaseapp.com",
-  databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
-  projectId: "dizimnen-otiw",
-  storageBucket: "dizimnen-otiw.firebasestorage.app",
-  messagingSenderId: "254101190553",
-  appId: "1:254101190553:web:446332fe4c63973ea4c508",
-  measurementId: "G-Y6JEDTY148"
-};
-
-  // Firebase ni ishga tushuramiz
-  firebase.initializeApp(firebaseConfig);
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      if (username === "admin" && password === "1234") {
-        alert("Sistemaǵa tabıslı kirildi!");
-      } else {
-        alert("Paydalanıwshı atı yamasa parol qáte.");
-      }
-    });
-    const auth = firebase.auth();
-
-  const loginForm = document.getElementById('loginForm');
-  const loginContainer = document.getElementById('loginContainer');
-  const dashboard = document.getElementById('dashboard');
-  const welcomeMessage = document.getElementById('welcomeMessage');
-  const logoutBtn = document.getElementById('logoutBtn');
-
-  // Kirish
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = loginForm.email.value;
-    const password = loginForm.password.value;
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        showDashboard(user);
-      })
-      .catch((error) => {
-        alert("Xato: " + error.message);
-      });
-  });
-
-  // Foydalanuvchini ko‘rsatish
-  function showDashboard(user) {
-    loginContainer.style.display = 'none';
-    dashboard.style.display = 'block';
-    welcomeMessage.textContent = `Xush kelibsiz, ${user.email}`;
-  }
-
-  // Chiqish
-  logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
-      dashboard.style.display = 'none';
-      loginContainer.style.display = 'block';
-    });
-  });
-
-  // Kirgan foydalanuvchini avtomatik aniqlash
-  auth.onAuthStateChanged(user => {
-    if (user) {
-      showDashboard(user);
-    } else {
-      dashboard.style.display = 'none';
-      loginContainer.style.display = 'block';
-    }
-  });
-  </script>
 
 </body>
 </html>
