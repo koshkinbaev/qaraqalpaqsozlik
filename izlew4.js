@@ -140,12 +140,6 @@
     { word: "Azıw.II", meaning: "f. Boldırıw, júdew, arıqlaw, buzılıw.", experience: "Zaman qısletinen sarǵaydım azdım. Bolar ma dep jaqtı kúnler xalıq ushın (Berdaq). Aq kewilliniń atı azbaydı, tonı tozbaydı (qq.x.n.)."},
     { word: "Azıwday", meaning: "kel. Azıwǵa usaǵan, azıw sıyaqlı mıqlı.", experience: "Jetimlerden hám biy, bay balalarınan qay-naqay azıwday eliw atlı (T.Qayıpbergenov)."},
     { word: "Azıwlasıw", meaning: "f. Ayqasıw, urısıw, qarsılasıw, ashshılasıw, dushpan menen sınasıw, tislesiw, shayqasıw.", experience: "Hesh waqta shoshqa shoshqanı, Azıwlasıp jarǵan emes (Berdaq)."},
-    { word: "Aybana", meaning: "at. Qáwender, arqa súyer, tirenish, qorǵanısh, abay, súyenish, tirek.",},
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
-    
-    
     { word: "Azot", meaning: "Tógin, dáris ushın paydalanılatuǵın ximiyalıq element.", experience: "Azottıń, fosfordıń hár gektarǵa qansha ekenin aytıp otırmayman (Q. Dosanov)."},
     { word: "Azsınıw", meaning: "Kemissiniw, kewli pitpew.", experience: "Azsınıp tursız ba aǵa, jigitlerdiń de tabısın kóremiz (K. Sultanov)."},
     { word: "Azbıray", meaning: "Qural-ásbap, qural-sayman, kerek-jaraq.", experience: ""},
@@ -153,6 +147,10 @@
     { word: "Azıraq", meaning: "Azǵana, shamalı, kishkene, kóp emes.", experience: "Tamaqtan awıstırıp tuqımǵa saqlaǵan azıraq arpa-jazlıq bar edi, - dedi Turımbet (N.Dákaraev)."},
     { word: "Azıw", meaning: "Tanlay tis, úlken tis, ótkir, mıqlı.", experience: "Azıw tislerinen álle qashan ayırılıp qalǵan (J.Aymurzaev)."},
     { word: "Azǵın", meaning: "Júdew, arıq, eti ketip súyegine taqalǵan, boldırǵan.", experience: "Betinde qan joq, azǵın (T. Qayıpbergenov)."},
+    { word: "Aybana", meaning: "at. Qáwender, arqa súyer, tirenish, qorǵanısh, abay, súyenish, tirek.",},
+    { word: "", meaning: "", experience: ""},
+    { word: "", meaning: "", experience: ""},
+    { word: "", meaning: "", experience: ""},
     { word: "Argotexnika", meaning: "at. Awıl xojalıq eginlerin islewdiń sisteması, diyqanshılıq hám olardı rawajlandırıw sharaları, ilajları.", experience: "Barlıq agrotexnika quralların keńnen qollanıw zárúr (O. Berdimuratov)."},
     { word: "Aǵzam", meaning: "Ullı mártebeli, ullı dárejeli", experience: "Quda qálese patsha aǵzam puqaralarına miyrimin salar (K.Sultanov)."},
     { word: "Aǵıl-tegil", meaning: "Molshılıq, mol-molaqay, kóp, dım kóp, jetkilikli.", experience: "Bunnan basqa da onıń sútli sıyırı bolıp, may menen sút aǵıl-tegil edi (S.Ayniy)."},
