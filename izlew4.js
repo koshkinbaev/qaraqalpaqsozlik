@@ -188,16 +188,7 @@
     { word: "Ayt I", meaning: "f. Sóyle.", experience: "Meyli, biraq tez ayt. (A.Áliev.)."},
     { word: "Ayt II", meaning: "at. Bayram, mereke, toy-tamasha.", experience: "Aytlar aytlap, toylar toylap júrgende, Biziń eldiń keliniseń degen sóz. Ata-anam qulaǵımnan ketpeydi («Alpamıs»)."},
     { word: "Ayta-ayta", meaning: "f. Qayta-Qayta ayta beriw, tákirarlap aytıw.", experience: "Basıńda bolmasa taǵıń, Ayta-ayta talar jaǵıń (Berdaq). Oqıp shıqtım qayta-qayta, Júrdim onı ayta-ayta, Kóp oyladım dep pe qáte. Tariyxın bilmegen edim (Berdaq)."},
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
-
-
-    
-    { word: "Argotexnika", meaning: "at. Awıl xojalıq eginlerin islewdiń sisteması, diyqanshılıq hám olardı rawajlandırıw sharaları, ilajları.", experience: "Barlıq agrotexnika quralların keńnen qollanıw zárúr (O. Berdimuratov)."},
-    { word: "Aǵzam", meaning: "Ullı mártebeli, ullı dárejeli", experience: "Quda qálese patsha aǵzam puqaralarına miyrimin salar (K.Sultanov)."},
-    { word: "Aǵıl-tegil", meaning: "Molshılıq, mol-molaqay, kóp, dım kóp, jetkilikli.", experience: "Bunnan basqa da onıń sútli sıyırı bolıp, may menen sút aǵıl-tegil edi (S.Ayniy)."},
-    { word: "Ay", meaning: "Aspan denesi, jerdiń joldası, belgili bir muǵdar ishinde túnge jarıq berip turatuǵın aspan keńisligindegi dene.", experience: "«Esime túser meniń, Suw boyına kelgeniń, «Ay ne ushın jalǵız» dep, sırlı sawal bergeniń... (I.Yusupov)."},
+     { word: "Ay", meaning: "Aspan denesi, jerdiń joldası, belgili bir muǵdar ishinde túnge jarıq berip turatuǵın aspan keńisligindegi dene.", experience: "«Esime túser meniń, Suw boyına kelgeniń, «Ay ne ushın jalǵız» dep, sırlı sawal bergeniń... (I.Yusupov)."},
     { word: "Aybalta", meaning: "Baltanıń qural ornına qollanılatuǵın ádette, patshalar qolına alıp otıratuǵın quralı, jaraq.", experience: "Sol waqıtları Surtaysha, Aybaltası qolında, Alarıp turdı ornınan («Qırq qız»)."},
     { word: "Aybaraq", meaning: "Bada-bad, aybat, abay-siyasat.", experience: "Qolǵa uslap jaw-jaraǵın, Salıp bular aybaraǵın, Siltedi barlıq jaraǵın, Qızdı baylap almaqshı eken (Berdaq)."},
     { word: "Aybat", meaning: "Túr-tús, qáhár, saltanat.", experience: "Buzaw iytlerge aybat etti, Perigúl jibermey, moynınan qatıp uslap tur (Ó.Ayjanov)."},
@@ -211,6 +202,13 @@
     { word: "Aylaw", meaning: "At jarısınıń belgili bir muǵdardaǵı shawıp keletuǵın yamasa shawıp ótetuǵın jer ólshemi.", experience: ""},
     { word: "Aytıs", meaning: "Folklorlıq keyingi janr.", experience: "Usınday házil aytıstan keyin Berdaq penen Ótesh shayır ekewi qattı dos boladı (I.Saǵitov)."},
     { word: "Ayıpker", meaning: "Gúnalı, ayıplı, qılmıslı, ayıpdar.", experience: "Joq men ayıpsız ayıpkermen (A.Bekimbetov)."},
+    { word: "", meaning: "", experience: ""},
+    { word: "", meaning: "", experience: ""},
+    { word: "", meaning: "", experience: ""},
+    
+    { word: "Argotexnika", meaning: "at. Awıl xojalıq eginlerin islewdiń sisteması, diyqanshılıq hám olardı rawajlandırıw sharaları, ilajları.", experience: "Barlıq agrotexnika quralların keńnen qollanıw zárúr (O. Berdimuratov)."},
+    { word: "Aǵzam", meaning: "Ullı mártebeli, ullı dárejeli", experience: "Quda qálese patsha aǵzam puqaralarına miyrimin salar (K.Sultanov)."},
+    { word: "Aǵıl-tegil", meaning: "Molshılıq, mol-molaqay, kóp, dım kóp, jetkilikli.", experience: "Bunnan basqa da onıń sútli sıyırı bolıp, may menen sút aǵıl-tegil edi (S.Ayniy)."},
     { word: "Aq jaǵal", meaning: "Ala, ılaqtıń, qozınıń túrine qaray ataw, bas betinde meni bar.", experience: "Japıraq múyiz aq jaǵal, Ol da keldi suw betke (I.Yusupov)."},
     { word: "Aqıy", meaning: "Biy, sher, ózin joqarı sanaytuǵın adam.", experience: "Astında bar torı atı, Belinde gá har polatı, Bolıstıń quyrıq qanatı, Aqsaqalıń aqiy eken (Ájiniyaz)."},
     { word: "Aqkóz", meaning: "Gódek, ańqaw, hadal, hesh nárse kórmegen.", experience: "Munday awır aqkóz batırlardı sol zamandaǵı Xiywa xanı Ispandiyar xan óltirtken (Q.Irmanov)."},
