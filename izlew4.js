@@ -2,7 +2,7 @@
   const words = [
     { word: "Abay", meaning: "at. Qorǵanısh, saqlıq, es, abay-siyasat.", experience: "Sen bilmeysen meniń jayım, Onıń menen teń qudayım, Kerek emes bos abayıń, Tek tur, dedi Aydos baba (Berdaq)." },
     { word: "Abaylamay", meaning: "r. Sezbey, serlemey, bilmey.", experience: "Oksananıń qaysı esikke kirip ketkenin abaylamay da qaldım (M.Nızanov)." },
-    { word: "Abzal", meaning: "r.Jaqsı, durıs, táwir.", experience: "Bul kúyikten frontka ketkenim abzal ǵoy (K.Sultanov)."},
+    { word: "Abzal", meaning: "r.Jaqsı, durıs, táwir.", experience: "Bul kúyikten frontqa ketkenim abzal ǵoy (K.Sultanov)."},
     { word: "Abısın", meaning: "at.Eki aǵayin jigittiń úlkeniniń kelinshegi kishkenesiniń kelinshegine abısın boladı.", experience: "Biziń abısın gáptiń posgellesin aytadı (K.Sultanov)." },
     { word: "Abadan", meaning: "kel. Jetkilikli, mol, kóp, qurǵın, barshılıq.", experience: "Xalıq shaǵlap mustaqıl Ózbekstanda, Dúnya tınısh, eller abadan bolsın (I. Yusupov). Ádira qalǵır tuwǵan jer, Bolmaǵan soń abadan (Jiyen jıraw)."},
     { word: "Abay-siyasat", meaning: "at. Kózabaǵa qır kórsetiwshilik.", experience: "Shopanlarǵa kelip, abay-siyasat qılıp, túsingenlerine násiyat aytıp, xannan kelgen jasawıl ne dep turıptı (Ó.Xojaniyazov)."},
