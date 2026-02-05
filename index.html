@@ -17,7 +17,8 @@
 
   <style>
     body { font-family: 'Roboto', sans-serif; }
-    * { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    * { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
+    .glass { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
   </style>
 </head>
 
@@ -174,8 +175,9 @@
       const root = document.documentElement;
       if (theme === "dark") root.classList.add("dark");
       else root.classList.remove("dark");
+
       document.body.className = cx(
-        "min-h-screen",
+        "min-h-screen antialiased",
         theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-800"
       );
     }
@@ -184,8 +186,8 @@
       return (
         <div className={cx(
           "fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999]",
-          "px-4 py-2 rounded-xl shadow-lg backdrop-blur",
-          "border text-sm",
+          "px-4 py-2 rounded-2xl shadow-xl glass",
+          "border text-sm font-semibold",
           show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none",
           "bg-white/80 border-slate-200 text-slate-800",
           "dark:bg-slate-900/70 dark:border-slate-700 dark:text-slate-100"
@@ -205,16 +207,13 @@
         try {
           const raw = localStorage.getItem(STORAGE_KEYS.chat);
           const parsed = raw ? JSON.parse(raw) : {};
-          return parsed?.[lang] || [
-            { role: "ai", text: t.aiHint }
-          ];
+          return parsed?.[lang] || [{ role: "ai", text: t.aiHint }];
         } catch {
           return [{ role: "ai", text: t.aiHint }];
         }
       });
 
       useEffect(() => {
-        // saqlash
         const raw = localStorage.getItem(STORAGE_KEYS.chat);
         const parsed = raw ? JSON.parse(raw) : {};
         parsed[lang] = messages;
@@ -222,11 +221,8 @@
       }, [messages, lang]);
 
       useEffect(() => {
-        // scroll pastga
-        if (listRef.current) {
-          listRef.current.scrollTop = listRef.current.scrollHeight;
-        }
-      }, [messages, loading]);
+        if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
+      }, [messages, loading, open]);
 
       async function send() {
         const text = input.trim();
@@ -234,8 +230,7 @@
 
         setErr("");
         setInput("");
-        const next = [...messages, { role: "user", text }];
-        setMessages(next);
+        setMessages(prev => [...prev, { role: "user", text }]);
         setLoading(true);
 
         try {
@@ -245,14 +240,12 @@
             body: JSON.stringify({
               message: text,
               lang,
-              // kontekst: sayt haqida qisqacha
               context: "Bu sayt Qaraqalpaq_sózlik: so'zlar izohi, misollar va audio talaffuz."
             })
           });
 
           const data = await r.json();
           if (!r.ok) throw new Error(data?.error || "Request failed");
-
           setMessages(prev => [...prev, { role: "ai", text: data.text }]);
         } catch (e) {
           setErr(t.aiErr);
@@ -269,38 +262,47 @@
       }
 
       function clearChat() {
-        const base = [{ role: "ai", text: t.aiHint }];
-        setMessages(base);
+        setMessages([{ role: "ai", text: t.aiHint }]);
       }
 
       if (!open) return null;
 
       return (
         <div className="fixed inset-0 z-[9998]">
-          <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-          <div className="absolute inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center p-3">
-            <div className="w-full md:max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60" onClick={onClose}></div>
+
+          {/* Bottom sheet on mobile, centered modal on md+ */}
+          <div className="absolute inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center p-3 md:p-6">
+            <div className={cx(
+              "w-full md:max-w-2xl",
+              "bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800",
+              "rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden",
+              "max-h-[92vh] md:max-h-[80vh]"
+            )}>
+              <div className="flex items-center justify-between px-4 md:px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-11 h-11 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center shrink-0">
                     <i className="fa-solid fa-wand-magic-sparkles text-blue-700 dark:text-blue-300"></i>
                   </div>
-                  <div>
-                    <div className="font-extrabold text-slate-900 dark:text-white">{t.aiTitle}</div>
-                    <div className="text-xs text-slate-500 dark:text-slate-300">API: server.js → /api/gemini</div>
+                  <div className="min-w-0">
+                    <div className="font-extrabold text-slate-900 dark:text-white truncate">{t.aiTitle}</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-300 truncate">API: server.js → /api/gemini</div>
                   </div>
                 </div>
+
                 <div className="flex items-center gap-2">
                   <button
                     onClick={clearChat}
-                    className="px-3 py-2 rounded-xl text-sm font-bold border border-slate-200 dark:border-slate-800 hover:shadow"
+                    className="px-3 py-2 rounded-xl text-sm font-extrabold border border-slate-200 dark:border-slate-800 hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                     type="button"
                   >
-                    <i className="fa-solid fa-broom mr-2"></i>{t.aiClear}
+                    <i className="fa-solid fa-broom mr-2"></i>
+                    <span className="hidden sm:inline">{t.aiClear}</span>
+                    <span className="sm:hidden">Clear</span>
                   </button>
                   <button
                     onClick={onClose}
-                    className="w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow"
+                    className="w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                     type="button"
                     aria-label="close"
                   >
@@ -309,11 +311,11 @@
                 </div>
               </div>
 
-              <div ref={listRef} className="h-[55vh] md:h-[420px] overflow-auto px-5 py-4 space-y-3">
+              <div ref={listRef} className="h-[56vh] md:h-[420px] overflow-auto px-4 md:px-5 py-4 space-y-3">
                 {messages.map((m, idx) => (
                   <div key={idx} className={cx("flex", m.role === "user" ? "justify-end" : "justify-start")}>
                     <div className={cx(
-                      "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
+                      "max-w-[92%] sm:max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap shadow-sm",
                       m.role === "user"
                         ? "bg-blue-600 text-white"
                         : "bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800"
@@ -325,7 +327,7 @@
 
                 {loading && (
                   <div className="flex justify-start">
-                    <div className="max-w-[85%] rounded-2xl px-4 py-3 text-sm bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    <div className="max-w-[92%] sm:max-w-[85%] rounded-2xl px-4 py-3 text-sm bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
                       <i className="fa-solid fa-spinner fa-spin mr-2"></i>{t.aiThinking}
                     </div>
                   </div>
@@ -338,10 +340,10 @@
                 )}
               </div>
 
-              <div className="px-5 py-4 border-t border-slate-200 dark:border-slate-800">
-                <div className="flex gap-2">
+              <div className="px-4 md:px-5 py-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex gap-2 items-end">
                   <textarea
-                    className="w-full resize-none h-12 md:h-14 rounded-2xl px-4 py-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 outline-none"
+                    className="w-full resize-none h-14 rounded-2xl px-4 py-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 outline-none focus:ring-2 focus:ring-blue-500/40"
                     placeholder={t.aiPlaceholder}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -351,13 +353,16 @@
                     onClick={send}
                     disabled={loading}
                     className={cx(
-                      "px-5 rounded-2xl font-extrabold",
+                      "h-14 px-5 rounded-2xl font-extrabold",
                       "bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.99]",
+                      "focus:outline-none focus:ring-2 focus:ring-blue-500/40",
                       loading ? "opacity-70 cursor-not-allowed" : ""
                     )}
                     type="button"
                   >
-                    <i className="fa-solid fa-paper-plane mr-2"></i>{t.aiSend}
+                    <i className="fa-solid fa-paper-plane mr-2"></i>
+                    <span className="hidden sm:inline">{t.aiSend}</span>
+                    <span className="sm:hidden">Send</span>
                   </button>
                 </div>
                 <div className="mt-2 text-xs text-slate-500 dark:text-slate-300">
@@ -371,16 +376,16 @@
     }
 
     function App() {
-      const [theme, setTheme] = useState(() => localStorage.getItem("qs_theme") || "light");
-      const [lang, setLang] = useState(() => localStorage.getItem("qs_lang") || "kaa");
+      const [theme, setTheme] = useState(() => localStorage.getItem(STORAGE_KEYS.theme) || "light");
+      const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEYS.lang) || "kaa");
       const [menuOpen, setMenuOpen] = useState(false);
       const [toast, setToast] = useState(false);
       const [chatOpen, setChatOpen] = useState(false);
 
       const t = useMemo(() => i18n[lang] || i18n.kaa, [lang]);
 
-      useEffect(() => { applyTheme(theme); localStorage.setItem("qs_theme", theme); }, [theme]);
-      useEffect(() => { localStorage.setItem("qs_lang", lang); }, [lang]);
+      useEffect(() => { applyTheme(theme); localStorage.setItem(STORAGE_KEYS.theme, theme); }, [theme]);
+      useEffect(() => { localStorage.setItem(STORAGE_KEYS.lang, lang); }, [lang]);
 
       function showToast() {
         setToast(true);
@@ -403,29 +408,42 @@
           <ChatModal open={chatOpen} onClose={() => setChatOpen(false)} t={t} lang={lang} />
 
           {/* HERO */}
-          <header className="relative overflow-hidden"
-            style={{ backgroundImage: "url('naǵıs.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70"></div>
+          <header
+            className="relative overflow-hidden"
+            style={{ backgroundImage: "url('naǵıs.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/35 to-black/80"></div>
+            <div className="absolute inset-0 opacity-30"
+                 style={{ backgroundImage: "radial-gradient(circle at 20% 20%, rgba(59,130,246,.55), transparent 40%), radial-gradient(circle at 80% 30%, rgba(14,165,233,.35), transparent 45%)" }}>
+            </div>
 
-            <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-16 md:py-20">
               <div className="flex flex-col gap-6">
-                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow">
+                <div className="inline-flex items-center gap-2 w-fit px-3 py-1.5 rounded-full border border-white/20 bg-white/10 glass text-white/90 text-xs font-bold">
+                  <i className="fa-solid fa-sparkles"></i>
+                  <span>Interaktiv platforma</span>
+                </div>
+
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow">
                   {t.heroTitle}
                 </h1>
-                <p className="text-white/90 max-w-2xl text-base md:text-lg">{t.heroSubtitle}</p>
+                <p className="text-white/90 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed">
+                  {t.heroSubtitle}
+                </p>
 
-                <div className="mt-2 max-w-xl">
-                  <div className="flex items-center gap-2 bg-white/95 dark:bg-slate-900/70 rounded-2xl p-2 border border-white/30 dark:border-slate-700 backdrop-blur shadow-lg">
+                {/* SEARCH */}
+                <div className="mt-1 max-w-xl">
+                  <div className="flex items-center gap-2 bg-white/95 dark:bg-slate-900/70 rounded-2xl p-2 border border-white/30 dark:border-slate-700 glass shadow-xl">
                     <span className="px-2 text-slate-600 dark:text-slate-200">
                       <i className="fa-solid fa-magnifying-glass"></i>
                     </span>
                     <input
-                      className="w-full bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-300"
+                      className="w-full bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-300 text-sm sm:text-base"
                       placeholder={t.searchPlaceholder}
                       onChange={() => {}}
                     />
                     <button
-                      className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]"
+                      className="px-4 sm:px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] font-extrabold"
                       onClick={() => window.location.href = "izlew.html"}
                       type="button"
                     >
@@ -434,9 +452,10 @@
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 mt-2">
+                {/* ACTIONS */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1">
                   <button
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/25 bg-white/10 text-white hover:bg-white/20 glass focus:outline-none focus:ring-2 focus:ring-white/30"
                     onClick={handleThemeToggle}
                     type="button"
                   >
@@ -444,23 +463,27 @@
                     <span className="font-semibold">{theme === "dark" ? t.themeNight : t.themeDay}</span>
                   </button>
 
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/25 bg-white/10 glass">
                     <i className="fa-solid fa-language text-white"></i>
                     <div className="flex gap-2">
                       {LANGS.map(l => (
-                        <button key={l.code} onClick={() => handleLangChange(l.code)}
-                          className={cx("px-3 py-1 rounded-lg text-sm font-semibold hover:bg-white/20",
-                          lang === l.code ? "bg-white/25 text-white" : "text-white/90")}
-                          type="button">
+                        <button
+                          key={l.code}
+                          onClick={() => handleLangChange(l.code)}
+                          className={cx(
+                            "px-3 py-1 rounded-lg text-xs sm:text-sm font-extrabold hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/25",
+                            lang === l.code ? "bg-white/20 text-white" : "text-white/90"
+                          )}
+                          type="button"
+                        >
                           {l.label}
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  {/* AI Button */}
                   <button
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-lg"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-300/40"
                     onClick={() => setChatOpen(true)}
                     type="button"
                   >
@@ -473,12 +496,12 @@
           </header>
 
           {/* NAVBAR */}
-          <nav className="sticky top-0 z-50 border-b border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-950/70 backdrop-blur">
-            <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src="pon21.png" alt="Logo" className="h-10 w-10 rounded-xl object-cover shadow" />
-                <div className="leading-tight">
-                  <div className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white">{t.brand}</div>
+          <nav className="sticky top-0 z-50 border-b border-slate-200/70 dark:border-slate-800 bg-white/75 dark:bg-slate-950/65 glass">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <img src="pon21.png" alt="Logo" className="h-10 w-10 rounded-2xl object-cover shadow-sm border border-slate-200/70 dark:border-slate-800" />
+                <div className="leading-tight min-w-0">
+                  <div className="text-base sm:text-lg md:text-xl font-extrabold text-slate-900 dark:text-white truncate">{t.brand}</div>
                   <div className="text-xs text-slate-500 dark:text-slate-300">{t.quickTitle}</div>
                 </div>
               </div>
@@ -486,17 +509,20 @@
               <ul className="hidden md:flex items-center gap-6">
                 {nav.map(item => (
                   <li key={item.href}>
-                    <a href={item.href} className="text-sm font-semibold text-slate-700 hover:text-blue-700 dark:text-slate-200 dark:hover:text-blue-300">
+                    <a
+                      href={item.href}
+                      className="text-sm font-extrabold text-slate-700 hover:text-blue-700 dark:text-slate-200 dark:hover:text-blue-300"
+                    >
                       {item.label}
                     </a>
                   </li>
                 ))}
               </ul>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => setChatOpen(true)}
-                  className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700"
+                  className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow focus:outline-none focus:ring-2 focus:ring-blue-500/40"
                   type="button"
                 >
                   <i className="fa-solid fa-robot"></i>{t.aiBtn}
@@ -504,19 +530,26 @@
 
                 <button
                   onClick={handleThemeToggle}
-                  className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow"
+                  className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                   type="button"
                 >
                   <i className={cx("fa-solid", theme === "dark" ? "fa-moon" : "fa-sun")}></i>
-                  <span className="text-sm font-semibold">{theme === "dark" ? t.themeNight : t.themeDay}</span>
+                  <span className="text-sm font-extrabold">{theme === "dark" ? t.themeNight : t.themeDay}</span>
                 </button>
 
                 <div className="hidden sm:flex items-center gap-2">
                   {LANGS.map(l => (
-                    <button key={l.code} onClick={() => handleLangChange(l.code)}
-                      className={cx("px-3 py-2 rounded-xl text-sm font-bold border",
-                        lang === l.code ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:shadow")}
-                      type="button">
+                    <button
+                      key={l.code}
+                      onClick={() => handleLangChange(l.code)}
+                      className={cx(
+                        "px-3 py-2 rounded-xl text-sm font-extrabold border focus:outline-none focus:ring-2 focus:ring-blue-500/30",
+                        lang === l.code
+                          ? "border-blue-600 bg-blue-600 text-white shadow"
+                          : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:shadow"
+                      )}
+                      type="button"
+                    >
                       {l.code.toUpperCase()}
                     </button>
                   ))}
@@ -524,27 +557,32 @@
 
                 <button
                   onClick={() => setMenuOpen(v => !v)}
-                  className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+                  className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30"
                   type="button"
+                  aria-label="menu"
                 >
                   <i className={cx("fa-solid", menuOpen ? "fa-xmark" : "fa-bars")}></i>
                 </button>
               </div>
             </div>
 
+            {/* MOBILE MENU */}
             <div className={cx("md:hidden", menuOpen ? "block" : "hidden")}>
-              <div className="max-w-6xl mx-auto px-6 pb-4">
-                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-4">
+                <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-lg">
                   <div className="grid gap-2">
                     {nav.map(item => (
-                      <a key={item.href} href={item.href}
-                        className="px-4 py-3 rounded-xl font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="px-4 py-3 rounded-2xl font-extrabold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      >
                         {item.label}
                       </a>
                     ))}
                     <button
                       onClick={() => setChatOpen(true)}
-                      className="px-4 py-3 rounded-xl font-extrabold bg-blue-600 text-white hover:bg-blue-700"
+                      className="px-4 py-3 rounded-2xl font-extrabold bg-blue-600 text-white hover:bg-blue-700 shadow"
                       type="button"
                     >
                       <i className="fa-solid fa-robot mr-2"></i>{t.aiBtn}
@@ -552,18 +590,27 @@
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <button onClick={handleThemeToggle}
-                      className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow font-semibold"
-                      type="button">
+                    <button
+                      onClick={handleThemeToggle}
+                      className="px-4 py-2 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow font-extrabold"
+                      type="button"
+                    >
                       <i className={cx("fa-solid mr-2", theme === "dark" ? "fa-moon" : "fa-sun")}></i>
                       {theme === "dark" ? t.themeNight : t.themeDay}
                     </button>
 
                     {LANGS.map(l => (
-                      <button key={l.code} onClick={() => handleLangChange(l.code)}
-                        className={cx("px-4 py-2 rounded-xl border font-semibold",
-                          lang === l.code ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950")}
-                        type="button">
+                      <button
+                        key={l.code}
+                        onClick={() => handleLangChange(l.code)}
+                        className={cx(
+                          "px-4 py-2 rounded-2xl border font-extrabold",
+                          lang === l.code
+                            ? "border-blue-600 bg-blue-600 text-white shadow"
+                            : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950"
+                        )}
+                        type="button"
+                      >
                         {l.label}
                       </button>
                     ))}
@@ -574,64 +621,77 @@
           </nav>
 
           {/* MAIN */}
-          <main className="max-w-6xl mx-auto px-6 py-12">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-8">{t.quickTitle}</h2>
+          <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-6 sm:mb-8">
+              {t.quickTitle}
+            </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <a href="izlew.html"
-                 className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <a
+                href="izlew.html"
+                className="group rounded-3xl p-5 sm:p-6 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardDictTitle}</h3>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardDictTitle}</h3>
                     <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{t.cardDictDesc}</p>
                   </div>
-                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center border border-blue-600/10 dark:border-blue-300/10">
                     <i className="fa-solid fa-book text-blue-700 dark:text-blue-300"></i>
                   </div>
                 </div>
-                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
-                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">
+                  {t.cardOpen}
+                  <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
               </a>
 
-              <a href="qosiq.html"
-                 className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1">
+              <a
+                href="qosiq.html"
+                className="group rounded-3xl p-5 sm:p-6 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardAudioTitle}</h3>
+                    <h3 className="text-lg sm:text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardAudioTitle}</h3>
                     <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{t.cardAudioDesc}</p>
                   </div>
-                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center border border-blue-600/10 dark:border-blue-300/10">
                     <i className="fa-solid fa-volume-high text-blue-700 dark:text-blue-300"></i>
                   </div>
                 </div>
-                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
-                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">
+                  {t.cardOpen}
+                  <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                 </div>
               </a>
             </div>
 
-            <section className="mt-14">
-              <div className="flex items-center justify-between gap-4 mb-5">
-                <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">{t.socialTitle}</h3>
-                <div className="text-sm text-slate-500 dark:text-slate-300">
+            <section className="mt-12 sm:mt-14">
+              <div className="flex items-center justify-between gap-4 mb-4 sm:mb-5">
+                <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">{t.socialTitle}</h3>
+                <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-300">
                   <i className="fa-solid fa-bolt mr-2"></i>Interaktiv havolalar
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {[
                   { href: "https://t.me/atabek_offical01", icon: "fa-telegram", label: "Telegram" },
                   { href: "https://instagram.com/atabekkoshkinbaev", icon: "fa-instagram", label: "Instagram" },
                   { href: "https://facebook.com/share/15FSXUZmzg/", icon: "fa-facebook", label: "Facebook" },
                   { href: "https://youtube.com/@karsu_news", icon: "fa-youtube", label: "YouTube" },
                 ].map(s => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                     className="rounded-3xl p-5 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 flex flex-col items-center justify-center gap-2">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-3xl p-4 sm:p-5 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:-translate-y-1 flex flex-col items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center border border-blue-600/10 dark:border-blue-300/10">
                       <i className={cx("fa-brands", s.icon, "text-2xl text-blue-700 dark:text-blue-300")}></i>
                     </div>
-                    <div className="font-bold text-slate-700 dark:text-slate-200">{s.label}</div>
+                    <div className="font-extrabold text-slate-700 dark:text-slate-200">{s.label}</div>
                   </a>
                 ))}
               </div>
@@ -639,35 +699,36 @@
           </main>
 
           <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-            <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12 grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               <div className="space-y-4">
-                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.aboutTitle}</h4>
+                <h4 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">{t.aboutTitle}</h4>
                 <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{t.aboutText}</p>
-                <img src="t1.jfif" alt="Profile" className="w-40 h-40 object-cover rounded-full border-4 border-slate-200 dark:border-slate-800 shadow" />
+                <img src="t1.jfif" alt="Profile" className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-full border-4 border-slate-200 dark:border-slate-800 shadow" />
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.rememberTitle}</h4>
+                <h4 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">{t.rememberTitle}</h4>
                 <div className="space-y-2 text-sm text-slate-700 dark:text-slate-200">
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q1}</div>
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q2}</div>
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q3}</div>
-                  <div className="font-bold text-slate-500 dark:text-slate-300">{t.author}</div>
+                  <div className="font-extrabold text-slate-500 dark:text-slate-300">{t.author}</div>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.contactTitle}</h4>
-                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.founder}</div>
+                <h4 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">{t.contactTitle}</h4>
+
+                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-sm">
+                  <div className="text-sm font-extrabold text-slate-700 dark:text-slate-200">{t.founder}</div>
                   <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.founderName}</div>
-                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 93 047 97 44</div>
+                  <div className="mt-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">+998 93 047 97 44</div>
                 </div>
 
-                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.tech}</div>
+                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 shadow-sm">
+                  <div className="text-sm font-extrabold text-slate-700 dark:text-slate-200">{t.tech}</div>
                   <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.techName}</div>
-                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 99 131 76 11</div>
+                  <div className="mt-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">+998 99 131 76 11</div>
                 </div>
               </div>
             </div>
