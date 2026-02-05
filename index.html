@@ -81,6 +81,7 @@
         aiClear: "Chatni tozalash",
         aiThinking: "O‘ylayapman...",
         aiErr: "Xatolik: AI javob bermadi. server.js faylini 3000-portda ishga tushiring.",
+        aiFallback: "Hozircha AI serverga ulanmadim. Quyidagini sinab ko‘ring: 1) server.js ni ishga tushiring, 2) so‘rovni qayta yuboring, 3) izlovdan foydalaning.",
         statsUsers: "Faol foydalanuvchi",
         statsWords: "So‘zlar bazasi",
         statsAudio: "Audio yozuv",
@@ -130,6 +131,7 @@
         aiClear: "Chattı tazalaw",
         aiThinking: "Oylap atırman...",
         aiErr: "Qátelik: AI juwap bermedi. server.js faylın 3000-portda iske túsiriń.",
+        aiFallback: "Házirshe AI serverge jalğanbadı. Mına islerdi isteń: 1) server.js iske túsiriń, 2) sorawdı qayta jiberiń, 3) izlewden paydalanıń.",
         statsUsers: "Faol paydalanıwshı",
         statsWords: "Sózler bazası",
         statsAudio: "Audio jazbalar",
@@ -179,6 +181,7 @@
         aiClear: "Очистить чат",
         aiThinking: "Думаю...",
         aiErr: "Ошибка: AI не отвечает. Запустите server.js на порту 3000.",
+        aiFallback: "Сейчас нет соединения с AI. Попробуйте: 1) запустить server.js, 2) отправить вопрос снова, 3) воспользоваться поиском.",
         statsUsers: "Активные пользователи",
         statsWords: "Слов в базе",
         statsAudio: "Аудио записей",
@@ -274,6 +277,7 @@
           setMessages(prev => [...prev, { role: "ai", text: data.text }]);
         } catch (e) {
           setErr(t.aiErr);
+          setMessages(prev => [...prev, { role: "ai", text: t.aiFallback }]);
         } finally {
           setLoading(false);
         }
@@ -767,4 +771,3 @@
   </script>
 </body>
 </html>
-
