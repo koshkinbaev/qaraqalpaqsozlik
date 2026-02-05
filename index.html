@@ -3,280 +3,589 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Qaraqalpaq_sózlik - Kirish</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Qaraqalpaq_sózlik - Interaktiv</title>
+
+  <!-- Fonts / Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React (CDN) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background: linear-gradient(to right, #f4f8fb, #e6f0fa);
-      color: #333;
-      margin: 0;
-    }
-
-    .header {
-      background-image: url("naǵıs.jpg");
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      padding: 60px 20px;
-      color: white;
-      text-align: center;
-      text-shadow: 5px 5px 5px #000;
-    }
-
-    .header h1 {
-      font-size: 3em;
-      margin: 0;
-    }
-
-    .nav-links li:hover .dropdown {
-      display: flex;
-    }
-
-    .dropdown {
-      display: none;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links {
-        flex-direction: column;
-        position: absolute;
-        top: 50px;
-        right: 0;
-        width: 100px;
-        display: none;
-        background: white;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .menu-toggle {
-        display: block;
-      }
-    }
-
-    .footer-container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .footer-container a {
-      color: #90cdf4;
-      text-decoration: none;
-    }
-
-    .footer-container a:hover {
-      text-decoration: underline;
-    }
-
-    .footer-bottom {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 14px;
-      border-top: 1px solid #444;
-      padding-top: 10px;
-    }
-
-    .contact-cards {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 40px;
-      font-family: sans-serif;
-      flex-wrap: wrap;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      width: 120px;
-      height: 120px;
-      text-align: center;
-      padding-top: 25px;
-      transition: 0.3s;
-    }
-
-    .card i {
-      font-size: 30px;
-      color: #1478d0;
-    }
-
-    .card:hover {
-      transform: scale(1.1);
-      background: #567281;
-    }
-
-    .card:hover i {
-      color: white;
-    }
+    body { font-family: 'Roboto', sans-serif; }
+    /* Smooth theme transitions */
+    * { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease; }
   </style>
 </head>
-<body>
 
-  <!-- HEADER -->
-  <div class="header">
-    <h1>Qaraqalpaq_sózlik - Interaktiv Sózlik</h1>
-  </div>
+<body class="bg-slate-50 text-slate-800">
+  <div id="root"></div>
 
-  <!-- NAVBAR -->
-  <nav class="main-navbar flex justify-between items-center bg-white px-6 py-4 shadow-md sticky top-0 z-50">
-    <div class="logo flex items-center gap-4 text-blue-900 text-2xl font-bold">
-      <img src="pon21.png" alt="Logo" class="h-10"> Qaraqalpaq Sózlik
-    </div>
-    <div class="menu-toggle text-2xl md:hidden cursor-pointer" onclick="toggleMenu()">☰</div>
-    <ul class="nav-links hidden md:flex gap-6 items-center" id="menu">
-      <li><a href="janaliq.html" class="hover:text-blue-600">Jańalıqlar</a></li>
-      <li><a href="fikir1.html" class="hover:text-blue-600">Pikir hám usınıs</a></li>
-      <li><a href="baylanıs.html" class="hover:text-blue-600">Dizimnen ótiw</a></li>
-      <li><a href="komanda.html" class="hover:text-blue-600">Komanda</a></li>
-    </ul>
-    <div class="right-items flex items-center gap-4">
-      <div class="user-icon text-xl cursor-pointer">📖</div>
-    </div>
-  </nav>
+  <script type="text/babel">
+    const { useEffect, useMemo, useState } = React;
 
-  <script>
-    function toggleMenu() {
-  const menu = document.getElementById('menu');
-  menu.classList.toggle('hidden');
-}
-  </script>
+    const STORAGE_KEYS = {
+      theme: "qs_theme",
+      lang: "qs_lang",
+    };
 
-  <!-- MAIN SECTION -->
-  <main class="flex flex-col items-center justify-center px-4 py-12">
-    <h1 class="text-3xl font-bold text-blue-800 mb-8">Sózlikler</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-      <a href="izlew.html" class="bg-white border border-blue-300 hover:border-blue-500 shadow-md rounded-lg p-6 text-center transition">
-        <h2 class="text-xl text-blue-700 font-semibold mb-2">📕 Sózlikler</h2>
-        <p class="text-gray-600 text-sm">Bul bólimde siz hárbir sózdiń tolıq túsindirmesi, mısallar menen qollanılıwı menen tanısasız. Oqıwshılar, studentler hám tilshiler ushın paydalı derek.</p>
-      </a>
-      <a href="qosiq.html" class="bg-white border border-blue-300 hover:border-blue-500 shadow-md rounded-lg p-6 text-center transition">
-        <h2 class="text-xl text-blue-700 font-semibold mb-2">🔊 Audio</h2>
-        <p class="text-gray-600 text-sm">Bul bólimde siz sózliklerdiń audiosın – tıńlań, úyreniń hám ámel etiń.</p>
-      </a>
-    </div>
-  </main>
+    const LANGS = [
+      { code: "uz", label: "O‘zbek" },
+      { code: "kaa", label: "Qaraqalpaq" },
+      { code: "ru", label: "Русский" },
+    ];
 
-  <!-- CONTACT CARDS -->
-  <div class="contact-cards">
-    <a href="https://t.me/atabek_offical01" class="card" target="_blank">
-      <i class="fab fa-telegram"></i><div>Telegram</div></a>
-    <a href="https://instagram.com/atabekkoshkinbaev" class="card" target="_blank">
-      <i class="fab fa-instagram"></i><div>Instagram</div></a>
-    <a href="https://facebook.com/share/15FSXUZmzg/" class="card" target="_blank">
-      <i class="fab fa-facebook"></i><div>Facebook</div></a>
-    <a href="https://youtube.com/@karsu_news" class="card" target="_blank">
-      <i class="fab fa-youtube"></i><div>YouTube</div></a>
-  </div>
-  <style>
-    <footer class="footer">
-  .footer {
-    background-color: #f4f8fb;
-    color: #00000000;
-    padding: 30px 20px;
-  }
-.footer-container {
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column; /* vertikal joylashuv uchun */
-text-align: center;
-padding: 40px;
-background-color: #f4f8fb;
-}
-  .contact-cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 40px;
-    font-family: sans-serif;
-    flex-wrap: wrap;
-  }
-.news-card {
-    background: rgb(192, 171, 171);
-    padding: 30px;
-    max-width: 700px;
-    width: 90%;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-  }
-.center-image {
-      width: 250px;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 6px solid #ccc;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+    const i18n = {
+      uz: {
+        brand: "Qaraqalpaq So‘zlik",
+        heroTitle: "Qaraqalpaq_sózlik — Interaktiv So‘zlik",
+        heroSubtitle: "So‘z ma’nolari, misollar va audio talaffuz — barchasi bir joyda.",
+        navNews: "Yangiliklar",
+        navFeedback: "Fikr va taklif",
+        navRegister: "Ro‘yxatdan o‘tish",
+        navTeam: "Jamoa",
+        quickTitle: "Bo‘limlar",
+        cardDictTitle: "📕 So‘zliklar",
+        cardDictDesc: "Bu bo‘limda so‘zlarning to‘liq izohi, misollar bilan qo‘llanishi keltiriladi. O‘quvchi, talaba va tilshunoslar uchun foydali.",
+        cardAudioTitle: "🔊 Audio",
+        cardAudioDesc: "So‘zlarning talaffuzini tinglang, o‘rganing va amalda qo‘llang.",
+        cardOpen: "Kirish",
+        socialTitle: "Biz bilan bog‘laning",
+        aboutTitle: "📌 Sayt haqida",
+        aboutText:
+          "“Qaraqalpaq_sózligi” — qaraqalpoq tilining so‘z boyligini jamlagan zamonaviy izohli platforma. Bu yerda so‘z ma’nosi, qo‘llanilishi va hayotiy misollar bilan tanishasiz. Maqsad — tilni sevish, o‘rganish va asrash.",
+        rememberTitle: "📖 Esda saqlang!",
+        q1: "“Niyatingiz chin bo‘lsa, maqsadingizga yetasiz!”",
+        q2: "“Harakat albatta natijasini beradi.”",
+        q3: "“Ilm — bu NUR!”",
+        author: "– Ko‘shkinbaev Atabek",
+        contactTitle: "📬 Savolingiz bormi?",
+        founder: "Loyiha asoschisi & Frontend dasturchi",
+        founderName: "Ko‘shkinbaev Atabek",
+        tech: "Backend dasturchi & Texnik xodim",
+        techName: "O‘tebaev Abdirasul",
+        rights: "Barcha huquqlar himoyalangan.",
+        themeDay: "Kunduz",
+        themeNight: "Tungi",
+        searchPlaceholder: "So‘z qidiring (demo)...",
+        toastSaved: "Sozlamalar saqlandi ✅",
+      },
+
+      kaa: {
+        brand: "Qaraqalpaq Sózlik",
+        heroTitle: "Qaraqalpaq_sózlik — Interaktiv Sózlik",
+        heroSubtitle: "Sóz mánileri, mısallar hám audio talaffuz — bári bir jerde.",
+        navNews: "Jańalıqlar",
+        navFeedback: "Pikir hám usınıs",
+        navRegister: "Dizimnen ótiw",
+        navTeam: "Komanda",
+        quickTitle: "Bólimler",
+        cardDictTitle: "📕 Sózlikler",
+        cardDictDesc: "Bul bólimde hárbir sózdiń tolıq túsindirmesi, mısallar menen qollanılıwı beriledi. Oqıwshılar, studentler hám tilshiler ushın paydalı.",
+        cardAudioTitle: "🔊 Audio",
+        cardAudioDesc: "Sózlerdiń talaffuzın tıńlań, úyreniń hám ámelde qollanıń.",
+        cardOpen: "Kiriw",
+        socialTitle: "Biz benen baylanısıń",
+        aboutTitle: "📌 Sayt haqqında",
+        aboutText:
+          "“Qaraqalpaq_sózligi” — qaraqalpaq tiliniń sóz baylıǵın jámlegen zamanagóy túsindirme platforma. Bul jerde sóz mánisi, qollanılıwı hám turmıslıq mısallar menen tanısasız. Maqsat — tilimizdi qádirlew, úyreniw hám saqlaw.",
+        rememberTitle: "📖 Este saqlań!",
+        q1: "“Niyetiń shın bolsa maqsetińe jeteseń!”",
+        q2: "“Háreket álbette nátiyjesin beredi.”",
+        q3: "“Ilim — bul NUR!”",
+        author: "– Kóshkinbaev Atabek",
+        contactTitle: "📬 Sorawıńız bar ma?",
+        founder: "Joybar tiykarshısı & Frontend programmist",
+        founderName: "Kóshkinbaev Atabek",
+        tech: "Backend programmist & Texnik xizmetker",
+        techName: "Ótebaev Abdirasul",
+        rights: "Barlıq huqıqlar qorǵalǵan.",
+        themeDay: "Kúndiz",
+        themeNight: "Túngi",
+        searchPlaceholder: "Sóz izlew (demo)...",
+        toastSaved: "Sazlawlar saqlandı ✅",
+      },
+
+      ru: {
+        brand: "Qaraqalpaq Словарь",
+        heroTitle: "Qaraqalpaq_sózlik — Интерактивный словарь",
+        heroSubtitle: "Значения слов, примеры и аудио произношение — всё в одном месте.",
+        navNews: "Новости",
+        navFeedback: "Отзывы и предложения",
+        navRegister: "Регистрация",
+        navTeam: "Команда",
+        quickTitle: "Разделы",
+        cardDictTitle: "📕 Словарь",
+        cardDictDesc: "В этом разделе вы найдёте подробные объяснения слов и примеры употребления. Полезно для студентов и преподавателей.",
+        cardAudioTitle: "🔊 Аудио",
+        cardAudioDesc: "Слушайте произношение слов, учите и применяйте на практике.",
+        cardOpen: "Открыть",
+        socialTitle: "Связаться с нами",
+        aboutTitle: "📌 О сайте",
+        aboutText:
+          "“Qaraqalpaq_sózligi” — современная платформа, собирающая богатство каракалпакского языка. Здесь вы изучите значение слов, употребление и примеры. Цель — любить, изучать и сохранять язык.",
+        rememberTitle: "📖 Запомните!",
+        q1: "«Если намерение искреннее — достигнешь цели!»",
+        q2: "«Действие обязательно даст результат.»",
+        q3: "«Знание — это СВЕТ!»",
+        author: "– Koshkinbaev Atabek",
+        contactTitle: "📬 Есть вопросы?",
+        founder: "Основатель проекта & Frontend разработчик",
+        founderName: "Koshkinbaev Atabek",
+        tech: "Backend разработчик & Тех. специалист",
+        techName: "O‘tebaev Abdirasul",
+        rights: "Все права защищены.",
+        themeDay: "День",
+        themeNight: "Ночь",
+        searchPlaceholder: "Поиск слова (демо)...",
+        toastSaved: "Настройки сохранены ✅",
+      },
+    };
+
+    const cx = (...classes) => classes.filter(Boolean).join(" ");
+
+    function applyTheme(theme) {
+      const root = document.documentElement;
+      // Tailwind dark mode via class
+      if (theme === "dark") root.classList.add("dark");
+      else root.classList.remove("dark");
+      // Background base
+      document.body.className = cx(
+        "min-h-screen",
+        theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-800"
+      );
     }
-  .card {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    width: 120px;
-    height: 120px;
-    text-align: center;
-    padding-top: 25px;
-    transition: 0.3s;
-  }
 
-  .card i {
-    font-size: 30px;
-    color: #0077b6;
-  }
+    function Toast({ show, text }) {
+      return (
+        <div className={cx(
+          "fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999]",
+          "px-4 py-2 rounded-xl shadow-lg backdrop-blur",
+          "border text-sm",
+          "transition-all duration-300",
+          show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none",
+          "bg-white/80 border-slate-200 text-slate-800",
+          "dark:bg-slate-900/70 dark:border-slate-700 dark:text-slate-100"
+        )}>
+          {text}
+        </div>
+      );
+    }
 
-  .card:hover {
-    transform: scale(1.1);
-    background: #0077b6;
-  }
-    
-  .card:hover i {
-    color: white;
-  } 
-  </style>
-  <div class="footer-container">
-    <div>
-      <h3>📌 Sayt haqqında</h3>
-      <p>"Qaraqalpaq_sózligi" - bul qaraqalpaq tiliniń hár qıylı soz baylıǵın jámlegen zamanagóy túsindirme sózlik bolıp, bul flatforma jas áwlad, studentler, oqıtıwshılar hám tilshiler ushın biybaha derek esaplanadı. 
-      Bul platforma paydalanıwshılarǵa sózlerdiń mánileri, olardıń qollanılıw usılları, sonday-aq, turmıslıq mısallar menen tanısıw imkaniyatın beredi. "Qaraqalpaq_sózligi" arqalı tilimizdi tereńirek úyrenemiz, 
-      hám onıń gózallıǵın ańlaw hám saqlap qalıw ańsatlasadı. Bul joybar - ana tilimizdi qádirleytuǵın hár bir adam ushın bilim hám ilham deregi.</p>
-       <img src="t1.jfif" alt="Men" class="center-image">     
-    </div>
-    <div>
-      <h3>📖 Este saqlań!</h3>
-      <p class="quote">"Niyetiń shın bolsa maqsetińe jeteseń!"</p>
-      <p class="quote">"Háreket álbette nátiyjesin beredi"</p>
-      <p class="quote">"Ilim bul-NUR!"</p>
-      <p>– Kóshkinbaev Atabek</p>
-    </div>
-    <div>
-      <h3>📬 Sorawıńız bolsa?</h3>
-      <p>Joybar tiykarshısı & Frontend programmist</p>
-      <p>Kóshkinbaev Atabek</p>
-      <p>+998930479744</p>
-      <p>Backend programmist & texnik xizmetker</p>
-      <p>Ótebaev Abdirasul</p>
-      <p>+998991317611</p>
-    </div>
-    
-  </div>
+    function App() {
+      const [theme, setTheme] = useState(() => localStorage.getItem(STORAGE_KEYS.theme) || "light");
+      const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEYS.lang) || "kaa");
+      const [menuOpen, setMenuOpen] = useState(false);
+      const [toast, setToast] = useState(false);
 
-  <div class="footer-bottom">
-    &copy; 2025 Qaraqalpaq_sózlik. Barlıq huqıqlar qorǵalǵan.
-  </div>
-</footer>
+      const t = useMemo(() => i18n[lang] || i18n.kaa, [lang]);
 
+      useEffect(() => {
+        applyTheme(theme);
+        localStorage.setItem(STORAGE_KEYS.theme, theme);
+      }, [theme]);
+
+      useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.lang, lang);
+      }, [lang]);
+
+      function showToast() {
+        setToast(true);
+        window.clearTimeout(window.__qs_toast);
+        window.__qs_toast = window.setTimeout(() => setToast(false), 1600);
+      }
+
+      function handleThemeToggle() {
+        setTheme(prev => (prev === "dark" ? "light" : "dark"));
+        showToast();
+      }
+
+      function handleLangChange(code) {
+        setLang(code);
+        showToast();
+      }
+
+      const nav = [
+        { label: t.navNews, href: "janaliq.html" },
+        { label: t.navFeedback, href: "fikir1.html" },
+        { label: t.navRegister, href: "baylanıs.html" },
+        { label: t.navTeam, href: "komanda.html" },
+      ];
+
+      return (
+        <div className="min-h-screen">
+          <Toast show={toast} text={t.toastSaved} />
+
+          {/* HERO */}
+          <header
+            className="relative overflow-hidden"
+            style={{
+              backgroundImage: "url('naǵıs.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70"></div>
+
+            <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
+              <div className="flex flex-col gap-6">
+                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow">
+                  {t.heroTitle}
+                </h1>
+                <p className="text-white/90 max-w-2xl text-base md:text-lg">
+                  {t.heroSubtitle}
+                </p>
+
+                {/* Search (demo) */}
+                <div className="mt-2 max-w-xl">
+                  <div className="flex items-center gap-2 bg-white/95 dark:bg-slate-900/70 rounded-2xl p-2 border border-white/30 dark:border-slate-700 backdrop-blur shadow-lg">
+                    <span className="px-2 text-slate-600 dark:text-slate-200">
+                      <i className="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input
+                      className="w-full bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-300"
+                      placeholder={t.searchPlaceholder}
+                      onChange={() => {}}
+                    />
+                    <button
+                      className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]"
+                      onClick={() => alert("Demo qidiruv: keyingi sahifada (izlew.html) ulab beramiz ✅")}
+                      type="button"
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+
+                {/* Quick controls */}
+                <div className="flex flex-wrap items-center gap-3 mt-2">
+                  {/* Theme */}
+                  <button
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur"
+                    onClick={handleThemeToggle}
+                    type="button"
+                    title="Theme"
+                  >
+                    <i className={theme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun"}></i>
+                    <span className="font-semibold">
+                      {theme === "dark" ? t.themeNight : t.themeDay}
+                    </span>
+                  </button>
+
+                  {/* Language */}
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/30 bg-white/10 backdrop-blur">
+                    <i className="fa-solid fa-language text-white"></i>
+                    <div className="flex gap-2">
+                      {LANGS.map(l => (
+                        <button
+                          key={l.code}
+                          onClick={() => handleLangChange(l.code)}
+                          className={cx(
+                            "px-3 py-1 rounded-lg text-sm font-semibold",
+                            "hover:bg-white/20",
+                            lang === l.code ? "bg-white/25 text-white" : "text-white/90"
+                          )}
+                          type="button"
+                        >
+                          {l.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </header>
+
+          {/* NAVBAR */}
+          <nav className="sticky top-0 z-50 border-b border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-950/70 backdrop-blur">
+            <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img src="pon21.png" alt="Logo" className="h-10 w-10 rounded-xl object-cover shadow" />
+                <div className="leading-tight">
+                  <div className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white">
+                    {t.brand}
+                  </div>
+                  <div className="text-xs text-slate-500 dark:text-slate-300">
+                    {t.quickTitle}
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop links */}
+              <ul className="hidden md:flex items-center gap-6">
+                {nav.map(item => (
+                  <li key={item.href}>
+                    <a
+                      href={item.href}
+                      className="text-sm font-semibold text-slate-700 hover:text-blue-700 dark:text-slate-200 dark:hover:text-blue-300"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Right controls */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleThemeToggle}
+                  className="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow"
+                  type="button"
+                >
+                  <i className={cx("fa-solid", theme === "dark" ? "fa-moon" : "fa-sun")}></i>
+                  <span className="text-sm font-semibold">
+                    {theme === "dark" ? t.themeNight : t.themeDay}
+                  </span>
+                </button>
+
+                <div className="hidden sm:flex items-center gap-2">
+                  {LANGS.map(l => (
+                    <button
+                      key={l.code}
+                      onClick={() => handleLangChange(l.code)}
+                      className={cx(
+                        "px-3 py-2 rounded-xl text-sm font-bold border",
+                        lang === l.code
+                          ? "border-blue-600 bg-blue-600 text-white"
+                          : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:shadow"
+                      )}
+                      type="button"
+                      title={l.label}
+                    >
+                      {l.code.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setMenuOpen(v => !v)}
+                  className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
+                  type="button"
+                  aria-label="menu"
+                >
+                  <i className={cx("fa-solid", menuOpen ? "fa-xmark" : "fa-bars")}></i>
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile menu */}
+            <div className={cx("md:hidden", menuOpen ? "block" : "hidden")}>
+              <div className="max-w-6xl mx-auto px-6 pb-4">
+                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
+                  <div className="flex items-center gap-2 mb-3">
+                    <i className="fa-solid fa-link text-slate-500 dark:text-slate-300"></i>
+                    <span className="text-sm font-bold text-slate-700 dark:text-slate-200">Menu</span>
+                  </div>
+                  <div className="grid gap-2">
+                    {nav.map(item => (
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="px-4 py-3 rounded-xl font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      >
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    <button
+                      onClick={handleThemeToggle}
+                      className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow font-semibold"
+                      type="button"
+                    >
+                      <i className={cx("fa-solid mr-2", theme === "dark" ? "fa-moon" : "fa-sun")}></i>
+                      {theme === "dark" ? t.themeNight : t.themeDay}
+                    </button>
+
+                    {LANGS.map(l => (
+                      <button
+                        key={l.code}
+                        onClick={() => handleLangChange(l.code)}
+                        className={cx(
+                          "px-4 py-2 rounded-xl border font-semibold",
+                          lang === l.code
+                            ? "border-blue-600 bg-blue-600 text-white"
+                            : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950"
+                        )}
+                        type="button"
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* MAIN */}
+          <main className="max-w-6xl mx-auto px-6 py-12">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-8">
+              {t.quickTitle}
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <a
+                href="izlew.html"
+                className={cx(
+                  "group rounded-3xl p-6 border shadow-sm",
+                  "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+                  "hover:shadow-xl hover:-translate-y-1"
+                )}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">
+                      {t.cardDictTitle}
+                    </h3>
+                    <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                      {t.cardDictDesc}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                    <i className="fa-solid fa-book text-blue-700 dark:text-blue-300"></i>
+                  </div>
+                </div>
+
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
+                  {t.cardOpen}
+                  <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+              </a>
+
+              <a
+                href="qosiq.html"
+                className={cx(
+                  "group rounded-3xl p-6 border shadow-sm",
+                  "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+                  "hover:shadow-xl hover:-translate-y-1"
+                )}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">
+                      {t.cardAudioTitle}
+                    </h3>
+                    <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                      {t.cardAudioDesc}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                    <i className="fa-solid fa-volume-high text-blue-700 dark:text-blue-300"></i>
+                  </div>
+                </div>
+
+                <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
+                  {t.cardOpen}
+                  <i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </div>
+              </a>
+            </div>
+
+            {/* SOCIAL CARDS */}
+            <section className="mt-14">
+              <div className="flex items-center justify-between gap-4 mb-5">
+                <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">{t.socialTitle}</h3>
+                <div className="text-sm text-slate-500 dark:text-slate-300">
+                  <i className="fa-solid fa-bolt mr-2"></i>Interaktiv havolalar
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[
+                  { href: "https://t.me/atabek_offical01", icon: "fa-telegram", label: "Telegram" },
+                  { href: "https://instagram.com/atabekkoshkinbaev", icon: "fa-instagram", label: "Instagram" },
+                  { href: "https://facebook.com/share/15FSXUZmzg/", icon: "fa-facebook", label: "Facebook" },
+                  { href: "https://youtube.com/@karsu_news", icon: "fa-youtube", label: "YouTube" },
+                ].map(s => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    className={cx(
+                      "rounded-3xl p-5 border",
+                      "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800",
+                      "hover:shadow-xl hover:-translate-y-1",
+                      "flex flex-col items-center justify-center gap-2"
+                    )}
+                    rel="noreferrer"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
+                      <i className={cx("fa-brands", s.icon, "text-2xl text-blue-700 dark:text-blue-300")}></i>
+                    </div>
+                    <div className="font-bold text-slate-700 dark:text-slate-200">{s.label}</div>
+                  </a>
+                ))}
+              </div>
+            </section>
+          </main>
+
+          {/* FOOTER */}
+          <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+            <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-4">
+                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.aboutTitle}</h4>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                  {t.aboutText}
+                </p>
+                <img
+                  src="t1.jfif"
+                  alt="Profile"
+                  className="w-40 h-40 object-cover rounded-full border-4 border-slate-200 dark:border-slate-800 shadow"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.rememberTitle}</h4>
+                <div className="space-y-2 text-sm text-slate-700 dark:text-slate-200">
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    {t.q1}
+                  </div>
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    {t.q2}
+                  </div>
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+                    {t.q3}
+                  </div>
+                  <div className="font-bold text-slate-500 dark:text-slate-300">{t.author}</div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.contactTitle}</h4>
+                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.founder}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.founderName}</div>
+                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 93 047 97 44</div>
+                </div>
+
+                <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
+                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.tech}</div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.techName}</div>
+                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 99 131 76 11</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-xs text-slate-500 dark:text-slate-400 py-6 border-t border-slate-200 dark:border-slate-800">
+              © 2025 Qaraqalpaq_sózlik. {t.rights}
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
 </body>
 </html>
