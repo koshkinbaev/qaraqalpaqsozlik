@@ -1,143 +1,1159 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Qoraqalpoq So‘zlik</title>
+  <title>Qaraqalpaq Sózlik — Pro</title>
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #d6dbdb;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,.08);
+      --card2: rgba(255,255,255,.06);
+      --text: #eaf0ff;
+      --muted: rgba(234,240,255,.75);
+      --line: rgba(255,255,255,.12);
+      --accent: #7c5cff;
+      --accent2: #00d2ff;
+      --good: #2ee59d;
+      --warn: #ffcf5a;
+      --bad: #ff5c7a;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+    [data-theme="light"]{
+      --bg: #f2f6ff;
+      --card: rgba(255,255,255,.9);
+      --card2: rgba(255,255,255,.75);
+      --text: #0b1220;
+      --muted: rgba(11,18,32,.7);
+      --line: rgba(11,18,32,.12);
+      --shadow: 0 18px 60px rgba(16,24,40,.12);
     }
 
-    header {
-      background-color: #2e3b4e;
-      color: white;
-      padding: 20px 0;
-      text-align: center;
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1000px 600px at 20% -10%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(1000px 600px at 90% 10%, rgba(0,210,255,.20), transparent 55%),
+        radial-gradient(900px 600px at 50% 120%, rgba(46,229,157,.14), transparent 60%),
+        var(--bg);
+      overflow-x:hidden;
     }
 
-    .container {
-      width: 80%;
-      margin: 20px auto;
+    /* Top header */
+    .topbar{
+      position: sticky;
+      top:0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(0,0,0,.28), rgba(0,0,0,0));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    [data-theme="light"] .topbar{
+      background: linear-gradient(to bottom, rgba(255,255,255,.68), rgba(255,255,255,0));
+      border-bottom: 1px solid rgba(11,18,32,.08);
     }
 
-    .search-box {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
+    .wrap{ width:min(1100px, 92vw); margin:0 auto; }
+
+    header{
+      padding: 22px 0 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 16px;
     }
 
-    .search-box input {
-      padding: 10px;
-      width: 50%;
-      border-radius: 5px;
-      border: 1px solid #000000;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 240px;
+    }
+    .logo{
+      width:42px;height:42px;border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 30px rgba(124,92,255,.25);
+      position: relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-30%;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 55%);
+      transform: rotate(20deg);
+    }
+    .brand h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+    .brand p{ margin:2px 0 0; color: var(--muted); font-size: 12px; }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
-    .search-box button {
-      padding: 10px;
-      background-color: #2e3b4e;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-left: 10px;
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: var(--card2);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      color: var(--text);
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .15s ease, background .2s ease;
+    }
+    .pill:hover{ transform: translateY(-1px); background: var(--card); }
+    .pill svg{ width:16px;height:16px; opacity:.9; }
+
+    /* Hero / search panel */
+    .hero{
+      padding: 14px 0 18px;
+    }
+    .panel{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
 
-    .search-box button:hover {
-      background-color: #1a2434;
+    .panel-top{
+      padding: 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-top .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .chip{
+      background: rgba(124,92,255,.14);
+      border: 1px solid rgba(124,92,255,.24);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .chip b{ font-weight:700; }
+    .chip--green{
+      background: rgba(46,229,157,.14);
+      border-color: rgba(46,229,157,.22);
+    }
+    .chip--yellow{
+      background: rgba(255,207,90,.14);
+      border-color: rgba(255,207,90,.24);
     }
 
-    .results {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    .search-row{
+      padding: 16px;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+    }
+    .search{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,.12);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    [data-theme="light"] .search{ background: rgba(255,255,255,.7); }
+    .search input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+    }
+    .search input::placeholder{ color: rgba(234,240,255,.55); }
+    [data-theme="light"] .search input::placeholder{ color: rgba(11,18,32,.45); }
+
+    .kbd{
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      white-space:nowrap;
     }
 
-    .word-card {
-      display: flex;
-      background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: all 0.3s ease-in-out;
+    .btn{
+      border:none;
+      outline:none;
+      cursor:pointer;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      color:white;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 18px 35px rgba(124,92,255,.22);
+      transition: transform .15s ease, filter .2s ease;
+      display:flex; align-items:center; gap:10px;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
+    .btn:active{ transform: translateY(0px); }
+
+    .subrow{
+      padding: 0 16px 16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .subrow-left{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .toggle{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: var(--card2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .toggle input{ transform: translateY(1px); }
+    .hint{
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .word-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Layout */
+    .grid{
+      display:grid;
+      grid-template-columns: 1.5fr .9fr;
+      gap: 16px;
+      padding: 16px;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      header{ flex-direction:column; align-items:flex-start; }
+      .actions{ width:100%; justify-content:flex-start; }
+      .search-row{ grid-template-columns: 1fr; }
+      .btn{ width:100%; justify-content:center; }
     }
 
-    .word-title {
-      background-color: #fff;
-      color: #2e3b4e;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      border-right: 2px solid #ccc;
-      width: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .section{
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 40px rgba(0,0,0,.10);
+      overflow:hidden;
+    }
+    .section h2{
+      margin:0;
+      padding: 14px 14px 10px;
+      font-size: 14px;
+      letter-spacing:.3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .section h2 .mini{
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform:none;
+      border:1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
     }
 
-    .word-details {
-      flex: 1;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
+    /* Results */
+    .results{
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      min-height: 220px;
+    }
+    .empty{
+      padding: 18px;
+      border: 1px dashed var(--line);
+      border-radius: var(--radius2);
+      color: var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+
+    .card{
+      display:grid;
+      grid-template-columns: 190px 1fr;
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    [data-theme="light"] .card{ background: rgba(255,255,255,.75); }
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 18px 50px rgba(0,0,0,.16); }
+
+    .word{
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(0,210,255,.12));
+      border-right: 1px solid var(--line);
+      padding: 16px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap: 10px;
+    }
+    .word .term{
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing:.3px;
+      line-height:1.1;
+    }
+    .word .meta{
+      color: var(--muted);
+      font-size: 12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .badge{
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      font-weight: 700;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .details{
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
       gap: 10px;
     }
 
-    .meaning-box, .example-box {
-      background-color: #f9f9f9;
+    .box{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .box strong{ color: var(--text); }
+    .box p{ margin:6px 0 0; color: var(--muted); line-height: 1.55; }
+
+    .card-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 4px;
+    }
+    .btn2{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor:pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform .15s ease, background .2s ease;
+      user-select:none;
+    }
+    .btn2:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); }
+    .btn2 svg{ width:16px; height:16px; opacity:.9; }
+    .btn2.fav.active{
+      border-color: rgba(46,229,157,.35);
+      background: rgba(46,229,157,.12);
+    }
+
+    /* Side lists */
+    .list{
       padding: 10px;
-      border: 1px solid #000000;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      max-height: 520px;
+      overflow:auto;
+    }
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+    .row .left{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      min-width: 0;
+    }
+    .row .left b{
+      font-size: 14px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .row .left span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .row .count{
+      min-width: 46px;
+      text-align:center;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(124,92,255,.12);
+      border: 1px solid rgba(124,92,255,.22);
+      font-weight: 900;
+    }
+    .row button{
+      border:none; cursor:pointer;
+      background: transparent;
+      color: var(--text);
+      padding: 6px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+    .row button:hover{ background: rgba(255,255,255,.05); }
+
+    /* Footer */
+    footer{
+      padding: 18px 0 26px;
+      color: var(--muted);
+      text-align:center;
+      font-size: 12px;
     }
 
-    .meaning-box strong,
-    .example-box strong {
-      color: #2e3b4e;
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.75);
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+      display:none;
+      gap:10px;
+      align-items:center;
+      z-index: 200;
+      box-shadow: 0 18px 40px rgba(0,0,0,.25);
+      max-width: 92vw;
     }
-
-   footer {
-  background-color: #2e3b4e;
-  color: white;
-  text-align: center;
-  padding: 0.5px;
-  font-size: 12px;
-  line-height: 1.2;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-}
+    [data-theme="light"] .toast{ background: rgba(11,18,32,.85); }
   </style>
 </head>
+
 <body>
+  <div class="topbar">
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>Qaraqalpaq Sózlik — Pro</h1>
+            <p>Sóz izlew · Saqlaw · Trending · Haftalik reyting</p>
+          </div>
+        </div>
 
-<header>
-  <h1>Qaraqalpaq Sózlik</h1>
-  <p>Sóz hám olardıń mánisin úyreniń</p>
-</header>
+        <div class="actions">
+          <div class="pill" id="btnTheme" title="Tema: Dark/Light">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 12.4A8.5 8.5 0 0 1 11.6 3a7 7 0 1 0 9.4 9.4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            Tema
+          </div>
 
-<div class="container">
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Sóz izlew...">
-    <button onclick="searchWord()">Izlew</button>
+          <div class="pill" id="btnExport" title="Saqlanganlar ro‘yxatini yuklab olish">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v10m0 0 4-4m-4 4-4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Export
+          </div>
+
+          <div class="pill" id="btnClearAll" title="Tarix va reytingni tozalash">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2m-1 0v16H9V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tozalash
+          </div>
+        </div>
+      </header>
+    </div>
   </div>
 
-  <div class="results" id="resultsContainer">
-    <!-- Natijeler bu yerda kórsetiledi -->
-  </div>
-</div>
+  <main class="wrap hero">
+    <div class="panel">
+      <div class="panel-top">
+        <div class="stats">
+          <div class="chip"><b id="statWords">0</b> sóz bazası</div>
+          <div class="chip chip--green"><b id="statFav">0</b> saqlang'anlar</div>
+          <div class="chip chip--yellow"><b id="statWeek">0</b> bu hafta izlen'gen</div>
+        </div>
+        <div class="hint">Enter — izlew · Ctrl/⌘+K — tez izlew</div>
+      </div>
 
-<footer>
-  <p>&copy; 2025 Túsindirme sózlik</p>
-</footer>
- <script src="izlew4.js"></script>
+      <div class="search-row">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;opacity:.8">
+            <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="searchInput" type="text" placeholder="Sóz izlew... (mísalı: bilim, kitap, student)" autocomplete="off"/>
+          <span class="kbd">Enter</span>
+        </div>
+        <button class="btn" id="btnSearch">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Izlew
+        </button>
+      </div>
 
+      <div class="subrow">
+        <div class="subrow-left">
+          <label class="toggle" title="Izlewdi tezlashtirish uchun">
+            <input type="checkbox" id="toggleAuto" checked />
+            Avto-izlew (har harfda)
+          </label>
+
+          <label class="toggle" title="So‘z ichidan ham qidiradi">
+            <input type="checkbox" id="toggleContains" checked />
+            Ichidan izlew (contains)
+          </label>
+
+          <label class="toggle" title="Katta-kichik harfni farqlamaydi">
+            <input type="checkbox" id="toggleCase" checked />
+            Case-insensitive
+          </label>
+        </div>
+
+        <div class="hint" id="hintText">Tayyor ✅</div>
+      </div>
+
+      <div class="grid">
+        <!-- Left: Results -->
+        <section class="section">
+          <h2>
+            Natijeler
+            <span class="mini" id="resultCount">0 ta</span>
+          </h2>
+          <div class="results" id="results"></div>
+        </section>
+
+        <!-- Right: Trending + Weekly + Saved + History -->
+        <section class="section">
+          <h2>
+            Trending & Reyting
+            <span class="mini">Top ro‘yxatlar</span>
+          </h2>
+
+          <div class="list">
+            <div class="row" style="background: rgba(124,92,255,.10); border-color: rgba(124,92,255,.22);">
+              <div class="left">
+                <b>🔥 Eng ko‘p izlen'gen (umumiy)</b>
+                <span>Qidiruv sanog‘i bo‘yicha</span>
+              </div>
+              <button id="btnRefreshTrending">Yangilash</button>
+            </div>
+            <div id="trendingList"></div>
+
+            <div class="row" style="background: rgba(255,207,90,.10); border-color: rgba(255,207,90,.22);">
+              <div class="left">
+                <b>🏆 Haftalik reyting</b>
+                <span>Hafta bo‘yicha top so‘zlar</span>
+              </div>
+              <button id="btnResetWeek">Haftani 0 qilish</button>
+            </div>
+            <div id="weeklyList"></div>
+
+            <div class="row" style="background: rgba(46,229,157,.10); border-color: rgba(46,229,157,.22);">
+              <div class="left">
+                <b>💾 Saqlanganlar</b>
+                <span>Favorites (localStorage)</span>
+              </div>
+              <button id="btnOpenSaved">Ko‘rish</button>
+            </div>
+
+            <div class="row">
+              <div class="left">
+                <b>🕘 Qidiruv tarixi</b>
+                <span>Oxirgi 12 ta so‘z</span>
+              </div>
+              <button id="btnClearHistory">Tozalash</button>
+            </div>
+            <div id="historyList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 — Qaraqalpaq Sózlik · LocalStorage bazasında saqlanadı · Offline ham ishlaydı
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /************************************************************
+     * 1) SO‘ZLAR BAZASI
+     * Sizda izlew4.js bo‘lsa:
+     *   - u faylda: window.DICTIONARY = [ {word, meaning, example}, ... ];
+     *   - keyin bu HTML oxirida <script src="izlew4.js"></script> qo‘shasiz.
+     ************************************************************/
+
+    // Demo bazasi (o‘zingiznikiga almashtirasiz)
+    window.DICTIONARY = window.DICTIONARY || [
+      { word: "bilim", meaning: "Oqıw, úyreniw arqalı alınǵan maǵlıwmat.", example: "Bilim — insannıń baylıǵı." },
+      { word: "kitap", meaning: "Oqıw úshin basılǵan yáki elektron mátin.", example: "Men kitap oqıwdı jaqsı kóremin." },
+      { word: "student", meaning: "Universitet yáki kollejde oqıytın adam.", example: "Studentler imtihanǵa tayarlanıwda." },
+      { word: "sálem", meaning: "Amándıq sorasıw, qarsı alıw sózi.", example: "Sálem! Qalay?!" },
+      { word: "mádeniyat", meaning: "Xalıqtıń ruwxıy hám materiallıq baylıqları.", example: "Mádeniyat — ulıw xazına." },
+    ];
+
+    /************************************************************
+     * 2) STORAGE KALITLARI
+     ************************************************************/
+    const LS = {
+      theme: "qsoz_theme",
+      favorites: "qsoz_favorites",
+      history: "qsoz_history",
+      searchesTotal: "qsoz_searches_total",  // { word: count }
+      searchesWeekly: "qsoz_searches_weekly",// { weekKey: { word: count } }
+      weekKey: "qsoz_week_key"
+    };
+
+    /************************************************************
+     * 3) UTIL
+     ************************************************************/
+    const $ = (s) => document.querySelector(s);
+    const escapeHtml = (str="") => str
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+
+    function toast(msg, icon="✅"){
+      const t = $("#toast");
+      t.innerHTML = `<span>${icon}</span><span style="line-height:1.35">${escapeHtml(msg)}</span>`;
+      t.style.display = "inline-flex";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=> t.style.display="none", 2200);
+    }
+
+    function getWeekKey(d = new Date()){
+      // ISO week key: YYYY-W##
+      const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      const dayNum = date.getUTCDay() || 7;
+      date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+      const y = date.getUTCFullYear();
+      return `${y}-W${String(weekNo).padStart(2,"0")}`;
+    }
+
+    function loadJSON(key, fallback){
+      try{
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      }catch{ return fallback; }
+    }
+    function saveJSON(key, val){
+      localStorage.setItem(key, JSON.stringify(val));
+    }
+
+    /************************************************************
+     * 4) STATE
+     ************************************************************/
+    const dict = window.DICTIONARY;
+    const state = {
+      favorites: new Set(loadJSON(LS.favorites, [])),
+      history: loadJSON(LS.history, []), // array of words
+      totalCounts: loadJSON(LS.searchesTotal, {}), // word => count
+      weeklyAll: loadJSON(LS.searchesWeekly, {}),  // weekKey => {word=>count}
+      currentWeek: getWeekKey(),
+      auto: true,
+      contains: true,
+      caseInsensitive: true
+    };
+
+    // ensure weekly bucket exists
+    if(!state.weeklyAll[state.currentWeek]) state.weeklyAll[state.currentWeek] = {};
+
+    /************************************************************
+     * 5) UI RENDER
+     ************************************************************/
+    function updateStats(){
+      $("#statWords").textContent = dict.length;
+      $("#statFav").textContent = state.favorites.size;
+
+      const w = state.weeklyAll[state.currentWeek] || {};
+      const totalThisWeek = Object.values(w).reduce((a,b)=>a+b,0);
+      $("#statWeek").textContent = totalThisWeek;
+    }
+
+    function renderHistory(){
+      const box = $("#historyList");
+      if(!state.history.length){
+        box.innerHTML = `<div class="empty">Tarix bo‘sh. So‘z izlep kóriń 🙂</div>`;
+        return;
+      }
+      box.innerHTML = state.history.slice(0,12).map(w => `
+        <div class="row">
+          <div class="left">
+            <b>${escapeHtml(w)}</b>
+            <span>Tarixdan izlew</span>
+          </div>
+          <button data-go="${escapeHtml(w)}">Izlew</button>
+        </div>
+      `).join("");
+
+      box.querySelectorAll("button[data-go]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const w = btn.getAttribute("data-go");
+          $("#searchInput").value = w;
+          search();
+        });
+      });
+    }
+
+    function topListFromCounts(countsObj, limit=6){
+      const entries = Object.entries(countsObj || {})
+        .sort((a,b)=> (b[1]-a[1]) || a[0].localeCompare(b[0]))
+        .slice(0, limit);
+      return entries;
+    }
+
+    function renderTrending(){
+      const box = $("#trendingList");
+      const top = topListFromCounts(state.totalCounts, 6);
+      if(!top.length){
+        box.innerHTML = `<div class="empty">Házirshe trending joq. Izlewler baslanǵannan keyin kórinedi 🔥</div>`;
+        return;
+      }
+      box.innerHTML = top.map(([w,c])=>`
+        <div class="row">
+          <div class="left">
+            <b>${escapeHtml(w)}</b>
+            <span>Umumiy qidiruv</span>
+          </div>
+          <div class="count">${c}</div>
+          <button data-go="${escapeHtml(w)}">Izlew</button>
+        </div>
+      `).join("");
+
+      box.querySelectorAll("button[data-go]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const w = btn.getAttribute("data-go");
+          $("#searchInput").value = w;
+          search();
+        });
+      });
+    }
+
+    function renderWeekly(){
+      const box = $("#weeklyList");
+      const weekCounts = state.weeklyAll[state.currentWeek] || {};
+      const top = topListFromCounts(weekCounts, 6);
+      if(!top.length){
+        box.innerHTML = `<div class="empty">Bu haftada izlew joq. Birinchi sózdi izlep kóriń 🏆</div>`;
+        return;
+      }
+      box.innerHTML = top.map(([w,c], idx)=>`
+        <div class="row">
+          <div class="left">
+            <b>${idx+1}. ${escapeHtml(w)}</b>
+            <span>Haftalik reyting</span>
+          </div>
+          <div class="count">${c}</div>
+          <button data-go="${escapeHtml(w)}">Izlew</button>
+        </div>
+      `).join("");
+
+      box.querySelectorAll("button[data-go]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const w = btn.getAttribute("data-go");
+          $("#searchInput").value = w;
+          search();
+        });
+      });
+    }
+
+    function renderResults(items){
+      const r = $("#results");
+      $("#resultCount").textContent = `${items.length} ta`;
+
+      if(!items.length){
+        r.innerHTML = `
+          <div class="empty">
+            Natije tabılmadı. ✅
+            <div style="margin-top:10px">
+              Maslahat: so‘zni qisqartirib ko‘riń yoki <b>Ichidan izlew</b>ni yoqıp qo‘yiń.
+            </div>
+          </div>`;
+        return;
+      }
+
+      r.innerHTML = items.map(item=>{
+        const term = item.word || item.term || "";
+        const meaning = item.meaning || item.meanings || item.desc || "";
+        const example = item.example || item.examples || "";
+        const isFav = state.favorites.has(normalizeKey(term));
+
+        return `
+          <div class="card">
+            <div class="word">
+              <div class="term">${escapeHtml(term)}</div>
+              <div class="meta">
+                <span class="badge">Sóz</span>
+                ${isFav ? `<span class="badge" style="border-color:rgba(46,229,157,.35); background:rgba(46,229,157,.12)">Saqlang'an</span>` : ``}
+              </div>
+            </div>
+            <div class="details">
+              <div class="box">
+                <strong>Máni:</strong>
+                <p>${escapeHtml(meaning)}</p>
+              </div>
+              <div class="box">
+                <strong>Mısal:</strong>
+                <p>${escapeHtml(example || "—")}</p>
+              </div>
+
+              <div class="card-actions">
+                <div class="btn2 fav ${isFav ? "active" : ""}" data-fav="${escapeHtml(term)}" title="Saqlaw / Saqlawdan shıǵarıw">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 21s-7-4.5-9.5-8.5C.7 9.4 2.3 6 6.1 6c2 0 3.2 1 3.9 2 .7-1 1.9-2 3.9-2 3.8 0 5.4 3.4 3.6 6.5C19 16.5 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  </svg>
+                  Saqlaw
+                </div>
+
+                <div class="btn2" data-copy="${escapeHtml(term)}">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M9 9h10v10H9V9Z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                  Kopiya
+                </div>
+
+                <div class="btn2" data-savefile="${escapeHtml(term)}">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 3v10m0 0 4-4m-4 4-4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  TXT
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      // actions handlers
+      r.querySelectorAll("[data-fav]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const term = btn.getAttribute("data-fav");
+          toggleFavorite(term);
+          search(false); // re-render
+        });
+      });
+
+      r.querySelectorAll("[data-copy]").forEach(btn=>{
+        btn.addEventListener("click", async ()=>{
+          const term = btn.getAttribute("data-copy");
+          const item = dict.find(x => normalizeKey(x.word) === normalizeKey(term));
+          const text = item
+            ? `${item.word}\nMánisi: ${item.meaning}\nMısal: ${item.example || "-"}`
+            : term;
+          try{
+            await navigator.clipboard.writeText(text);
+            toast("Kopiya qilindi!");
+          }catch{
+            toast("Kopiya qilishda xatolik", "⚠️");
+          }
+        });
+      });
+
+      r.querySelectorAll("[data-savefile]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          const term = btn.getAttribute("data-savefile");
+          const item = dict.find(x => normalizeKey(x.word) === normalizeKey(term));
+          if(!item){ toast("Topilmadi", "⚠️"); return; }
+          const content = `${item.word}\n\nMánisi:\n${item.meaning}\n\nMısal:\n${item.example || "-"}`;
+          downloadText(`${safeFileName(item.word)}.txt`, content);
+          toast("TXT yuklab olindi!");
+        });
+      });
+    }
+
+    function safeFileName(s){
+      return (s || "soz").toString().trim().replace(/[\\\/:*?"<>|]/g, "_");
+    }
+    function downloadText(filename, content){
+      const blob = new Blob([content], {type:"text/plain;charset=utf-8"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function normalizeKey(s){
+      return (s||"").toString().trim().toLowerCase();
+    }
+
+    /************************************************************
+     * 6) SEARCH + COUNTERS
+     ************************************************************/
+    function recordSearch(term){
+      const key = normalizeKey(term);
+      if(!key) return;
+
+      // history (no duplicates, latest first)
+      state.history = [term, ...state.history.filter(x => normalizeKey(x) !== key)].slice(0, 12);
+      saveJSON(LS.history, state.history);
+
+      // total counts
+      state.totalCounts[key] = (state.totalCounts[key] || 0) + 1;
+      saveJSON(LS.searchesTotal, state.totalCounts);
+
+      // weekly counts
+      const current = getWeekKey();
+      state.currentWeek = current;
+      if(!state.weeklyAll[current]) state.weeklyAll[current] = {};
+      state.weeklyAll[current][key] = (state.weeklyAll[current][key] || 0) + 1;
+      saveJSON(LS.searchesWeekly, state.weeklyAll);
+    }
+
+    function matchItems(query){
+      const q = query || "";
+      const contains = state.contains;
+      const ci = state.caseInsensitive;
+
+      const qN = ci ? q.toLowerCase().trim() : q.trim();
+      if(!qN) return [];
+
+      return dict.filter(item=>{
+        const w = (item.word || item.term || "").toString();
+        const wN = ci ? w.toLowerCase() : w;
+
+        if(contains) return wN.includes(qN);
+        return wN === qN;
+      });
+    }
+
+    function search(shouldRecord=true){
+      const q = $("#searchInput").value.trim();
+      if(!q){
+        $("#hintText").textContent = "Sóz kiritiń 🙂";
+        renderResults([]);
+        return;
+      }
+      const items = matchItems(q);
+      renderResults(items);
+
+      $("#hintText").textContent = items.length
+        ? `Tabıldı: ${items.length} ta ✅`
+        : `Tabılmadı ❌`;
+
+      if(shouldRecord){
+        recordSearch(q);
+        renderHistory();
+        renderTrending();
+        renderWeekly();
+        updateStats();
+      }
+    }
+
+    /************************************************************
+     * 7) FAVORITES
+     ************************************************************/
+    function toggleFavorite(term){
+      const key = normalizeKey(term);
+      if(!key) return;
+      if(state.favorites.has(key)){
+        state.favorites.delete(key);
+        toast("Saqlanganlardan óshirildi", "💾");
+      }else{
+        state.favorites.add(key);
+        toast("Saqlandı", "💚");
+      }
+      saveJSON(LS.favorites, [...state.favorites]);
+      updateStats();
+    }
+
+    function openSaved(){
+      const favs = [...state.favorites];
+      if(!favs.length){
+        toast("Saqlanganlar bo‘sh", "ℹ️");
+        return;
+      }
+      // render favorites as search results
+      const items = dict.filter(x => state.favorites.has(normalizeKey(x.word)));
+      $("#searchInput").value = "";
+      renderResults(items);
+      $("#hintText").textContent = "Saqlanganlar kórsetildi 💾";
+      toast("Saqlanganlar ochildi", "💾");
+    }
+
+    /************************************************************
+     * 8) THEME
+     ************************************************************/
+    function setTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem(LS.theme, theme);
+    }
+    function initTheme(){
+      const saved = localStorage.getItem(LS.theme);
+      if(saved === "light" || saved === "dark"){
+        setTheme(saved);
+      }else{
+        setTheme("dark");
+      }
+    }
+
+    /************************************************************
+     * 9) EXPORT
+     ************************************************************/
+    function exportFavorites(){
+      const items = dict.filter(x => state.favorites.has(normalizeKey(x.word)));
+      if(!items.length){
+        toast("Export qilish uchun saqlanganlar yo‘q", "⚠️");
+        return;
+      }
+      const json = JSON.stringify(items, null, 2);
+      downloadText("qaraqalpaq_sozlik_favorites.json", json);
+      toast("Export tayyor ✅");
+    }
+
+    /************************************************************
+     * 10) CLEAR / RESET
+     ************************************************************/
+    function clearHistory(){
+      state.history = [];
+      saveJSON(LS.history, state.history);
+      renderHistory();
+      toast("Tarix tozalandi", "🧹");
+    }
+
+    function resetWeek(){
+      state.weeklyAll[state.currentWeek] = {};
+      saveJSON(LS.searchesWeekly, state.weeklyAll);
+      renderWeekly();
+      updateStats();
+      toast("Haftalik reyting 0 qilindi", "🏆");
+    }
+
+    function clearAll(){
+      if(!confirm("Rostan ham tarix, trending va haftalik reytingni tozalaysizmi?")) return;
+      localStorage.removeItem(LS.history);
+      localStorage.removeItem(LS.searchesTotal);
+      localStorage.removeItem(LS.searchesWeekly);
+      state.history = [];
+      state.totalCounts = {};
+      state.weeklyAll = {};
+      state.weeklyAll[state.currentWeek] = {};
+      renderHistory(); renderTrending(); renderWeekly(); updateStats();
+      toast("Tozalandi", "🧹");
+    }
+
+    /************************************************************
+     * 11) INIT + EVENTS
+     ************************************************************/
+    function init(){
+      initTheme();
+
+      // toggles
+      $("#toggleAuto").addEventListener("change", e => state.auto = e.target.checked);
+      $("#toggleContains").addEventListener("change", e => { state.contains = e.target.checked; search(false); });
+      $("#toggleCase").addEventListener("change", e => { state.caseInsensitive = e.target.checked; search(false); });
+
+      // search
+      $("#btnSearch").addEventListener("click", ()=> search(true));
+      $("#searchInput").addEventListener("keydown", (e)=>{
+        if(e.key === "Enter") search(true);
+      });
+      $("#searchInput").addEventListener("input", ()=>{
+        if(state.auto) search(true);
+      });
+
+      // quick focus Ctrl/⌘+K
+      window.addEventListener("keydown", (e)=>{
+        if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k"){
+          e.preventDefault();
+          $("#searchInput").focus();
+        }
+      });
+
+      // header buttons
+      $("#btnTheme").addEventListener("click", ()=>{
+        const current = document.documentElement.getAttribute("data-theme") || "dark";
+        setTheme(current === "dark" ? "light" : "dark");
+        toast("Tema o‘zgardi");
+      });
+
+      $("#btnExport").addEventListener("click", exportFavorites);
+      $("#btnClearAll").addEventListener("click", clearAll);
+
+      // sidebar buttons
+      $("#btnRefreshTrending").addEventListener("click", ()=>{ renderTrending(); toast("Yangilandi"); });
+      $("#btnResetWeek").addEventListener("click", resetWeek);
+      $("#btnClearHistory").addEventListener("click", clearHistory);
+      $("#btnOpenSaved").addEventListener("click", openSaved);
+
+      // initial render
+      updateStats();
+      renderHistory();
+      renderTrending();
+      renderWeekly();
+      renderResults([]);
+      $("#hintText").textContent = "Tayyor ✅";
+    }
+
+    init();
+  </script>
+
+  <!-- Agar sizda so‘zlar bazasi alohida faylda bo‘lsa, shu yerga qo‘shing:
+       1) izlew4.js ichida: window.DICTIONARY = [...]
+       2) keyin pastdagi scriptni yoqing
+  -->
+  <!-- <script src="izlew4.js"></script> -->
 </body>
 </html>
+
