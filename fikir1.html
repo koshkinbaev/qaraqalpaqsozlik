@@ -1,187 +1,306 @@
 <!DOCTYPE html>
-<html lang="uz">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pikir hám usınıslar</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-</head>
-<body class="bg-gray-50 min-h-screen flex flex-col items-center p-6">
-
-  <h1 class="text-3xl font-bold mb-6">Pikir hám usınıslar</h1>
-
-  <form id="feedbackForm" class="w-full max-w-lg bg-white p-6 rounded shadow space-y-4">
-    <div>
-      <label for="userName" class="block font-semibold mb-1">Atı fámilyası</label>
-      <input id="userName" name="userName" type="text" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-    </div>
-
-    <div>
-      <label for="rating" class="block font-semibold mb-1">Bahalaw (1-5):</label>
-      <select id="rating" name="rating" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Bahalań</option>
-        <option value="1">1 ⭐</option>
-        <option value="2">2 ⭐⭐</option>
-        <option value="3">3 ⭐⭐⭐</option>
-        <option value="4">4 ⭐⭐⭐⭐</option>
-        <option value="5">5 ⭐⭐⭐⭐⭐</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="category" class="block font-semibold mb-1">Kategoriya:</label>
-      <select id="category" name="category" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        <option value="">Kategoriya tanlań</option>
-        <option value="Sayt dizayni">Sayt dizayni</option>
-        <option value="Foydalanuvchi tajribasi">Paydalanıwshı tájiriybesi</option>
-        <option value="Texnik muammolar">Texnik mashqalalar</option>
-        <option value="Boshqa">Basqa</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="comment" class="block font-semibold mb-1">Pikir:</label>
-      <textarea id="comment" name="comment" rows="4" required class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-    </div>
-
-    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
-      Pikirdi jiberiw
-    </button>
-  </form>
-
-  <section class="feedback-list w-full max-w-lg mt-8"></section>
-  <ul id="feedbackList" class="w-full max-w-lg space-y-4 mt-4"></ul>
-
-<script>
-  // Firebase konfiguratsiyasi (O'zingiznikini qo‘ying!)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAm89VWmzax9IZl42cEd1B53_xoUoy9K_M",
-  authDomain: "pikirreytingapp.firebaseapp.com",
-  databaseURL: "https://pikirreytingapp-default-rtdb.firebaseio.com",
-  projectId: "pikirreytingapp",
-  storageBucket: "pikirreytingapp.firebasestorage.app",
-  messagingSenderId: "809064080199",
-  appId: "1:809064080199:web:0aff9c292187166f0c6262",
-  measurementId: "G-PX1R2MT5KZ"
-};
-
-  // Firebase-ni ishga tushirish
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  const form = document.getElementById('feedbackForm');
-  const list = document.getElementById('feedbackList');
-
-  // Filtr paneli
-  document.querySelector('.feedback-list').innerHTML = `
-    <div class="mb-4 flex flex-wrap gap-4 items-center justify-between bg-white p-4 rounded shadow">
-      <div>
-        <label for="filterCategory" class="mr-2 font-semibold">Kategoriya boyınsha:</label>
-        <select id="filterCategory" class="p-2 border rounded">
-          <option value="all">Hámmesi</option>
-          <option value="Sayt dizayni">Sayt dizayni</option>
-          <option value="Foydalanuvchi tajribasi">Paydalanıwshı tájiriybesi</option>
-          <option value="Texnik muammolar">Texnik mashqalalar</option>
-          <option value="Boshqa">Basqa</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="filterSort" class="mr-2 font-semibold">Waqıt boyınsha:</label>
-        <select id="filterSort" class="p-2 border rounded">
-          <option value="newest">Jańa pikirler birinshi</option>
-          <option value="oldest">Eski pikirler birinshi</option>
-        </select>
-      </div>
-    </div>
-  `;
-
-  const filterCategorySelect = document.getElementById('filterCategory');
-  const filterSortSelect = document.getElementById('filterSort');
-  let allFeedbacks = [];
-
-  // Fikrni DOMga qo‘shish
-  function renderFeedback(feedback) {
-    const li = document.createElement('li');
-    li.className = 'bg-white p-4 rounded shadow border border-gray-200';
-    li.innerHTML = `
-      <div class="flex justify-between items-center mb-2">
-        <div>
-          <strong class="text-indigo-600">${feedback.name}</strong> 
-          <span class="text-yellow-500 font-bold ml-2">${'⭐'.repeat(feedback.rating)}</span>
-        </div>
-        <div class="text-sm text-gray-500 italic">${new Date(feedback.date).toLocaleString()}</div>
-      </div>
-      <div class="mb-2 text-gray-700">${feedback.comment}</div>
-      <div class="text-sm font-semibold text-indigo-700">Kategoriya: ${feedback.category}</div>
-    `;
-    list.appendChild(li);
-  }
-
-  // Fikrlarni yuklash
-  function refreshFeedbacks() {
-    list.innerHTML = '';
-    let filtered = [...allFeedbacks];
-
-    const selectedCategory = filterCategorySelect.value;
-    const selectedSort = filterSortSelect.value;
-
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(f => f.category === selectedCategory);
-    }
-
-    filtered.sort((a, b) => {
-      if (selectedSort === 'newest') return new Date(b.date) - new Date(a.date);
-      else return new Date(a.date) - new Date(b.date);
-    });
-
-    if (filtered.length === 0) {
-      list.innerHTML = '<p class="text-center text-gray-500 mt-4">Hech qanday fikr topilmadi.</p>';
-    } else {
-      filtered.forEach(renderFeedback);
-    }
-  }
-
-  // Real vaqtda yangi fikrlarni qo‘shish
-  firebase.database().ref('feedbacks').on('child_added', snapshot => {
-    const feedback = snapshot.val();
-    allFeedbacks.push(feedback);
-    refreshFeedbacks();
-  });
-
-  // Formni yuborish
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const name = document.getElementById('userName').value.trim();
-    const rating = document.getElementById('rating').value;
-    const comment = document.getElementById('comment').value.trim();
-    const category = document.getElementById('category').value;
-
-    if (!name || !rating || !comment || !category) {
-      alert('Iltimos, barcha maydonlarni to‘ldiring!');
-      return;
-    }
-
-    const feedback = {
-      name,
-      rating,
-      comment,
-      category,
-      date: new Date().toISOString(),
-    };
-
-    db.ref('feedbacks').push(feedback);
-    form.reset();
-  });
-
-  // Filtrlash
-  filterCategorySelect.addEventListener('change', refreshFeedbacks);
-  filterSortSelect.addEventListener('change', refreshFeedbacks);
-</script>
-
-</body>
-</html>
+     2	<html lang="uz">
+     3	<head>
+     4	  <meta charset="UTF-8" />
+     5	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+     6	  <title>Pikir hám usınıslar</title>
+     7	  <script src="https://cdn.tailwindcss.com"></script>
+     8	
+     9	  <!-- Firebase SDK -->
+    10	  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    11	  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    12	</head>
+    13	<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-sky-50 text-slate-800">
+    14	  <main class="px-6 py-10 md:py-14">
+    15	    <section class="mx-auto max-w-5xl">
+    16	      <div class="flex flex-col gap-8">
+    17	        <header class="rounded-3xl bg-white/80 p-8 shadow-lg shadow-indigo-100 ring-1 ring-indigo-100 backdrop-blur">
+    18	          <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    19	            <div class="space-y-3">
+    20	              <p class="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-700">
+    21	                ✨ Pikir hám usınıslar platforması
+    22	              </p>
+    23	              <h1 class="text-3xl font-bold text-slate-900 md:text-4xl">
+    24	                Saytımızdı jaqsılaw ushın pikirińizdi qaldırıń
+    25	              </h1>
+    26	              <p class="text-base text-slate-600 md:text-lg">
+    27	                Hár bir jiberilgen pikir barlıq paydalanıwshılarǵa kórinedi. Qaǵıydalı bahalaw, kategoriya hám izohlar
+    28	                bizge jaqsılawǵa járdem beredi.
+    29	              </p>
+    30	            </div>
+    31	            <div class="rounded-2xl border border-indigo-100 bg-white p-4 shadow-sm">
+    32	              <p class="text-sm font-semibold text-slate-700">Telegram bot orqali ham izoh jiberiń</p>
+    33	              <p class="text-sm text-slate-500">@atabekkoshkinbaev_bot</p>
+    34	              <a
+    35	                href="https://t.me/atabekkoshkinbaev_bot"
+    36	                target="_blank"
+    37	                rel="noopener"
+    38	                class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
+    39	              >
+    40	                Botqa ótıw →
+    41	              </a>
+    42	            </div>
+    43	          </div>
+    44	        </header>
+    45	
+    46	        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+    47	          <form id="feedbackForm" class="rounded-3xl bg-white p-8 shadow-lg shadow-indigo-100 ring-1 ring-indigo-100">
+    48	            <div class="flex items-center justify-between">
+    49	              <h2 class="text-xl font-semibold text-slate-900">Pikir qaldırıw forması</h2>
+    50	              <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Live</span>
+    51	            </div>
+    52	
+    53	            <div class="mt-6 grid gap-5">
+    54	              <div>
+    55	                <label for="userName" class="block text-sm font-semibold text-slate-700">Atı fámilyası</label>
+    56	                <input
+    57	                  id="userName"
+    58	                  name="userName"
+    59	                  type="text"
+    60	                  required
+    61	                  placeholder="Atıńızdı jazıń"
+    62	                  class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+    63	                />
+    64	              </div>
+    65	
+    66	              <div>
+    67	                <label class="block text-sm font-semibold text-slate-700">Bahalaw (1-5)</label>
+    68	                <div class="mt-2 grid grid-cols-5 gap-2" id="ratingButtons">
+    69	                  <button type="button" data-value="1" class="rating-btn">1⭐</button>
+    70	                  <button type="button" data-value="2" class="rating-btn">2⭐</button>
+    71	                  <button type="button" data-value="3" class="rating-btn">3⭐</button>
+    72	                  <button type="button" data-value="4" class="rating-btn">4⭐</button>
+    73	                  <button type="button" data-value="5" class="rating-btn">5⭐</button>
+    74	                </div>
+    75	                <input id="rating" name="rating" type="hidden" required />
+    76	              </div>
+    77	
+    78	              <div>
+    79	                <label for="category" class="block text-sm font-semibold text-slate-700">Kategoriya</label>
+    80	                <select
+    81	                  id="category"
+    82	                  name="category"
+    83	                  required
+    84	                  class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+    85	                >
+    86	                  <option value="">Kategoriya tanlań</option>
+    87	                  <option value="Sayt dizayni">Sayt dizayni</option>
+    88	                  <option value="Foydalanuvchi tajribasi">Paydalanıwshı tájiriybesi</option>
+    89	                  <option value="Texnik muammolar">Texnik mashqalalar</option>
+    90	                  <option value="Boshqa">Basqa</option>
+    91	                </select>
+    92	              </div>
+    93	
+    94	              <div>
+    95	                <label for="comment" class="block text-sm font-semibold text-slate-700">Pikir</label>
+    96	                <textarea
+    97	                  id="comment"
+    98	                  name="comment"
+    99	                  rows="4"
+   100	                  required
+   101	                  placeholder="Pikir hám usınısıńızdı jazıń..."
+   102	                  class="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+   103	                ></textarea>
+   104	              </div>
+   105	
+   106	              <button
+   107	                type="submit"
+   108	                class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700"
+   109	              >
+   110	                Pikirdi jiberiw
+   111	              </button>
+   112	              <p id="formMessage" class="text-sm text-emerald-600"></p>
+   113	            </div>
+   114	          </form>
+   115	
+   116	          <aside class="flex flex-col gap-6">
+   117	            <div class="rounded-3xl bg-white p-6 shadow-lg shadow-indigo-100 ring-1 ring-indigo-100">
+   118	              <h3 class="text-lg font-semibold text-slate-900">Izohlar paneli</h3>
+   119	              <p class="mt-2 text-sm text-slate-600">
+   120	                Barlıq jiberilgen izohlar real waqt reǵiminde kórinedi. Filtr hám sortlaw arqalı tez tabıń.
+   121	              </p>
+   122	              <div class="mt-4 rounded-2xl bg-indigo-50 p-4 text-sm text-indigo-700">
+   123	                <p class="font-semibold">Barlıq izohlar sanı</p>
+   124	                <p class="text-2xl font-bold" id="feedbackCount">0</p>
+   125	              </div>
+   126	            </div>
+   127	            <div class="rounded-3xl border border-indigo-100 bg-white p-6 shadow-lg shadow-indigo-100">
+   128	              <h3 class="text-lg font-semibold text-slate-900">Telegram bot qolǵa alasız</h3>
+   129	              <p class="mt-2 text-sm text-slate-600">
+   130	                Izohlarıńızdı bot arqalı jiberiw ushın Telegram-da botpen xabar almasıń.
+   131	              </p>
+   132	              <a
+   133	                href="https://t.me/atabekkoshkinbaev_bot"
+   134	                target="_blank"
+   135	                rel="noopener"
+   136	                class="mt-4 inline-flex items-center justify-center rounded-xl border border-indigo-200 px-4 py-2 text-sm font-semibold text-indigo-700 transition hover:border-indigo-300 hover:bg-indigo-50"
+   137	              >
+   138	                Botqa jiberiw
+   139	              </a>
+   140	            </div>
+   141	          </aside>
+   142	        </div>
+   143	
+   144	        <section class="rounded-3xl bg-white p-8 shadow-lg shadow-indigo-100 ring-1 ring-indigo-100">
+   145	          <div class="flex flex-wrap items-center justify-between gap-4">
+   146	            <div>
+   147	              <h2 class="text-xl font-semibold text-slate-900">Pikirler tizimi</h2>
+   148	              <p class="text-sm text-slate-600">Filtrler arqalı izohlarıńızdı tez tabıń.</p>
+   149	            </div>
+   150	            <div class="flex flex-wrap gap-3">
+   151	              <div>
+   152	                <label for="filterCategory" class="mb-1 block text-xs font-semibold text-slate-500">Kategoriya</label>
+   153	                <select id="filterCategory" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+   154	                  <option value="all">Hámmesi</option>
+   155	                  <option value="Sayt dizayni">Sayt dizayni</option>
+   156	                  <option value="Foydalanuvchi tajribasi">Paydalanıwshı tájiriybesi</option>
+   157	                  <option value="Texnik muammolar">Texnik mashqalalar</option>
+   158	                  <option value="Boshqa">Basqa</option>
+   159	                </select>
+   160	              </div>
+   161	              <div>
+   162	                <label for="filterSort" class="mb-1 block text-xs font-semibold text-slate-500">Waqıt boyınsha</label>
+   163	                <select id="filterSort" class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm">
+   164	                  <option value="newest">Jańa pikirler birinshi</option>
+   165	                  <option value="oldest">Eski pikirler birinshi</option>
+   166	                </select>
+   167	              </div>
+   168	            </div>
+   169	          </div>
+   170	          <ul id="feedbackList" class="mt-6 grid gap-4"></ul>
+   171	        </section>
+   172	      </div>
+   173	    </section>
+   174	  </main>
+   175	
+   176	<script>
+   177	  const firebaseConfig = {
+   178	    apiKey: "AIzaSyAm89VWmzax9IZl42cEd1B53_xoUoy9K_M",
+   179	    authDomain: "pikirreytingapp.firebaseapp.com",
+   180	    databaseURL: "https://pikirreytingapp-default-rtdb.firebaseio.com",
+   181	    projectId: "pikirreytingapp",
+   182	    storageBucket: "pikirreytingapp.firebasestorage.app",
+   183	    messagingSenderId: "809064080199",
+   184	    appId: "1:809064080199:web:0aff9c292187166f0c6262",
+   185	    measurementId: "G-PX1R2MT5KZ"
+   186	  };
+   187	
+   188	  firebase.initializeApp(firebaseConfig);
+   189	  const db = firebase.database();
+   190	
+   191	  const form = document.getElementById('feedbackForm');
+   192	  const list = document.getElementById('feedbackList');
+   193	  const message = document.getElementById('formMessage');
+   194	  const filterCategorySelect = document.getElementById('filterCategory');
+   195	  const filterSortSelect = document.getElementById('filterSort');
+   196	  const feedbackCount = document.getElementById('feedbackCount');
+   197	  const ratingButtons = document.querySelectorAll('.rating-btn');
+   198	  const ratingInput = document.getElementById('rating');
+   199	
+   200	  let allFeedbacks = [];
+   201	
+   202	  ratingButtons.forEach(button => {
+   203	    button.className =
+   204	      'rating-btn rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:border-indigo-300 hover:bg-indigo-50';
+   205	    button.addEventListener('click', () => {
+   206	      ratingButtons.forEach(btn => btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600'));
+   207	      button.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+   208	      ratingInput.value = button.dataset.value;
+   209	    });
+   210	  });
+   211	
+   212	  function renderFeedback(feedback) {
+   213	    const li = document.createElement('li');
+   214	    li.className = 'rounded-2xl border border-slate-100 bg-slate-50 p-5 shadow-sm';
+   215	    li.innerHTML = `
+   216	      <div class="flex flex-wrap items-start justify-between gap-3">
+   217	        <div>
+   218	          <p class="text-sm font-semibold text-indigo-600">${feedback.name}</p>
+   219	          <p class="text-sm text-slate-600">${feedback.category}</p>
+   220	        </div>
+   221	        <div class="text-right">
+   222	          <p class="text-sm font-semibold text-amber-500">${'⭐'.repeat(feedback.rating)}</p>
+   223	          <p class="text-xs text-slate-400">${new Date(feedback.date).toLocaleString()}</p>
+   224	        </div>
+   225	      </div>
+   226	      <p class="mt-3 text-sm text-slate-700">${feedback.comment}</p>
+   227	    `;
+   228	    list.appendChild(li);
+   229	  }
+   230	
+   231	  function refreshFeedbacks() {
+   232	    list.innerHTML = '';
+   233	    let filtered = [...allFeedbacks];
+   234	
+   235	    const selectedCategory = filterCategorySelect.value;
+   236	    const selectedSort = filterSortSelect.value;
+   237	
+   238	    if (selectedCategory !== 'all') {
+   239	      filtered = filtered.filter(f => f.category === selectedCategory);
+   240	    }
+   241	
+   242	    filtered.sort((a, b) => {
+   243	      if (selectedSort === 'newest') return new Date(b.date) - new Date(a.date);
+   244	      return new Date(a.date) - new Date(b.date);
+   245	    });
+   246	
+   247	    feedbackCount.textContent = filtered.length;
+   248	
+   249	    if (filtered.length === 0) {
+   250	      list.innerHTML = '<li class="text-center text-sm text-slate-500">Hech qanday fikr tabılmadı.</li>';
+   251	    } else {
+   252	      filtered.forEach(renderFeedback);
+   253	    }
+   254	  }
+   255	
+   256	  firebase.database().ref('feedbacks').once('value', snapshot => {
+   257	    const data = snapshot.val();
+   258	    if (data) {
+   259	      allFeedbacks = Object.values(data);
+   260	      refreshFeedbacks();
+   261	    }
+   262	  });
+   263	
+   264	  firebase.database().ref('feedbacks').on('child_added', snapshot => {
+   265	    const feedback = snapshot.val();
+   266	    if (!allFeedbacks.find(item => item.date === feedback.date && item.name === feedback.name)) {
+   267	      allFeedbacks.push(feedback);
+   268	      refreshFeedbacks();
+   269	    }
+   270	  });
+   271	
+   272	  form.addEventListener('submit', e => {
+   273	    e.preventDefault();
+   274	    message.textContent = '';
+   275	
+   276	    const name = document.getElementById('userName').value.trim();
+   277	    const rating = ratingInput.value;
+   278	    const comment = document.getElementById('comment').value.trim();
+   279	    const category = document.getElementById('category').value;
+   280	
+   281	    if (!name || !rating || !comment || !category) {
+   282	      alert('Iltimos, barcha maydonlarni to‘ldiring!');
+   283	      return;
+   284	    }
+   285	
+   286	    const feedback = {
+   287	      name,
+   288	      rating,
+   289	      comment,
+   290	      category,
+   291	      date: new Date().toISOString(),
+   292	    };
+   293	
+   294	    db.ref('feedbacks').push(feedback).then(() => {
+   295	      message.textContent = 'Rahmet! Pikiriniz jiberildi.';
+   296	      form.reset();
+   297	      ratingButtons.forEach(btn => btn.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600'));
+   298	      ratingInput.value = '';
+   299	    });
+   300	  });
+   301	
+   302	  filterCategorySelect.addEventListener('change', refreshFeedbacks);
+   303	  filterSortSelect.addEventListener('change', refreshFeedbacks);
+   304	</script>
+   305	</body>
+   306	</html>
