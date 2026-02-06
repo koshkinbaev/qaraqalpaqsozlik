@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Qaraqalpaq_sózlik - Interaktiv</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,11 +17,38 @@
 
   <style>
     body { font-family: 'Roboto', sans-serif; }
-    * { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    * { transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
+
+    /* Mobil uchun qulay “tap” */
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    /* Safe-area (iPhone notch) */
+    .safe-pad { padding-bottom: env(safe-area-inset-bottom); }
+
+    /* Gradient tekst (brend) */
+    .brand-grad{
+      background: linear-gradient(90deg, rgba(37,99,235,1), rgba(14,165,233,1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
   </style>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: "0 12px 40px rgba(0,0,0,.12)"
+          }
+        }
+      }
+    }
+  </script>
 </head>
 
-<body class="bg-slate-50 text-slate-800">
+<body class="bg-slate-50 text-slate-800 min-h-screen">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -50,14 +77,13 @@
         navTeam: "Jamoa",
         quickTitle: "Bo‘limlar",
         cardDictTitle: "📕 So‘zliklar",
-        cardDictDesc: "Bu bo‘limda so‘zlarning to‘liq izohi, misollar bilan qo‘llanishi keltiriladi. O‘quvchi, talaba va tilshunoslar uchun foydali.",
+        cardDictDesc: "So‘zlarning izohi, misollar va qo‘llanishi. O‘quvchi, talaba va tilshunoslar uchun foydali.",
         cardAudioTitle: "🔊 Audio",
         cardAudioDesc: "So‘zlarning talaffuzini tinglang, o‘rganing va amalda qo‘llang.",
         cardOpen: "Kirish",
         socialTitle: "Biz bilan bog‘laning",
         aboutTitle: "📌 Sayt haqida",
-        aboutText:
-          "“Qaraqalpaq_sózligi” — qaraqalpoq tilining so‘z boyligini jamlagan zamonaviy izohli platforma. Bu yerda so‘z ma’nosi, qo‘llanilishi va hayotiy misollar bilan tanishasiz. Maqsad — tilni sevish, o‘rganish va asrash.",
+        aboutText: "“Qaraqalpaq_sózligi” — qaraqalpoq tilining so‘z boyligini jamlagan zamonaviy izohli platforma. Maqsad — tilni sevish, o‘rganish va asrash.",
         rememberTitle: "📖 Esda saqlang!",
         q1: "“Niyatingiz chin bo‘lsa, maqsadingizga yetasiz!”",
         q2: "“Harakat albatta natijasini beradi.”",
@@ -73,6 +99,8 @@
         themeNight: "Tungi",
         searchPlaceholder: "So‘z qidiring (demo)...",
         toastSaved: "Sozlamalar saqlandi ✅",
+        toastOnline: "Internet qaytdi ✅",
+        toastOffline: "Internet yo‘q (offline) ⚠️",
         aiBtn: "AI Yordamchi",
         aiTitle: "Gemini AI — Savol-javob",
         aiHint: "Savolingizni yozing. AI avtomatik javob beradi.",
@@ -80,7 +108,10 @@
         aiSend: "Yuborish",
         aiClear: "Chatni tozalash",
         aiThinking: "O‘ylayapman...",
-        aiErr: "Xatolik. Server ishlayaptimi? (server.js 3000-port)"
+        aiErr: "Xatolik. Server ishlayaptimi? (server.js 3000-port)",
+        goTop: "Yuqoriga",
+        sections: "Bo‘limlar",
+        openSearch: "Qidiruvga o‘tish",
       },
       kaa: {
         brand: "Qaraqalpaq Sózlik",
@@ -92,14 +123,13 @@
         navTeam: "Komanda",
         quickTitle: "Bólimler",
         cardDictTitle: "📕 Sózlikler",
-        cardDictDesc: "Bul bólimde hárbir sózdiń tolıq túsindirmesi, mısallar menen qollanılıwı beriledi. Oqıwshılar, studentler hám tilshiler ushın paydalı.",
+        cardDictDesc: "Hárbir sózdiń túsindirmesi hám mısallar. Oqıwshılar hám studentler ushın paydalı.",
         cardAudioTitle: "🔊 Audio",
-        cardAudioDesc: "Sózlerdiń talaffuzın tıńlań, úyreniń hám ámelde qollanıń.",
+        cardAudioDesc: "Talaffuzdı tıńlań, úyreniń hám qollanıń.",
         cardOpen: "Kiriw",
         socialTitle: "Biz benen baylanısıń",
         aboutTitle: "📌 Sayt haqqında",
-        aboutText:
-          "“Qaraqalpaq_sózligi” — qaraqalpaq tiliniń sóz baylıǵın jámlegen zamanagóy túsindirme platforma. Bul jerde sóz mánisi, qollanılıwı hám turmıslıq mısallar menen tanısasız. Maqsat — tilimizdi qádirlew, úyreniw hám saqlaw.",
+        aboutText: "“Qaraqalpaq_sózligi” — sóz baylıǵın jámlegen platforma. Maqsat — tilimizdi qádirlew hám saqlaw.",
         rememberTitle: "📖 Este saqlań!",
         q1: "“Niyetiń shın bolsa maqsetińe jeteseń!”",
         q2: "“Háreket álbette nátiyjesin beredi.”",
@@ -115,6 +145,8 @@
         themeNight: "Túngi",
         searchPlaceholder: "Sóz izlew (demo)...",
         toastSaved: "Sazlawlar saqlandı ✅",
+        toastOnline: "Internet qayttı ✅",
+        toastOffline: "Internet joq (offline) ⚠️",
         aiBtn: "AI Járdemshi",
         aiTitle: "Gemini AI — Soraw-juwap",
         aiHint: "Sorawıńızdı jazıń. AI avtomatik juwap beredi.",
@@ -122,7 +154,10 @@
         aiSend: "Jiberiw",
         aiClear: "Chattı tazalaw",
         aiThinking: "Oylap atırman...",
-        aiErr: "Qátelik. Server islep turıptı ma? (server.js 3000-port)"
+        aiErr: "Qátelik. Server islep turıptı ma? (server.js 3000-port)",
+        goTop: "Joqarıǵa",
+        sections: "Bólimler",
+        openSearch: "Izlewge ótiw",
       },
       ru: {
         brand: "Qaraqalpaq Словарь",
@@ -134,14 +169,13 @@
         navTeam: "Команда",
         quickTitle: "Разделы",
         cardDictTitle: "📕 Словарь",
-        cardDictDesc: "В этом разделе вы найдёте подробные объяснения слов и примеры употребления. Полезно для студентов и преподавателей.",
+        cardDictDesc: "Подробные объяснения слов и примеры употребления. Полезно для студентов и преподавателей.",
         cardAudioTitle: "🔊 Аудио",
         cardAudioDesc: "Слушайте произношение слов, учите и применяйте на практике.",
         cardOpen: "Открыть",
         socialTitle: "Связаться с нами",
         aboutTitle: "📌 О сайте",
-        aboutText:
-          "“Qaraqalpaq_sózligi” — современная платформа, собирающая богатство каракалпакского языка. Здесь вы изучите значение слов, употребление и примеры. Цель — любить, изучать и сохранять язык.",
+        aboutText: "“Qaraqalpaq_sózligi” — современная платформа, собирающая богатство каракалпакского языка. Цель — любить, изучать и сохранять язык.",
         rememberTitle: "📖 Запомните!",
         q1: "«Если намерение искреннее — достигнешь цели!»",
         q2: "«Действие обязательно даст результат.»",
@@ -157,6 +191,8 @@
         themeNight: "Ночь",
         searchPlaceholder: "Поиск слова (демо)...",
         toastSaved: "Настройки сохранены ✅",
+        toastOnline: "Интернет восстановлен ✅",
+        toastOffline: "Нет интернета (offline) ⚠️",
         aiBtn: "AI Помощник",
         aiTitle: "Gemini AI — Вопросы и ответы",
         aiHint: "Напишите вопрос. AI автоматически ответит.",
@@ -164,7 +200,10 @@
         aiSend: "Отправить",
         aiClear: "Очистить чат",
         aiThinking: "Думаю...",
-        aiErr: "Ошибка. Сервер запущен? (server.js порт 3000)"
+        aiErr: "Ошибка. Сервер запущен? (server.js порт 3000)",
+        goTop: "Наверх",
+        sections: "Разделы",
+        openSearch: "Открыть поиск",
       },
     };
 
@@ -176,6 +215,7 @@
       else root.classList.remove("dark");
       document.body.className = cx(
         "min-h-screen",
+        "antialiased",
         theme === "dark" ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-800"
       );
     }
@@ -183,15 +223,35 @@
     function Toast({ show, text }) {
       return (
         <div className={cx(
-          "fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999]",
-          "px-4 py-2 rounded-xl shadow-lg backdrop-blur",
-          "border text-sm",
+          "fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] safe-pad",
+          "px-4 py-2 rounded-2xl shadow-soft backdrop-blur",
+          "border text-sm font-semibold",
           show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none",
-          "bg-white/80 border-slate-200 text-slate-800",
-          "dark:bg-slate-900/70 dark:border-slate-700 dark:text-slate-100"
+          "bg-white/90 border-slate-200 text-slate-900",
+          "dark:bg-slate-900/80 dark:border-slate-700 dark:text-slate-100"
         )}>
           {text}
         </div>
+      );
+    }
+
+    function BackToTop({ show, onClick, t }) {
+      return (
+        <button
+          onClick={onClick}
+          className={cx(
+            "fixed right-4 bottom-20 md:bottom-6 z-[9997] safe-pad",
+            "rounded-2xl px-4 py-3 font-extrabold shadow-soft border",
+            "bg-white/90 dark:bg-slate-900/80 backdrop-blur",
+            "border-slate-200 dark:border-slate-700",
+            "text-slate-900 dark:text-slate-100",
+            "hover:shadow-lg active:scale-[0.99]",
+            show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"
+          )}
+          type="button"
+        >
+          <i className="fa-solid fa-arrow-up mr-2"></i>{t.goTop}
+        </button>
       );
     }
 
@@ -205,16 +265,13 @@
         try {
           const raw = localStorage.getItem(STORAGE_KEYS.chat);
           const parsed = raw ? JSON.parse(raw) : {};
-          return parsed?.[lang] || [
-            { role: "ai", text: t.aiHint }
-          ];
+          return parsed?.[lang] || [{ role: "ai", text: t.aiHint }];
         } catch {
           return [{ role: "ai", text: t.aiHint }];
         }
       });
 
       useEffect(() => {
-        // saqlash
         const raw = localStorage.getItem(STORAGE_KEYS.chat);
         const parsed = raw ? JSON.parse(raw) : {};
         parsed[lang] = messages;
@@ -222,10 +279,7 @@
       }, [messages, lang]);
 
       useEffect(() => {
-        // scroll pastga
-        if (listRef.current) {
-          listRef.current.scrollTop = listRef.current.scrollHeight;
-        }
+        if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
       }, [messages, loading]);
 
       async function send() {
@@ -234,8 +288,7 @@
 
         setErr("");
         setInput("");
-        const next = [...messages, { role: "user", text }];
-        setMessages(next);
+        setMessages(prev => [...prev, { role: "user", text }]);
         setLoading(true);
 
         try {
@@ -245,14 +298,12 @@
             body: JSON.stringify({
               message: text,
               lang,
-              // kontekst: sayt haqida qisqacha
               context: "Bu sayt Qaraqalpaq_sózlik: so'zlar izohi, misollar va audio talaffuz."
             })
           });
 
           const data = await r.json();
           if (!r.ok) throw new Error(data?.error || "Request failed");
-
           setMessages(prev => [...prev, { role: "ai", text: data.text }]);
         } catch (e) {
           setErr(t.aiErr);
@@ -269,18 +320,18 @@
       }
 
       function clearChat() {
-        const base = [{ role: "ai", text: t.aiHint }];
-        setMessages(base);
+        setMessages([{ role: "ai", text: t.aiHint }]);
       }
 
       if (!open) return null;
 
       return (
         <div className="fixed inset-0 z-[9998]">
-          <div className="absolute inset-0 bg-black/50" onClick={onClose}></div>
-          <div className="absolute inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center p-3">
+          <div className="absolute inset-0 bg-black/55" onClick={onClose}></div>
+
+          <div className="absolute inset-x-0 bottom-0 md:inset-0 md:flex md:items-center md:justify-center p-3 safe-pad">
             <div className="w-full md:max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex items-center justify-between px-4 md:px-5 py-4 border-b border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
                     <i className="fa-solid fa-wand-magic-sparkles text-blue-700 dark:text-blue-300"></i>
@@ -293,7 +344,7 @@
                 <div className="flex items-center gap-2">
                   <button
                     onClick={clearChat}
-                    className="px-3 py-2 rounded-xl text-sm font-bold border border-slate-200 dark:border-slate-800 hover:shadow"
+                    className="px-3 py-2 rounded-xl text-sm font-extrabold border border-slate-200 dark:border-slate-800 hover:shadow"
                     type="button"
                   >
                     <i className="fa-solid fa-broom mr-2"></i>{t.aiClear}
@@ -309,14 +360,14 @@
                 </div>
               </div>
 
-              <div ref={listRef} className="h-[55vh] md:h-[420px] overflow-auto px-5 py-4 space-y-3">
+              <div ref={listRef} className="h-[55vh] md:h-[420px] overflow-auto px-4 md:px-5 py-4 space-y-3">
                 {messages.map((m, idx) => (
                   <div key={idx} className={cx("flex", m.role === "user" ? "justify-end" : "justify-start")}>
                     <div className={cx(
-                      "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
+                      "max-w-[88%] md:max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
                       m.role === "user"
                         ? "bg-blue-600 text-white"
-                        : "bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800"
+                        : "bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800"
                     )}>
                       {m.text}
                     </div>
@@ -338,7 +389,7 @@
                 )}
               </div>
 
-              <div className="px-5 py-4 border-t border-slate-200 dark:border-slate-800">
+              <div className="px-4 md:px-5 py-4 border-t border-slate-200 dark:border-slate-800">
                 <div className="flex gap-2">
                   <textarea
                     className="w-full resize-none h-12 md:h-14 rounded-2xl px-4 py-3 border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 outline-none"
@@ -371,24 +422,71 @@
     }
 
     function App() {
-      const [theme, setTheme] = useState(() => localStorage.getItem("qs_theme") || "light");
-      const [lang, setLang] = useState(() => localStorage.getItem("qs_lang") || "kaa");
+      const [theme, setTheme] = useState(() => localStorage.getItem(STORAGE_KEYS.theme) || "light");
+      const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEYS.lang) || "kaa");
       const [menuOpen, setMenuOpen] = useState(false);
-      const [toast, setToast] = useState(false);
+      const [toast, setToast] = useState({ show:false, text:"" });
       const [chatOpen, setChatOpen] = useState(false);
+      const [showTop, setShowTop] = useState(false);
+
+      const [query, setQuery] = useState("");
+      const [suggestOpen, setSuggestOpen] = useState(false);
 
       const t = useMemo(() => i18n[lang] || i18n.kaa, [lang]);
 
-      useEffect(() => { applyTheme(theme); localStorage.setItem("qs_theme", theme); }, [theme]);
-      useEffect(() => { localStorage.setItem("qs_lang", lang); }, [lang]);
+      const suggestions = useMemo(() => {
+        const base = [
+          { label: "Imidj nima?", go: "izlew.html" },
+          { label: "Diktsiya nima?", go: "izlew.html" },
+          { label: "Boshlovchilik qoidalari", go: "izlew.html" },
+          { label: "Audio talaffuz", go: "qosiq.html" },
+        ];
+        const q = query.trim().toLowerCase();
+        if (!q) return base.slice(0, 4);
+        return base.filter(x => x.label.toLowerCase().includes(q)).slice(0, 4);
+      }, [query]);
 
-      function showToast() {
-        setToast(true);
+      function showToast(text) {
+        setToast({ show:true, text });
         window.clearTimeout(window.__qs_toast);
-        window.__qs_toast = window.setTimeout(() => setToast(false), 1600);
+        window.__qs_toast = window.setTimeout(() => setToast({ show:false, text:"" }), 1700);
       }
-      function handleThemeToggle() { setTheme(p => (p === "dark" ? "light" : "dark")); showToast(); }
-      function handleLangChange(code) { setLang(code); showToast(); }
+
+      useEffect(() => {
+        applyTheme(theme);
+        localStorage.setItem(STORAGE_KEYS.theme, theme);
+      }, [theme]);
+
+      useEffect(() => {
+        localStorage.setItem(STORAGE_KEYS.lang, lang);
+      }, [lang]);
+
+      useEffect(() => {
+        const onScroll = () => setShowTop(window.scrollY > 500);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive:true });
+        return () => window.removeEventListener("scroll", onScroll);
+      }, []);
+
+      useEffect(() => {
+        const onOnline = () => showToast(t.toastOnline);
+        const onOffline = () => showToast(t.toastOffline);
+        window.addEventListener("online", onOnline);
+        window.addEventListener("offline", onOffline);
+        return () => {
+          window.removeEventListener("online", onOnline);
+          window.removeEventListener("offline", onOffline);
+        };
+      }, [t]);
+
+      function handleThemeToggle() {
+        setTheme(p => (p === "dark" ? "light" : "dark"));
+        showToast(t.toastSaved);
+      }
+      function handleLangChange(code) {
+        setLang(code);
+        showToast(t.toastSaved);
+      }
 
       const nav = [
         { label: t.navNews, href: "janaliq.html" },
@@ -397,43 +495,96 @@
         { label: t.navTeam, href: "komanda.html" },
       ];
 
+      function goSearch() {
+        // demo: qidiruv sahifasiga o‘tish
+        window.location.href = "izlew.html";
+      }
+
+      function onSearchKey(e) {
+        if (e.key === "Enter") goSearch();
+        if (e.key === "Escape") setSuggestOpen(false);
+      }
+
+      function scrollTop() {
+        window.scrollTo({ top:0, behavior:"smooth" });
+      }
+
       return (
         <div className="min-h-screen">
-          <Toast show={toast} text={t.toastSaved} />
+          <Toast show={toast.show} text={toast.text} />
           <ChatModal open={chatOpen} onClose={() => setChatOpen(false)} t={t} lang={lang} />
+          <BackToTop show={showTop} onClick={scrollTop} t={t} />
 
           {/* HERO */}
-          <header className="relative overflow-hidden"
-            style={{ backgroundImage: "url('naǵıs.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70"></div>
+          <header
+            className="relative overflow-hidden"
+            style={{
+              backgroundImage: "url('naǵıs.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/75"></div>
+            <div className="absolute inset-0 opacity-30" style={{
+              background: "radial-gradient(circle at 20% 30%, rgba(59,130,246,.55), transparent 45%), radial-gradient(circle at 80% 20%, rgba(14,165,233,.5), transparent 40%)"
+            }}></div>
 
-            <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-20">
+            <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20">
               <div className="flex flex-col gap-6">
-                <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white drop-shadow">
+                <h1 className="text-[clamp(1.7rem,4.2vw,3.2rem)] font-extrabold tracking-tight text-white drop-shadow">
                   {t.heroTitle}
                 </h1>
-                <p className="text-white/90 max-w-2xl text-base md:text-lg">{t.heroSubtitle}</p>
+                <p className="text-white/90 max-w-2xl text-[clamp(0.98rem,2.1vw,1.1rem)] leading-relaxed">
+                  {t.heroSubtitle}
+                </p>
 
+                {/* Search */}
                 <div className="mt-2 max-w-xl">
-                  <div className="flex items-center gap-2 bg-white/95 dark:bg-slate-900/70 rounded-2xl p-2 border border-white/30 dark:border-slate-700 backdrop-blur shadow-lg">
-                    <span className="px-2 text-slate-600 dark:text-slate-200">
-                      <i className="fa-solid fa-magnifying-glass"></i>
-                    </span>
-                    <input
-                      className="w-full bg-transparent outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-300"
-                      placeholder={t.searchPlaceholder}
-                      onChange={() => {}}
-                    />
-                    <button
-                      className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98]"
-                      onClick={() => window.location.href = "izlew.html"}
-                      type="button"
-                    >
-                      OK
-                    </button>
+                  <div className="relative">
+                    <div className="flex items-center gap-2 bg-white/95 dark:bg-slate-900/70 rounded-2xl p-2 border border-white/30 dark:border-slate-700 backdrop-blur shadow-lg">
+                      <span className="px-2 text-slate-600 dark:text-slate-200">
+                        <i className="fa-solid fa-magnifying-glass"></i>
+                      </span>
+
+                      <input
+                        value={query}
+                        onChange={(e)=>{ setQuery(e.target.value); setSuggestOpen(true); }}
+                        onFocus={()=> setSuggestOpen(true)}
+                        onBlur={()=> setTimeout(()=> setSuggestOpen(false), 150)}
+                        onKeyDown={onSearchKey}
+                        className="w-full bg-transparent outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-300"
+                        placeholder={t.searchPlaceholder}
+                      />
+
+                      <button
+                        className="px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.98] font-extrabold"
+                        onClick={goSearch}
+                        type="button"
+                      >
+                        OK
+                      </button>
+                    </div>
+
+                    {/* Suggestions */}
+                    {suggestOpen && suggestions.length > 0 && (
+                      <div className="absolute z-40 mt-2 w-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/90 backdrop-blur shadow-soft overflow-hidden">
+                        {suggestions.map((s, idx) => (
+                          <button
+                            key={idx}
+                            onMouseDown={(e)=>e.preventDefault()}
+                            onClick={()=>{ setQuery(s.label); goSearch(); }}
+                            className="w-full text-left px-4 py-3 text-sm font-semibold text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-900"
+                            type="button"
+                          >
+                            <i className="fa-solid fa-bolt mr-2 text-blue-600"></i>{s.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 
+                {/* Controls */}
                 <div className="flex flex-wrap items-center gap-3 mt-2">
                   <button
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-white/30 bg-white/10 text-white hover:bg-white/20 backdrop-blur"
@@ -448,17 +599,21 @@
                     <i className="fa-solid fa-language text-white"></i>
                     <div className="flex gap-2">
                       {LANGS.map(l => (
-                        <button key={l.code} onClick={() => handleLangChange(l.code)}
-                          className={cx("px-3 py-1 rounded-lg text-sm font-semibold hover:bg-white/20",
-                          lang === l.code ? "bg-white/25 text-white" : "text-white/90")}
-                          type="button">
+                        <button
+                          key={l.code}
+                          onClick={() => handleLangChange(l.code)}
+                          className={cx(
+                            "px-3 py-1 rounded-lg text-sm font-semibold hover:bg-white/20",
+                            lang === l.code ? "bg-white/25 text-white" : "text-white/90"
+                          )}
+                          type="button"
+                        >
                           {l.label}
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  {/* AI Button */}
                   <button
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 shadow-lg"
                     onClick={() => setChatOpen(true)}
@@ -473,20 +628,20 @@
           </header>
 
           {/* NAVBAR */}
-          <nav className="sticky top-0 z-50 border-b border-slate-200/70 dark:border-slate-800 bg-white/80 dark:bg-slate-950/70 backdrop-blur">
-            <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+          <nav className="sticky top-0 z-50 border-b border-slate-200/70 dark:border-slate-800 bg-white/90 dark:bg-slate-950/70 backdrop-blur">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <img src="pon21.png" alt="Logo" className="h-10 w-10 rounded-xl object-cover shadow" />
                 <div className="leading-tight">
                   <div className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white">{t.brand}</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-300">{t.quickTitle}</div>
+                  <div className="text-xs text-slate-600 dark:text-slate-300">{t.quickTitle}</div>
                 </div>
               </div>
 
               <ul className="hidden md:flex items-center gap-6">
                 {nav.map(item => (
                   <li key={item.href}>
-                    <a href={item.href} className="text-sm font-semibold text-slate-700 hover:text-blue-700 dark:text-slate-200 dark:hover:text-blue-300">
+                    <a href={item.href} className="text-sm font-semibold text-slate-800 hover:text-blue-700 dark:text-slate-100 dark:hover:text-blue-300">
                       {item.label}
                     </a>
                   </li>
@@ -513,10 +668,17 @@
 
                 <div className="hidden sm:flex items-center gap-2">
                   {LANGS.map(l => (
-                    <button key={l.code} onClick={() => handleLangChange(l.code)}
-                      className={cx("px-3 py-2 rounded-xl text-sm font-bold border",
-                        lang === l.code ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:shadow")}
-                      type="button">
+                    <button
+                      key={l.code}
+                      onClick={() => handleLangChange(l.code)}
+                      className={cx(
+                        "px-3 py-2 rounded-xl text-sm font-bold border",
+                        lang === l.code
+                          ? "border-blue-600 bg-blue-600 text-white"
+                          : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:shadow"
+                      )}
+                      type="button"
+                    >
                       {l.code.toUpperCase()}
                     </button>
                   ))}
@@ -532,13 +694,17 @@
               </div>
             </div>
 
+            {/* Mobile menu */}
             <div className={cx("md:hidden", menuOpen ? "block" : "hidden")}>
-              <div className="max-w-6xl mx-auto px-6 pb-4">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-4">
                 <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm">
                   <div className="grid gap-2">
                     {nav.map(item => (
-                      <a key={item.href} href={item.href}
-                        className="px-4 py-3 rounded-xl font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                      <a
+                        key={item.href}
+                        href={item.href}
+                        className="px-4 py-3 rounded-xl font-semibold text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+                      >
                         {item.label}
                       </a>
                     ))}
@@ -552,18 +718,27 @@
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <button onClick={handleThemeToggle}
+                    <button
+                      onClick={handleThemeToggle}
                       className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 hover:shadow font-semibold"
-                      type="button">
+                      type="button"
+                    >
                       <i className={cx("fa-solid mr-2", theme === "dark" ? "fa-moon" : "fa-sun")}></i>
                       {theme === "dark" ? t.themeNight : t.themeDay}
                     </button>
 
                     {LANGS.map(l => (
-                      <button key={l.code} onClick={() => handleLangChange(l.code)}
-                        className={cx("px-4 py-2 rounded-xl border font-semibold",
-                          lang === l.code ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950")}
-                        type="button">
+                      <button
+                        key={l.code}
+                        onClick={() => handleLangChange(l.code)}
+                        className={cx(
+                          "px-4 py-2 rounded-xl border font-semibold",
+                          lang === l.code
+                            ? "border-blue-600 bg-blue-600 text-white"
+                            : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100"
+                        )}
+                        type="button"
+                      >
                         {l.label}
                       </button>
                     ))}
@@ -574,47 +749,58 @@
           </nav>
 
           {/* MAIN */}
-          <main className="max-w-6xl mx-auto px-6 py-12">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-8">{t.quickTitle}</h2>
+          <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-12">
+            {/* ✅ “Bo‘limlar” ko‘rinmay qolmasin: doim kontrast */}
+            <h2 className="text-[clamp(1.35rem,3.2vw,2.05rem)] font-extrabold text-slate-900 dark:text-white mb-8">
+              {t.quickTitle}
+            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <a href="izlew.html"
-                 className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1">
+              <a
+                href="izlew.html"
+                className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99]"
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardDictTitle}</h3>
-                    <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{t.cardDictDesc}</p>
+                    <p className="mt-2 text-slate-700 dark:text-slate-200 text-sm leading-relaxed">{t.cardDictDesc}</p>
                   </div>
                   <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
                     <i className="fa-solid fa-book text-blue-700 dark:text-blue-300"></i>
                   </div>
                 </div>
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
-                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1"></i>
                 </div>
               </a>
 
-              <a href="qosiq.html"
-                 className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1">
+              <a
+                href="qosiq.html"
+                className="group rounded-3xl p-6 border shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99]"
+              >
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h3 className="text-xl font-extrabold text-blue-700 dark:text-blue-300">{t.cardAudioTitle}</h3>
-                    <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{t.cardAudioDesc}</p>
+                    <p className="mt-2 text-slate-700 dark:text-slate-200 text-sm leading-relaxed">{t.cardAudioDesc}</p>
                   </div>
                   <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
                     <i className="fa-solid fa-volume-high text-blue-700 dark:text-blue-300"></i>
                   </div>
                 </div>
                 <div className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 dark:text-blue-300">
-                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                  {t.cardOpen}<i className="fa-solid fa-arrow-right group-hover:translate-x-1"></i>
                 </div>
               </a>
             </div>
 
+            {/* SOCIAL */}
             <section className="mt-14">
               <div className="flex items-center justify-between gap-4 mb-5">
-                <h3 className="text-xl font-extrabold text-slate-900 dark:text-white">{t.socialTitle}</h3>
-                <div className="text-sm text-slate-500 dark:text-slate-300">
+                {/* ✅ “Biz bilan bog‘laning” oq fonda yo‘qolmasin */}
+                <h3 className="text-[clamp(1.1rem,2.6vw,1.35rem)] font-extrabold text-slate-900 dark:text-white">
+                  {t.socialTitle}
+                </h3>
+                <div className="text-sm text-slate-600 dark:text-slate-300">
                   <i className="fa-solid fa-bolt mr-2"></i>Interaktiv havolalar
                 </div>
               </div>
@@ -626,53 +812,60 @@
                   { href: "https://facebook.com/share/15FSXUZmzg/", icon: "fa-facebook", label: "Facebook" },
                   { href: "https://youtube.com/@karsu_news", icon: "fa-youtube", label: "YouTube" },
                 ].map(s => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                     className="rounded-3xl p-5 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 flex flex-col items-center justify-center gap-2">
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-3xl p-5 border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] flex flex-col items-center justify-center gap-2"
+                  >
                     <div className="w-12 h-12 rounded-2xl bg-blue-600/10 dark:bg-blue-500/15 flex items-center justify-center">
                       <i className={cx("fa-brands", s.icon, "text-2xl text-blue-700 dark:text-blue-300")}></i>
                     </div>
-                    <div className="font-bold text-slate-700 dark:text-slate-200">{s.label}</div>
+                    <div className="font-extrabold text-slate-800 dark:text-slate-100">{s.label}</div>
                   </a>
                 ))}
               </div>
             </section>
           </main>
 
+          {/* FOOTER */}
           <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
-            <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="space-y-4">
                 <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.aboutTitle}</h4>
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{t.aboutText}</p>
+                <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">{t.aboutText}</p>
                 <img src="t1.jfif" alt="Profile" className="w-40 h-40 object-cover rounded-full border-4 border-slate-200 dark:border-slate-800 shadow" />
               </div>
 
               <div className="space-y-4">
                 <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.rememberTitle}</h4>
-                <div className="space-y-2 text-sm text-slate-700 dark:text-slate-200">
+                <div className="space-y-2 text-sm text-slate-800 dark:text-slate-100">
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q1}</div>
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q2}</div>
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">{t.q3}</div>
-                  <div className="font-bold text-slate-500 dark:text-slate-300">{t.author}</div>
+                  <div className="font-bold text-slate-600 dark:text-slate-300">{t.author}</div>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <h4 className="text-lg font-extrabold text-slate-900 dark:text-white">{t.contactTitle}</h4>
+
                 <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.founder}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.founderName}</div>
-                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 93 047 97 44</div>
+                  <div className="text-sm font-bold text-slate-800 dark:text-slate-100">{t.founder}</div>
+                  <div className="text-sm text-slate-700 dark:text-slate-200 mt-1">{t.founderName}</div>
+                  <div className="mt-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">+998 93 047 97 44</div>
                 </div>
 
                 <div className="rounded-3xl p-5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900">
-                  <div className="text-sm font-bold text-slate-700 dark:text-slate-200">{t.tech}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300 mt-1">{t.techName}</div>
-                  <div className="mt-2 text-sm font-bold text-blue-700 dark:text-blue-300">+998 99 131 76 11</div>
+                  <div className="text-sm font-bold text-slate-800 dark:text-slate-100">{t.tech}</div>
+                  <div className="text-sm text-slate-700 dark:text-slate-200 mt-1">{t.techName}</div>
+                  <div className="mt-2 text-sm font-extrabold text-blue-700 dark:text-blue-300">+998 99 131 76 11</div>
                 </div>
               </div>
             </div>
 
-            <div className="text-center text-xs text-slate-500 dark:text-slate-400 py-6 border-t border-slate-200 dark:border-slate-800">
+            <div className="text-center text-xs text-slate-600 dark:text-slate-400 py-6 border-t border-slate-200 dark:border-slate-800">
               © 2025 Qaraqalpaq_sózlik. {t.rights}
             </div>
           </footer>
