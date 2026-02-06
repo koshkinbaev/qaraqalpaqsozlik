@@ -1,171 +1,432 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jamoamiz</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f8;
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Search,
+  Users,
+  Sparkles,
+  Link as LinkIcon,
+  Copy,
+  X,
+  Instagram,
+  Send,
+  Code2,
+  Server,
+  ShieldCheck,
+} from "lucide-react";
+
+const TEAM = [
+  {
+    id: "atabek",
+    name: "Kóshkinbaev Atabek",
+    role: "Founder • Frontend Developer",
+    tags: ["Frontend", "UI/UX", "Leadership"],
+    avatar: "/atabek.jfif", // public papkaga joylang
+    about:
+      "Qaraqalpaq mámleketlik universiteti 2-kurs studenti. “UNI academy” klubında kompyuter sawatqanlıǵı kursı mentori. “Qaraqalpaq Sózlik” joybarınıń ideya avtorı hám basshısı. Sayt dizayneri, paydalanıwshı interfeysi hám frontend programmist.",
+    socials: {
+      telegram: "https://t.me/atabek_offical01",
+      instagram:
+        "https://instagram.com/atabekkoshkinbaev?igsh=MTYweGdmZTJ2eTM2ZA==",
+    },
+    highlight: "UI/UX + Frontend’ni yagona tizimga keltiradi",
+    icon: "frontend",
+  },
+  {
+    id: "abdirasul",
+    name: "Ótebaev Abdirasul",
+    role: "Backend Developer • Tech Support",
+    tags: ["Backend", "Firebase", "DevOps"],
+    avatar: "/menn.jpg", // public papkaga joylang
+    about:
+      "Qaraqalpaq mámleketlik universiteti 2-kurs studenti. Joybar sheńberinde backend sistemalar hám texnikalıq jumıslar menen shuǵıllanadı. Firebase maǵlıwmatlar bazasın integraciyalaw, sózler hám túsinikler bazasın basqaradı.",
+    socials: {
+      telegram: "https://t.me/Abdirasul_Otebaev",
+      instagram:
+        "https://www.instagram.com/abdirasul_otebaev?igsh=MWJjeG01NnFqamhrOQ==",
+    },
+    highlight: "Stabil backend + tezkor texnik yordam",
+    icon: "backend",
+  },
+];
+
+const ROLES = ["All", "Frontend", "Backend", "UI/UX", "Firebase", "DevOps", "Leadership"];
+
+function cx(...c) {
+  return c.filter(Boolean).join(" ");
+}
+
+function RoleIcon({ type }) {
+  const common = "w-5 h-5";
+  if (type === "frontend") return <Code2 className={common} />;
+  if (type === "backend") return <Server className={common} />;
+  return <ShieldCheck className={common} />;
+}
+
+export default function TeamPage() {
+  const [query, setQuery] = useState("");
+  const [role, setRole] = useState("All");
+  const [active, setActive] = useState(null);
+  const [toast, setToast] = useState("");
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return TEAM.filter((m) => {
+      const matchesQuery =
+        !q ||
+        m.name.toLowerCase().includes(q) ||
+        m.role.toLowerCase().includes(q) ||
+        m.tags.join(" ").toLowerCase().includes(q);
+
+      const matchesRole =
+        role === "All" || m.tags.map((t) => t.toLowerCase()).includes(role.toLowerCase());
+
+      return matchesQuery && matchesRole;
+    });
+  }, [query, role]);
+
+  const stats = useMemo(() => {
+    const total = TEAM.length;
+    const skillSet = new Set(TEAM.flatMap((m) => m.tags));
+    const socials = TEAM.reduce((acc, m) => acc + Object.keys(m.socials || {}).length, 0);
+    return {
+      total,
+      skills: skillSet.size,
+      socials,
+    };
+  }, []);
+
+  const copyProfileLink = async (memberId) => {
+    const url = `${window.location.origin}${window.location.pathname}#${memberId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setToast("Profil havolasi nusxalandi ✅");
+    } catch {
+      setToast("Nusxalash bo‘lmadi. Qo‘lda ko‘chiring: " + url);
+    } finally {
+      setTimeout(() => setToast(""), 2200);
     }
+  };
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-
-    .intro {
-      text-align: center;
-      font-size: 1.2rem;
-      margin-bottom: 50px;
-      color: #555;
-    }
-
-    .team-section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .team-section h1 {
-      font-size: 38px;
-      margin-bottom: 40px;
-      color: #222;
-    }
-
-    .team-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      justify-content: center;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-      padding: 25px;
-      width: 280px;
-      text-align: center;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: slideIn 0.8s forwards;
-    }
-
-    .card:nth-child(2) { animation-delay: 0.2s; }
-    .card:nth-child(3) { animation-delay: 0.4s; }
-    .card:nth-child(4) { animation-delay: 0.6s; }
-    .card:nth-child(5) { animation-delay: 0.8s; }
-
-    @keyframes slideIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-bottom: 20px;
-      border: 4px solid #0077cc;
-    }
-
-    .card h2 {
-      font-size: 20px;
-      margin: 10px 0 5px;
-      color: #0077cc;
-    }
-
-    .card h4 {
-      font-size: 15px;
-      margin: 5px 0 15px;
-      color: #666;
-      font-weight: normal;
-    }
-
-    .card p {
-      font-size: 14px;
-      color: #444;
-      line-height: 1.6;
-    }
-
-    .social-icons {
-      margin-top: 15px;
-    }
-
-    .social-icons a {
-      text-decoration: none;
-      color: #0077cc;
-      margin: 0 8px;
-      font-size: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .team-cards {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-<div class="container">
-    <h1>Sayt haqqında</h1>
-    <p class="intro">
-      "Qaraqalpaq Sózlik" joybarınıń artında túrli tarawlarda qánigeler bolǵan jas hám talantlı jámáát turadı.
-Hár bir aǵzamız óz tarawında jetik bilimge iye bolıp, usı joybar arqalı ana tilimizdi sanlı dúnyada
-keń jaydırıwǵa úles qospaqta. <br /> Birgelikte biz - dizayn, programmalastırıw, til bilimi hám tálim tarawların
-birlestirgen kúshli komandamız.
-    </p>
-  <section class="team-section">
-    <h1>Biziń komanda</h1>
-    <div class="team-cards">
-
-      <!-- ATABEK -->
-      <div class="card">
-        <img src="atabek.jfif" alt="Atabek">
-        <h2>Kóshkinbaev Atabek</h2>
-        <h4>Joybar tiykarshısı & Frontend programmist</h4>
-        <p>
-            Qaraqalpaq mámleketlik universiteti 2-kurs studenti, "UNI academy" klubında kompyuter sawatqanlıǵı kursı mentori. "Qaraqalpaq Sózlik" joybarınıń ideya avtorı hám basshısı. Sayt dizayneri, paydalanıwshı interfeysi hám frontend programmist.
-        </p>
-        <div class="social-icons">
-          <a href="https://t.me/atabek_offical01"><i class="fab fa-telegram"></i></a>
-          <a href="https://instagram.com/atabekkoshkinbaev?igsh=MTYweGdmZTJ2eTM2ZA=="><i class="fab fa-instagram"></i></a>
-        </div>
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      {/* Background dekor */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute -top-28 -left-24 h-72 w-72 rounded-full bg-indigo-200/60 blur-3xl" />
+        <div className="absolute top-40 -right-28 h-80 w-80 rounded-full bg-cyan-200/50 blur-3xl" />
+        <div className="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-fuchsia-200/40 blur-3xl" />
       </div>
 
-      <!-- Abdirasul -->
-      <div class="card">
-        <img src="menn.jpg" alt="O'tebaev Abdirasul rasmi">
-        <h2>Ótebaev Abdirasul</h2>
-        <h4>Backend programmist & texnik xizmetker</h4>
-        <p>
-            Qaraqalpaq mámleketlik universiteti 2-kurs studenti, joybar sheńberinde backend sistemalar hám texnikalıq jumıslar menen shuǵıllanadı.Firebase maǵlıwmatlar bazasın integraciyalaw, sózler hám túsinikler bazasın basqaradı.
-        </p>
-        <div class="social-icons">
-          <a href="https://t.me/Abdirasul_Otebaev"><i class="fab fa-telegram"></i></a>
-          <a href="https://www.instagram.com/abdirasul_otebaev?igsh=MWJjeG01NnFqamhrOQ=="><i class="fab fa-instagram"></i></a>
-        </div>
-    
-    </div>
-  </section>
+      <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14">
+        {/* HERO */}
+        <motion.header
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55 }}
+          className="rounded-3xl border border-slate-200 bg-white/80 backdrop-blur-xl shadow-[0_18px_50px_rgba(15,23,42,0.08)]"
+        >
+          <div className="p-6 sm:p-10">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <div className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+                  <Sparkles className="h-4 w-4" />
+                  Qaraqalpaq Sózlik • Team
+                </div>
+                <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                  Sayt haqqında
+                </h1>
+                <p className="mt-3 max-w-2xl text-slate-600">
+                  “Qaraqalpaq Sózlik” joybarınıń artında túrli tarawlarda qánigeler bolǵan jas hám talantlı jámáát turadı.
+                  Hár bir aǵzamız óz tarawında jetik bilimge iye bolıp, usı joybar arqalı ana tilimizdi sanlı dúnyada
+                  keń jaydırıwǵa úles qospaqta. Birgelikte biz — dizayn, programmalastırıw, til bilimi hám tálim tarawların
+                  birlestirgen kúshli komandamız.
+                </p>
+              </div>
 
-</body>
-</html>
+              {/* STATS */}
+              <div className="grid w-full max-w-sm grid-cols-3 gap-3 sm:w-auto">
+                <StatCard icon={<Users className="h-5 w-5" />} label="A’zolar" value={stats.total} />
+                <StatCard icon={<Code2 className="h-5 w-5" />} label="Ko‘nikma" value={stats.skills} />
+                <StatCard icon={<LinkIcon className="h-5 w-5" />} label="Linklar" value={stats.socials} />
+              </div>
+            </div>
+
+            {/* Search + Filter */}
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="relative w-full sm:max-w-md">
+                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Ism, rol yoki tag bo‘yicha qidirish…"
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-10 py-3 text-sm outline-none ring-0 focus:border-slate-300"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {ROLES.map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setRole(r)}
+                    className={cx(
+                      "rounded-full border px-4 py-2 text-xs font-semibold transition",
+                      role === r
+                        ? "border-slate-900 bg-slate-900 text-white"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                    )}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.header>
+
+        {/* TEAM */}
+        <section className="mt-10">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <h2 className="text-2xl font-extrabold">Biziń komanda</h2>
+            <div className="text-sm font-semibold text-slate-800 flex items-center">
+              <Sparkles className="mr-2 h-4 w-4" />
+              Interaktiv siltemeler
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence>
+              {filtered.map((m, idx) => (
+                <motion.article
+                  key={m.id}
+                  id={m.id}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 18 }}
+                  transition={{ duration: 0.35, delay: Math.min(idx * 0.06, 0.25) }}
+                  className="group rounded-3xl border border-slate-200 bg-white shadow-[0_14px_40px_rgba(15,23,42,0.08)] overflow-hidden"
+                >
+                  <div className="p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="relative">
+                        <img
+                          src={m.avatar}
+                          alt={m.name}
+                          className="h-16 w-16 rounded-2xl object-cover ring-2 ring-slate-900/10"
+                        />
+                        <div className="absolute -bottom-2 -right-2 rounded-xl border border-slate-200 bg-white p-2 shadow">
+                          <RoleIcon type={m.icon} />
+                        </div>
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-lg font-extrabold">{m.name}</h3>
+                        <p className="mt-1 text-sm text-slate-600">{m.role}</p>
+                        <p className="mt-2 text-xs text-slate-500 line-clamp-2">
+                          {m.highlight}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {m.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="mt-5 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {m.socials?.telegram && (
+                          <a
+                            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-slate-300"
+                            href={m.socials.telegram}
+                            target="_blank"
+                            rel="noreferrer"
+                            title="Telegram"
+                          >
+                            <Send className="h-4 w-4" />
+                            Telegram
+                          </a>
+                        )}
+                        {m.socials?.instagram && (
+                          <a
+                            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-slate-300"
+                            href={m.socials.instagram}
+                            target="_blank"
+                            rel="noreferrer"
+                            title="Instagram"
+                          >
+                            <Instagram className="h-4 w-4" />
+                            Instagram
+                          </a>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => copyProfileLink(m.id)}
+                          className="rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:border-slate-300"
+                          title="Profil linkini nusxalash"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </button>
+                        <button
+                          onClick={() => setActive(m)}
+                          className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:opacity-95"
+                        >
+                          Batafsil
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-cyan-500 to-fuchsia-500 opacity-60" />
+                </motion.article>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {filtered.length === 0 && (
+            <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-8 text-center text-slate-600">
+              Hech narsa topilmadi. Qidiruv yoki filter’ni o‘zgartirib ko‘ring.
+            </div>
+          )}
+        </section>
+
+        {/* FOOTER */}
+        <footer className="mt-12 text-center text-sm text-slate-500">
+          © {new Date().getFullYear()} Qaraqalpaq Sózlik • Team Page
+        </footer>
+      </div>
+
+      {/* MODAL */}
+      <AnimatePresence>
+        {active && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div
+              className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
+              onClick={() => setActive(null)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 14, scale: 0.98 }}
+              transition={{ duration: 0.25 }}
+              className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_30px_90px_rgba(15,23,42,0.25)]"
+            >
+              <div className="p-6 sm:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={active.avatar}
+                      alt={active.name}
+                      className="h-16 w-16 rounded-2xl object-cover"
+                    />
+                    <div>
+                      <h3 className="text-xl font-extrabold">{active.name}</h3>
+                      <p className="mt-1 text-sm text-slate-600">{active.role}</p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setActive(null)}
+                    className="rounded-xl border border-slate-200 bg-white p-2 text-slate-700 hover:border-slate-300"
+                    aria-label="Close"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {active.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="mt-5 leading-relaxed text-slate-700">{active.about}</p>
+
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    {active.socials?.telegram && (
+                      <a
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-300"
+                        href={active.socials.telegram}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Send className="h-4 w-4" />
+                        Telegram
+                      </a>
+                    )}
+                    {active.socials?.instagram && (
+                      <a
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-300"
+                        href={active.socials.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Instagram className="h-4 w-4" />
+                        Instagram
+                      </a>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => copyProfileLink(active.id)}
+                    className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white hover:opacity-95"
+                  >
+                    <Copy className="h-4 w-4" />
+                    Profil linkini nusxalash
+                  </button>
+                </div>
+              </div>
+
+              <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-cyan-500 to-fuchsia-500 opacity-70" />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* TOAST */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            className="fixed bottom-5 left-1/2 z-[60] w-[92%] max-w-md -translate-x-1/2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow"
+          >
+            {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function StatCard({ icon, label, value }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-center">
+      <div className="mx-auto flex w-fit items-center gap-2 text-slate-900">
+        {icon}
+        <span className="text-sm font-extrabold">{value}</span>
+      </div>
+      <div className="mt-1 text-xs font-semibold text-slate-500">{label}</div>
+    </div>
+  );
+}
