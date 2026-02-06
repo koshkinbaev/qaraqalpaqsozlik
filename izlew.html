@@ -1,637 +1,275 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Qaraqalpaq Sózlik — Pro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qaraqalpaq Sózlik — Pro</title>
 
-  <style>
-    :root{
-      --bg: #0b1220;
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.06);
-      --text: #eaf0ff;
-      --muted: rgba(234,240,255,.75);
-      --line: rgba(255,255,255,.12);
-      --accent: #7c5cff;
-      --accent2: #00d2ff;
-      --good: #2ee59d;
-      --warn: #ffcf5a;
-      --bad: #ff5c7a;
-      --shadow: 0 18px 60px rgba(0,0,0,.35);
-      --radius: 18px;
-      --radius2: 14px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-    }
-    [data-theme="light"]{
-      --bg: #f2f6ff;
-      --card: rgba(255,255,255,.9);
-      --card2: rgba(255,255,255,.75);
-      --text: #0b1220;
-      --muted: rgba(11,18,32,.7);
-      --line: rgba(11,18,32,.12);
-      --shadow: 0 18px 60px rgba(16,24,40,.12);
-    }
+<style>
+body{
+  font-family: Arial, sans-serif;
+  background:#d6dbdb;
+  margin:0; padding:0;
+}
+header{
+  background:#2e3b4e;
+  color:#fff;
+  padding:20px;
+  text-align:center;
+}
+.container{ width:90%; max-width:1100px; margin:20px auto; }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: var(--font);
-      color: var(--text);
-      background:
-        radial-gradient(1000px 600px at 20% -10%, rgba(124,92,255,.35), transparent 60%),
-        radial-gradient(1000px 600px at 90% 10%, rgba(0,210,255,.20), transparent 55%),
-        radial-gradient(900px 600px at 50% 120%, rgba(46,229,157,.14), transparent 60%),
-        var(--bg);
-      overflow-x:hidden;
-    }
+.search-box{
+  display:flex; gap:10px; margin-bottom:10px;
+}
+.search-box input{
+  flex:1; padding:12px; border-radius:8px; border:1px solid #000;
+  font-size:16px;
+}
+.search-box button{
+  padding:12px 16px; border-radius:8px; border:none;
+  background:#2e3b4e; color:#fff; cursor:pointer;
+}
+.search-box button:hover{ background:#1a2434; }
 
-    /* Top header */
-    .topbar{
-      position: sticky;
-      top:0;
-      z-index: 50;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(to bottom, rgba(0,0,0,.28), rgba(0,0,0,0));
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    [data-theme="light"] .topbar{
-      background: linear-gradient(to bottom, rgba(255,255,255,.68), rgba(255,255,255,0));
-      border-bottom: 1px solid rgba(11,18,32,.08);
-    }
+#infoBar{ margin:10px 0; font-size:14px; color:#333; }
 
-    .wrap{ width:min(1100px, 92vw); margin:0 auto; }
+.word-card{
+  display:flex;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  margin-bottom:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+.word-title{
+  width:200px;
+  background:#f0f0f0;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:22px;
+  padding:10px; text-align:center;
+}
+.word-details{ padding:12px; display:grid; gap:10px; flex:1; }
+.meaning-box,.example-box{
+  background:#f9f9f9;
+  padding:10px; border-radius:8px; border:1px solid #000;
+}
 
-    header{
-      padding: 22px 0 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 16px;
-    }
+mark{ background:#ffeb3b; padding:0 4px; border-radius:4px; }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap: 12px;
-      min-width: 240px;
-    }
-    .logo{
-      width:42px;height:42px;border-radius:14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 14px 30px rgba(124,92,255,.25);
-      position: relative;
-      overflow:hidden;
-    }
-    .logo:after{
-      content:"";
-      position:absolute; inset:-30%;
-      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 55%);
-      transform: rotate(20deg);
-    }
-    .brand h1{
-      margin:0;
-      font-size: 18px;
-      letter-spacing:.2px;
-      line-height:1.1;
-    }
-    .brand p{ margin:2px 0 0; color: var(--muted); font-size: 12px; }
+.pagination{
+  display:flex; gap:8px; justify-content:center; margin:20px 0;
+}
+.pagination button{
+  padding:8px 12px; border-radius:6px; border:1px solid #333;
+  cursor:pointer; background:#fff;
+}
+.pagination button.active{
+  background:#2e3b4e; color:#fff;
+}
 
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-
-    .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: var(--card2);
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      color: var(--text);
-      font-size: 13px;
-      cursor:pointer;
-      user-select:none;
-      transition: transform .15s ease, background .2s ease;
-    }
-    .pill:hover{ transform: translateY(-1px); background: var(--card); }
-    .pill svg{ width:16px;height:16px; opacity:.9; }
-
-    /* Hero / search panel */
-    .hero{
-      padding: 14px 0 18px;
-    }
-    .panel{
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.02));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-
-    .panel-top{
-      padding: 16px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      border-bottom: 1px solid var(--line);
-    }
-    .panel-top .stats{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .chip{
-      background: rgba(124,92,255,.14);
-      border: 1px solid rgba(124,92,255,.24);
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size:12px;
-      color: var(--text);
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .chip b{ font-weight:700; }
-    .chip--green{
-      background: rgba(46,229,157,.14);
-      border-color: rgba(46,229,157,.22);
-    }
-    .chip--yellow{
-      background: rgba(255,207,90,.14);
-      border-color: rgba(255,207,90,.24);
-    }
-
-    .search-row{
-      padding: 16px;
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-    }
-    .search{
-      position:relative;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      padding: 12px 14px;
-      background: rgba(0,0,0,.12);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-    }
-    [data-theme="light"] .search{ background: rgba(255,255,255,.7); }
-    .search input{
-      width:100%;
-      border:none;
-      outline:none;
-      background: transparent;
-      color: var(--text);
-      font-size: 15px;
-    }
-    .search input::placeholder{ color: rgba(234,240,255,.55); }
-    [data-theme="light"] .search input::placeholder{ color: rgba(11,18,32,.45); }
-
-    .kbd{
-      font-size: 12px;
-      color: var(--muted);
-      border: 1px solid var(--line);
-      padding: 6px 8px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.04);
-      white-space:nowrap;
-    }
-
-    .btn{
-      border:none;
-      outline:none;
-      cursor:pointer;
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      color:white;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 18px 35px rgba(124,92,255,.22);
-      transition: transform .15s ease, filter .2s ease;
-      display:flex; align-items:center; gap:10px;
-    }
-    .btn:hover{ transform: translateY(-1px); filter: brightness(1.05); }
-    .btn:active{ transform: translateY(0px); }
-
-    .subrow{
-      padding: 0 16px 16px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .subrow-left{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .toggle{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: var(--card2);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 10px 12px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .toggle input{ transform: translateY(1px); }
-    .hint{
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    /* Layout */
-    .grid{
-      display:grid;
-      grid-template-columns: 1.5fr .9fr;
-      gap: 16px;
-      padding: 16px;
-    }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      header{ flex-direction:column; align-items:flex-start; }
-      .actions{ width:100%; justify-content:flex-start; }
-      .search-row{ grid-template-columns: 1fr; }
-      .btn{ width:100%; justify-content:center; }
-    }
-
-    .section{
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid var(--line);
-      box-shadow: 0 14px 40px rgba(0,0,0,.10);
-      overflow:hidden;
-    }
-    .section h2{
-      margin:0;
-      padding: 14px 14px 10px;
-      font-size: 14px;
-      letter-spacing:.3px;
-      color: var(--muted);
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .section h2 .mini{
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform:none;
-      border:1px solid var(--line);
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.03);
-    }
-
-    /* Results */
-    .results{
-      padding: 14px;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-      min-height: 220px;
-    }
-    .empty{
-      padding: 18px;
-      border: 1px dashed var(--line);
-      border-radius: var(--radius2);
-      color: var(--muted);
-      background: rgba(255,255,255,.03);
-    }
-
-    .card{
-      display:grid;
-      grid-template-columns: 190px 1fr;
-      border-radius: var(--radius2);
-      overflow:hidden;
-      border: 1px solid var(--line);
-      background: rgba(0,0,0,.12);
-      transition: transform .15s ease, box-shadow .2s ease;
-    }
-    [data-theme="light"] .card{ background: rgba(255,255,255,.75); }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 18px 50px rgba(0,0,0,.16); }
-
-    .word{
-      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(0,210,255,.12));
-      border-right: 1px solid var(--line);
-      padding: 16px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap: 10px;
-    }
-    .word .term{
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing:.3px;
-      line-height:1.1;
-    }
-    .word .meta{
-      color: var(--muted);
-      font-size: 12px;
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-    .badge{
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      font-weight: 700;
-      color: var(--text);
-      font-size: 12px;
-    }
-
-    .details{
-      padding: 14px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-    }
-
-    .box{
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-    }
-    .box strong{ color: var(--text); }
-    .box p{ margin:6px 0 0; color: var(--muted); line-height: 1.55; }
-
-    .card-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top: 4px;
-    }
-    .btn2{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 9px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      cursor:pointer;
-      font-size: 13px;
-      font-weight: 700;
-      transition: transform .15s ease, background .2s ease;
-      user-select:none;
-    }
-    .btn2:hover{ transform: translateY(-1px); background: rgba(255,255,255,.07); }
-    .btn2 svg{ width:16px; height:16px; opacity:.9; }
-    .btn2.fav.active{
-      border-color: rgba(46,229,157,.35);
-      background: rgba(46,229,157,.12);
-    }
-
-    /* Side lists */
-    .list{
-      padding: 10px;
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      max-height: 520px;
-      overflow:auto;
-    }
-    .row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.03);
-    }
-    .row .left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width: 0;
-    }
-    .row .left b{
-      font-size: 14px;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .row .left span{
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .row .count{
-      min-width: 46px;
-      text-align:center;
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: rgba(124,92,255,.12);
-      border: 1px solid rgba(124,92,255,.22);
-      font-weight: 900;
-    }
-    .row button{
-      border:none; cursor:pointer;
-      background: transparent;
-      color: var(--text);
-      padding: 6px 8px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-    }
-    .row button:hover{ background: rgba(255,255,255,.05); }
-
-    /* Footer */
-    footer{
-      padding: 18px 0 26px;
-      color: var(--muted);
-      text-align:center;
-      font-size: 12px;
-    }
-
-    /* Toast */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,.75);
-      color: #fff;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(10px);
-      display:none;
-      gap:10px;
-      align-items:center;
-      z-index: 200;
-      box-shadow: 0 18px 40px rgba(0,0,0,.25);
-      max-width: 92vw;
-    }
-    [data-theme="light"] .toast{ background: rgba(11,18,32,.85); }
-  </style>
+.word-card.active{
+  outline:3px solid #2e3b4e;
+}
+</style>
 </head>
-
 <body>
-  <div class="topbar">
-    <div class="wrap">
-      <header>
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <h1>Qaraqalpaq Sózlik — Pro</h1>
-            <p>Sóz izlew · Saqlaw · Trending · Haftalik reyting</p>
-          </div>
-        </div>
 
-        <div class="actions">
-          <div class="pill" id="btnTheme" title="Tema: Dark/Light">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M21 12.4A8.5 8.5 0 0 1 11.6 3a7 7 0 1 0 9.4 9.4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            Tema
-          </div>
+<header>
+  <h1>Qaraqalpaq Sózlik — Pro</h1>
+  <p>Auto search · Pagination · Keyboard · Translit · Fuzzy</p>
+</header>
 
-          <div class="pill" id="btnExport" title="Saqlanganlar ro‘yxatini yuklab olish">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v10m0 0 4-4m-4 4-4-4M4 17v3h16v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Export
-          </div>
-
-          <div class="pill" id="btnClearAll" title="Tarix va reytingni tozalash">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2m-1 0v16H9V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Tozalash
-          </div>
-        </div>
-      </header>
-    </div>
+<div class="container">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Sóz izlew...">
+    <button id="searchBtn">Izlew</button>
   </div>
 
-  <main class="wrap hero">
-    <div class="panel">
-      <div class="panel-top">
-        <div class="stats">
-          <div class="chip"><b id="statWords">0</b> sóz bazası</div>
-          <div class="chip chip--green"><b id="statFav">0</b> saqlang'anlar</div>
-          <div class="chip chip--yellow"><b id="statWeek">0</b> bu hafta izlen'gen</div>
-        </div>
-        <div class="hint">Enter — izlew · Ctrl/⌘+K — tez izlew</div>
+  <div id="infoBar">Tayyor ✅</div>
+
+  <div id="resultsContainer"></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<script>
+// ====== 1) DATA ======
+const words = [
+  {
+    word: "Abay",
+    meaning: "at. Qorǵanısh, saqlıq, es, abay-siyasat.",
+    experience: "Sen bilmeysen meniń jayım, Onıń menen teń qudayım..."
+  },
+  {
+    word: "Kitap",
+    meaning: "Oqıw ushın basılǵan mátin.",
+    experience: "Men kitap oqıwdı jaqsı kóremin."
+  },
+  {
+    word: "Bilim",
+    meaning: "Oqıw arqalı alınǵan maǵlıwmat.",
+    experience: "Bilim — insannıń baylıǵı."
+  }
+  // bu yerga 1000+ so‘z qo‘shasiz
+];
+
+// ====== 2) SETTINGS ======
+const PAGE_SIZE = 20;
+let currentPage = 1;
+let currentResults = [];
+let selectedIndex = -1;
+let debounceTimer = null;
+
+// ====== 3) UTILS ======
+function escapeHTML(str){
+  return String(str ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function normalize(str){
+  return String(str ?? "").toLowerCase().trim();
+}
+
+// ====== 4) FUZZY ======
+function levenshtein(a,b){
+  a=normalize(a); b=normalize(b);
+  if(a===b) return 0;
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+  for(let i=0;i<=m;i++) dp[i][0]=i;
+  for(let j=0;j<=n;j++) dp[0][j]=j;
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      const cost=a[i-1]===b[j-1]?0:1;
+      dp[i][j]=Math.min(
+        dp[i-1][j]+1,
+        dp[i][j-1]+1,
+        dp[i-1][j-1]+cost
+      );
+    }
+  }
+  return dp[m][n];
+}
+function score(term,text){
+  term=normalize(term); text=normalize(text);
+  if(text.includes(term)) return 1;
+  const parts=text.split(/\s+/);
+  let best=0;
+  for(const p of parts){
+    const d=levenshtein(term,p);
+    const s=1-d/Math.max(term.length,p.length);
+    if(s>best) best=s;
+  }
+  return best;
+}
+
+// ====== 5) SEARCH ======
+function searchWord(){
+  const q = document.getElementById("searchInput").value.trim();
+  if(!q){
+    currentResults = [];
+    render();
+    return;
+  }
+
+  const results=[];
+  for(const w of words){
+    const blob = `${w.word} ${w.meaning} ${w.experience}`;
+    const s = score(q, blob);
+    if(s>=0.6){
+      results.push({w, s});
+    }
+  }
+  results.sort((a,b)=>b.s-a.s);
+  currentResults = results;
+  currentPage = 1;
+  selectedIndex = -1;
+  render();
+}
+
+// ====== 6) RENDER ======
+function highlight(text, term){
+  const safe=escapeHTML(text);
+  if(!term) return safe;
+  const re=new RegExp(`(${term.replace(/[.*+?^${}()|[\\]\\\\]/g,"\\\\$&")})`,"ig");
+  return safe.replace(re,"<mark>$1</mark>");
+}
+
+function render(){
+  const container=document.getElementById("resultsContainer");
+  const info=document.getElementById("infoBar");
+  container.innerHTML="";
+
+  if(currentResults.length===0){
+    info.textContent="Natije joq.";
+    return;
+  }
+
+  info.textContent=`Tabıldı: ${currentResults.length} ta`;
+
+  const start=(currentPage-1)*PAGE_SIZE;
+  const pageItems=currentResults.slice(start,start+PAGE_SIZE);
+
+  pageItems.forEach((it,idx)=>{
+    const w=it.w;
+    const card=document.createElement("div");
+    card.className="word-card";
+    if(idx===selectedIndex) card.classList.add("active");
+
+    card.innerHTML=`
+      <div class="word-title">${highlight(w.word, document.getElementById("searchInput").value)}</div>
+      <div class="word-details">
+        <div class="meaning-box"><strong>Mánisi:</strong> ${highlight(w.meaning, document.getElementById("searchInput").value)}</div>
+        <div class="example-box"><strong>Mısal:</strong> ${highlight(w.experience, document.getElementById("searchInput").value)}</div>
       </div>
+    `;
+    container.appendChild(card);
+  });
 
-      <div class="search-row">
-        <div class="search">
-          <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;opacity:.8">
-            <path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/>
-            <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <input id="searchInput" type="text" placeholder="Sóz izlew... (mísalı: bilim, kitap, student)" autocomplete="off"/>
-          <span class="kbd">Enter</span>
-        </div>
-        <button class="btn" id="btnSearch">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-          Izlew
-        </button>
-      </div>
+  renderPagination();
+}
 
-      <div class="subrow">
-        <div class="subrow-left">
-          <label class="toggle" title="Izlewdi tezlashtirish uchun">
-            <input type="checkbox" id="toggleAuto" checked />
-            Avto-izlew (har harfda)
-          </label>
+function renderPagination(){
+  const pag=document.getElementById("pagination");
+  pag.innerHTML="";
+  const pages=Math.ceil(currentResults.length/PAGE_SIZE);
+  for(let i=1;i<=pages;i++){
+    const btn=document.createElement("button");
+    btn.textContent=i;
+    if(i===currentPage) btn.classList.add("active");
+    btn.onclick=()=>{ currentPage=i; selectedIndex=-1; render(); };
+    pag.appendChild(btn);
+  }
+}
 
-          <label class="toggle" title="So‘z ichidan ham qidiradi">
-            <input type="checkbox" id="toggleContains" checked />
-            Ichidan izlew (contains)
-          </label>
+// ====== 7) EVENTS ======
+document.getElementById("searchBtn").addEventListener("click", searchWord);
 
-          <label class="toggle" title="Katta-kichik harfni farqlamaydi">
-            <input type="checkbox" id="toggleCase" checked />
-            Case-insensitive
-          </label>
-        </div>
+// Auto search (debounce)
+document.getElementById("searchInput").addEventListener("input", ()=>{
+  clearTimeout(debounceTimer);
+  debounceTimer=setTimeout(searchWord, 300);
+});
 
-        <div class="hint" id="hintText">Tayyor ✅</div>
-      </div>
+// Keyboard navigation
+document.addEventListener("keydown", (e)=>{
+  if(currentResults.length===0) return;
+  const max = Math.min(PAGE_SIZE, currentResults.length - (currentPage-1)*PAGE_SIZE);
 
-      <div class="grid">
-        <!-- Left: Results -->
-        <section class="section">
-          <h2>
-            Natijeler
-            <span class="mini" id="resultCount">0 ta</span>
-          </h2>
-          <div class="results" id="results"></div>
-        </section>
+  if(e.key==="ArrowDown"){
+    selectedIndex = Math.min(max-1, selectedIndex+1);
+    render();
+  }
+  if(e.key==="ArrowUp"){
+    selectedIndex = Math.max(0, selectedIndex-1);
+    render();
+  }
+});
+</script>
 
-        <!-- Right: Trending + Weekly + Saved + History -->
-        <section class="section">
-          <h2>
-            Trending & Reyting
-            <span class="mini">Top ro‘yxatlar</span>
-          </h2>
-
-          <div class="list">
-            <div class="row" style="background: rgba(124,92,255,.10); border-color: rgba(124,92,255,.22);">
-              <div class="left">
-                <b>🔥 Eng ko‘p izlen'gen (umumiy)</b>
-                <span>Qidiruv sanog‘i bo‘yicha</span>
-              </div>
-              <button id="btnRefreshTrending">Yangilash</button>
-            </div>
-            <div id="trendingList"></div>
-
-            <div class="row" style="background: rgba(255,207,90,.10); border-color: rgba(255,207,90,.22);">
-              <div class="left">
-                <b>🏆 Haftalik reyting</b>
-                <span>Hafta bo‘yicha top so‘zlar</span>
-              </div>
-              <button id="btnResetWeek">Haftani 0 qilish</button>
-            </div>
-            <div id="weeklyList"></div>
-
-            <div class="row" style="background: rgba(46,229,157,.10); border-color: rgba(46,229,157,.22);">
-              <div class="left">
-                <b>💾 Saqlanganlar</b>
-                <span>Favorites (localStorage)</span>
-              </div>
-              <button id="btnOpenSaved">Ko‘rish</button>
-            </div>
-
-            <div class="row">
-              <div class="left">
-                <b>🕘 Qidiruv tarixi</b>
-                <span>Oxirgi 12 ta so‘z</span>
-              </div>
-              <button id="btnClearHistory">Tozalash</button>
-            </div>
-            <div id="historyList"></div>
-          </div>
-        </section>
-      </div>
-    </div>
-
-    <footer>
-      © 2026 — Qaraqalpaq Sózlik · LocalStorage bazasında saqlanadı · Offline ham ishlaydı
-    </footer>
- <script src="izlew4.js"></script>
 </body>
 </html>
-
-
-
 
