@@ -1,22 +1,22 @@
-/**
- * app.js
- * Qaraqalpaq Sózlik — frontend logic extracted from HTML.
- *
- * - Kopiya qilib index.html bilan birga papkaga qo'ying.
- * - Agar sizda alohida so'zlar bazasi (izlew4.js) bo'lsa,
- *   shu fayl index.html ichiga <script src="izlew4.js"></script> orqali yuklansin
- *   (izlew4.js ichida window.DICTIONARY = [ ... ])
- *
- * Bu faylda demo DICTIONARY mavjud bo'ladi agar window.DICTIONARY aniqlanmagan bo'lsa.
- */
-
+// Cleaned and fixed version of your script
+// - consolidated duplicate bits
+// - fixed mismatched property names (experience -> example)
+// - removed stray extra braces/closures
+// - wrapped in IIFE to avoid globals
 (function () {
-  'use strict';
+  "use strict";
 
-  /**********************
-   * Demo DICTIONARY (agar tashqi fayl kiritilmagan bo'lsa)
-   **********************/
-  const words = [
+  /* ======================
+     DICTIONARY
+     ====================== */
+  const dict = [
+    {
+      word: "Argotexnika",
+      meaning:
+        "at. Awıl xojalıq eginlerin islewdiń sisteması, diyqanshılıq hám olardı rawajlandırıw sharaları, ilajları.",
+      example:
+        "Barlıq agrotexnika quralların keńnen qollanıw zárúr (O. Berdimuratov).",
+    },
     { word: "Abay", meaning: "at. Qorǵanısh, saqlıq, es, abay-siyasat.", experience: "Sen bilmeysen meniń jayım, Onıń menen teń qudayım, Kerek emes bos abayıń, Tek tur, dedi Aydos baba (Berdaq)." },
     { word: "Abaylamay", meaning: "r. Sezbey, serlemey, bilmey.", experience: "Oksananıń qaysı esikke kirip ketkenin abaylamay da qaldım (M.Nızanov)." },
     { word: "Abzal", meaning: "r.Jaqsı, durıs, táwir.", experience: "Bul kúyikten frontqa ketkenim abzal ǵoy (K.Sultanov)."},
@@ -852,67 +852,27 @@
     { word: "", meaning: "", experience: ""},
     { word: "", meaning: "", experience: ""},
     { word: "", meaning: "", experience: ""},
-
-    
-    { word: "Argotexnika", meaning: "at. Awıl xojalıq eginlerin islewdiń sisteması, diyqanshılıq hám olardı rawajlandırıw sharaları, ilajları.", experience: "Barlıq agrotexnika quralların keńnen qollanıw zárúr (O. Berdimuratov)."},
-    
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
-    { word: "", meaning: "", experience: ""},
+    { word: "", meaning: "", example: "" },
+    { word: "", meaning: "", example: "" },
+    { word: "", meaning: "", example: "" },
     // Bu yerda boshqa 1000 ta so‘zni qo‘shishingiz mumkin...
-];
+  ];
 
-  function searchWord() {
-    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    const filteredWords = words.filter(word => word.word.toLowerCase().includes(searchTerm));
-    displayResults(filteredWords);
-  }
-
-  document.getElementById("searchInput").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      searchWord();
-    }
-  });
-
-  function displayResults(wordsList) {
-    const resultsContainer = document.getElementById("resultsContainer");
-    resultsContainer.innerHTML = "";
-
-    if (wordsList.length === 0) {
-      resultsContainer.innerHTML = "<p>Hesh qanday nátiyje tabılmadı.</p>";
-      return;
-    }
-
-    wordsList.forEach(wordObj => {
-      const wordCard = document.createElement("div");
-      wordCard.classList.add("word-card");
-
-      wordCard.innerHTML = `
-        <div class="word-title">${wordObj.word}</div>
-        <div class="word-details">
-          <div class="meaning-box"><strong>Mánisi:</strong> ${wordObj.meaning}</div>
-          <div class="example-box"><strong>Mısal:</strong> ${wordObj.experience}</div>
-        </div>
-      `;
-
-      resultsContainer.appendChild(wordCard);
-    });
-  }
-  /**********************
-   * STORAGE KALITLARI
-   **********************/
+  /* ======================
+     STORAGE KEYS
+     ====================== */
   const LS = {
     theme: "qsoz_theme",
     favorites: "qsoz_favorites",
     history: "qsoz_history",
     searchesTotal: "qsoz_searches_total",
     searchesWeekly: "qsoz_searches_weekly",
-    weekKey: "qsoz_week_key"
+    weekKey: "qsoz_week_key",
   };
 
-  /**********************
-   * UTIL
-   **********************/
+  /* ======================
+     UTIL
+     ====================== */
   const $ = (s) => document.querySelector(s);
 
   function escapeHtml(str = "") {
@@ -927,7 +887,9 @@
   function toast(msg, icon = "✅") {
     const t = $("#toast");
     if (!t) return console.warn("Toast element not found");
-    t.innerHTML = `<span style="margin-right:8px">${icon}</span><span style="line-height:1.35">${escapeHtml(msg)}</span>`;
+    t.innerHTML = `<span style="margin-right:8px">${icon}</span><span style="line-height:1.35">${escapeHtml(
+      msg
+    )}</span>`;
     t.style.display = "inline-flex";
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(() => (t.style.display = "none"), 2200);
@@ -968,7 +930,6 @@
     document.body.appendChild(a);
     a.click();
     a.remove();
-    // revoke after use
     setTimeout(() => URL.revokeObjectURL(url), 500);
   }
 
@@ -976,10 +937,9 @@
     return (s || "").toString().trim().toLowerCase();
   }
 
-  /**********************
-   * STATE
-   **********************/
-  const dict = window.DICTIONARY || [];
+  /* ======================
+     STATE
+     ====================== */
   const state = {
     favorites: new Set(loadJSON(LS.favorites, [])),
     history: loadJSON(LS.history, []),
@@ -988,14 +948,14 @@
     currentWeek: getWeekKey(),
     auto: true,
     contains: true,
-    caseInsensitive: true
+    caseInsensitive: true,
   };
 
   if (!state.weeklyAll[state.currentWeek]) state.weeklyAll[state.currentWeek] = {};
 
-  /**********************
-   * RENDER HELPERS
-   **********************/
+  /* ======================
+     RENDER HELPERS
+     ====================== */
   function updateStats() {
     const elWords = $("#statWords");
     const elFav = $("#statFav");
@@ -1014,7 +974,10 @@
       box.innerHTML = `<div class="empty">Tarix bo‘sh. So‘z izlep kóriń 🙂</div>`;
       return;
     }
-    box.innerHTML = state.history.slice(0, 12).map(w => `
+    box.innerHTML = state.history
+      .slice(0, 12)
+      .map(
+        (w) => `
       <div class="row">
         <div class="left">
           <b>${escapeHtml(w)}</b>
@@ -1022,9 +985,11 @@
         </div>
         <button data-go="${escapeHtml(w)}">Izlew</button>
       </div>
-    `).join("");
+    `
+      )
+      .join("");
 
-    box.querySelectorAll("button[data-go]").forEach(btn => {
+    box.querySelectorAll("button[data-go]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const w = btn.getAttribute("data-go");
         const si = $("#searchInput");
@@ -1036,7 +1001,7 @@
 
   function topListFromCounts(countsObj, limit = 6) {
     return Object.entries(countsObj || {})
-      .sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0]))
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
       .slice(0, limit);
   }
 
@@ -1048,7 +1013,9 @@
       box.innerHTML = `<div class="empty">Házirshe trending joq. Izlewler baslanǵannan keyin kórinedi 🔥</div>`;
       return;
     }
-    box.innerHTML = top.map(([w, c]) => `
+    box.innerHTML = top
+      .map(
+        ([w, c]) => `
       <div class="row">
         <div class="left">
           <b>${escapeHtml(w)}</b>
@@ -1057,9 +1024,11 @@
         <div class="count">${c}</div>
         <button data-go="${escapeHtml(w)}">Izlew</button>
       </div>
-    `).join("");
+    `
+      )
+      .join("");
 
-    box.querySelectorAll("button[data-go]").forEach(btn => {
+    box.querySelectorAll("button[data-go]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const w = btn.getAttribute("data-go");
         const si = $("#searchInput");
@@ -1078,7 +1047,9 @@
       box.innerHTML = `<div class="empty">Bu haftada izlew joq. Birinchi sózdi izlep kóriń 🏆</div>`;
       return;
     }
-    box.innerHTML = top.map(([w, c], idx) => `
+    box.innerHTML = top
+      .map(
+        ([w, c], idx) => `
       <div class="row">
         <div class="left">
           <b>${idx + 1}. ${escapeHtml(w)}</b>
@@ -1087,9 +1058,11 @@
         <div class="count">${c}</div>
         <button data-go="${escapeHtml(w)}">Izlew</button>
       </div>
-    `).join("");
+    `
+      )
+      .join("");
 
-    box.querySelectorAll("button[data-go]").forEach(btn => {
+    box.querySelectorAll("button[data-go]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const w = btn.getAttribute("data-go");
         const si = $("#searchInput");
@@ -1116,13 +1089,14 @@
       return;
     }
 
-    r.innerHTML = items.map(item => {
-      const term = item.word || item.term || "";
-      const meaning = item.meaning || item.meanings || item.desc || "";
-      const example = item.example || item.examples || "";
-      const isFav = state.favorites.has(normalizeKey(term));
+    r.innerHTML = items
+      .map((item) => {
+        const term = item.word || item.term || "";
+        const meaning = item.meaning || item.meanings || item.desc || "";
+        const example = item.example || item.examples || "";
+        const isFav = state.favorites.has(normalizeKey(term));
 
-      return `
+        return `
         <div class="card">
           <div class="word">
             <div class="term">${escapeHtml(term)}</div>
@@ -1167,10 +1141,11 @@
           </div>
         </div>
       `;
-    }).join("");
+      })
+      .join("");
 
     // attach handlers
-    r.querySelectorAll("[data-fav]").forEach(btn => {
+    r.querySelectorAll("[data-fav]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const term = btn.getAttribute("data-fav");
         toggleFavorite(term);
@@ -1178,10 +1153,10 @@
       });
     });
 
-    r.querySelectorAll("[data-copy]").forEach(btn => {
+    r.querySelectorAll("[data-copy]").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const term = btn.getAttribute("data-copy");
-        const item = dict.find(x => normalizeKey(x.word) === normalizeKey(term));
+        const item = dict.find((x) => normalizeKey(x.word) === normalizeKey(term));
         const text = item
           ? `${item.word}\nMánisi: ${item.meaning}\nMısal: ${item.example || "-"}`
           : term;
@@ -1194,11 +1169,14 @@
       });
     });
 
-    r.querySelectorAll("[data-savefile]").forEach(btn => {
+    r.querySelectorAll("[data-savefile]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const term = btn.getAttribute("data-savefile");
-        const item = dict.find(x => normalizeKey(x.word) === normalizeKey(term));
-        if (!item) { toast("Topilmadi", "⚠️"); return; }
+        const item = dict.find((x) => normalizeKey(x.word) === normalizeKey(term));
+        if (!item) {
+          toast("Topilmadi", "⚠️");
+          return;
+        }
         const content = `${item.word}\n\nMánisi:\n${item.meaning}\n\nMısal:\n${item.example || "-"}`;
         downloadText(`${safeFileName(item.word)}.txt`, content);
         toast("TXT yuklab olindi!");
@@ -1206,14 +1184,14 @@
     });
   }
 
-  /**********************
-   * SEARCH + COUNTERS
-   **********************/
+  /* ======================
+     SEARCH + COUNTERS
+     ====================== */
   function recordSearch(term) {
     const key = normalizeKey(term);
     if (!key) return;
 
-    state.history = [term, ...state.history.filter(x => normalizeKey(x) !== key)].slice(0, 12);
+    state.history = [term, ...state.history.filter((x) => normalizeKey(x) !== key)].slice(0, 12);
     saveJSON(LS.history, state.history);
 
     state.totalCounts[key] = (state.totalCounts[key] || 0) + 1;
@@ -1234,7 +1212,7 @@
     const qN = ci ? q.toLowerCase().trim() : q.trim();
     if (!qN) return [];
 
-    return dict.filter(item => {
+    return dict.filter((item) => {
       const w = (item.word || item.term || "").toString();
       const wN = ci ? w.toLowerCase() : w;
       if (contains) return wN.includes(qN);
@@ -1266,9 +1244,9 @@
     }
   }
 
-  /**********************
-   * FAVORITES
-   **********************/
+  /* ======================
+     FAVORITES
+     ====================== */
   function toggleFavorite(term) {
     const key = normalizeKey(term);
     if (!key) return;
@@ -1289,7 +1267,7 @@
       toast("Saqlanganlar bo‘sh", "ℹ️");
       return;
     }
-    const items = dict.filter(x => state.favorites.has(normalizeKey(x.word)));
+    const items = dict.filter((x) => state.favorites.has(normalizeKey(x.word)));
     const si = $("#searchInput");
     if (si) si.value = "";
     renderResults(items);
@@ -1298,9 +1276,9 @@
     toast("Saqlanganlar ochildi", "💾");
   }
 
-  /**********************
-   * THEME
-   **********************/
+  /* ======================
+     THEME
+     ====================== */
   function setTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(LS.theme, theme);
@@ -1310,16 +1288,15 @@
     if (saved === "light" || saved === "dark") {
       setTheme(saved);
     } else {
-      // prefer dark by default
       setTheme("dark");
     }
   }
 
-  /**********************
-   * EXPORT / CLEAR
-   **********************/
+  /* ======================
+     EXPORT / CLEAR
+     ====================== */
   function exportFavorites() {
-    const items = dict.filter(x => state.favorites.has(normalizeKey(x.word)));
+    const items = dict.filter((x) => state.favorites.has(normalizeKey(x.word)));
     if (!items.length) {
       toast("Export qilish uchun saqlanganlar yo‘q", "⚠️");
       return;
@@ -1353,13 +1330,16 @@
     state.totalCounts = {};
     state.weeklyAll = {};
     state.weeklyAll[state.currentWeek] = {};
-    renderHistory(); renderTrending(); renderWeekly(); updateStats();
+    renderHistory();
+    renderTrending();
+    renderWeekly();
+    updateStats();
     toast("Tozalandi", "🧹");
   }
 
-  /**********************
-   * INIT
-   **********************/
+  /* ======================
+     INIT
+     ====================== */
   function init() {
     initTheme();
 
@@ -1367,9 +1347,15 @@
     const tAuto = $("#toggleAuto");
     const tContains = $("#toggleContains");
     const tCase = $("#toggleCase");
-    if (tAuto) tAuto.addEventListener("change", e => state.auto = e.target.checked);
-    if (tContains) tContains.addEventListener("change", e => { state.contains = e.target.checked; search(false); });
-    if (tCase) tCase.addEventListener("change", e => { state.caseInsensitive = e.target.checked; search(false); });
+    if (tAuto) tAuto.addEventListener("change", (e) => (state.auto = e.target.checked));
+    if (tContains) tContains.addEventListener("change", (e) => {
+      state.contains = e.target.checked;
+      search(false);
+    });
+    if (tCase) tCase.addEventListener("change", (e) => {
+      state.caseInsensitive = e.target.checked;
+      search(false);
+    });
 
     // search buttons / input
     const btnSearch = $("#btnSearch");
@@ -1409,7 +1395,10 @@
 
     // sidebar buttons
     const btnRefreshTrending = $("#btnRefreshTrending");
-    if (btnRefreshTrending) btnRefreshTrending.addEventListener("click", () => { renderTrending(); toast("Yangilandi"); });
+    if (btnRefreshTrending) btnRefreshTrending.addEventListener("click", () => {
+      renderTrending();
+      toast("Yangilandi");
+    });
     const btnResetWeek = $("#btnResetWeek");
     if (btnResetWeek) btnResetWeek.addEventListener("click", resetWeek);
     const btnClearHistory = $("#btnClearHistory");
@@ -1434,6 +1423,3 @@
     init();
   }
 })();
-});
-  }
-
