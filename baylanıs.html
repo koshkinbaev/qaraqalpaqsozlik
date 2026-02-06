@@ -368,12 +368,9 @@
       flex-wrap:wrap;
     }
 
-    /* Recaptcha container nice padding */
+    /* Recaptcha container hidden (use invisible reCAPTCHA) */
     #recaptcha-container{
-      border:1px dashed rgba(255,255,255,.18);
-      border-radius: 14px;
-      padding:10px;
-      background: rgba(0,0,0,.18);
+      display:none;
     }
 
     .hidden{ display:none !important; }
@@ -829,7 +826,7 @@
       if(recaptchaReady) return;
       try{
         window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
-          size: "normal"
+          size: "invisible"
         });
         // IMPORTANT: call render() on the window property
         window.recaptchaVerifier.render().then(()=> {
@@ -881,7 +878,7 @@
       setLoading(btn, true);
       try{
         await confirmationResult.confirm(code);
-        toast("good", "Tasdiqlandi", "Telefon orqali tizimge kirildi.");
+        toast("good", "Tasdiqlandi", "Telefon orqali ro'yxatdan o'tildi.");
       }catch(err){
         toast("bad", "Kod xato", err.message || String(err));
       }finally{
@@ -902,7 +899,7 @@
       const wrap = $("#tgWidgetWrap");
       wrap.innerHTML = "";
 
-      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("@atabekkoshkinbaev_bot")){
         const box = document.createElement("div");
         box.style.border = "1px solid rgba(255,255,255,.14)";
         box.style.borderRadius = "14px";
@@ -967,7 +964,7 @@
 
     // Open bot deep-link
     $("#openBotBtn").addEventListener("click", ()=>{
-      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("@atabekkoshkinbaev_bot")){
         toast("warn", "Bot username", "Avval TELEGRAM_BOT_USERNAME ni bot usernamiga almashtiring.");
         return;
       }
