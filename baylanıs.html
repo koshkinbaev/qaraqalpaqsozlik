@@ -902,7 +902,7 @@
       const wrap = $("#tgWidgetWrap");
       wrap.innerHTML = "";
 
-      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("@atabekkoshkinbaev_bot")){
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
         const box = document.createElement("div");
         box.style.border = "1px solid rgba(255,255,255,.14)";
         box.style.borderRadius = "14px";
@@ -923,7 +923,7 @@
       const s = document.createElement("script");
       s.async = true;
       s.src = "https://telegram.org/js/telegram-widget.js?22";
-      s.setAttribute("data-telegram-login", @atabekkoshkinbaev_bot);
+      s.setAttribute("data-telegram-login", TELEGRAM_BOT_USERNAME);
       s.setAttribute("data-size", "large");
       s.setAttribute("data-userpic", "true");
       s.setAttribute("data-radius", "14");
@@ -967,7 +967,7 @@
 
     // Open bot deep-link
     $("#openBotBtn").addEventListener("click", ()=>{
-      if(!@atabekkoshkinbaev_bot || @atabekkoshkinbaev_bot.includes("@atabekkoshkinbaev_bot")){
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
         toast("warn", "Bot username", "Avval TELEGRAM_BOT_USERNAME ni bot usernamiga almashtiring.");
         return;
       }
