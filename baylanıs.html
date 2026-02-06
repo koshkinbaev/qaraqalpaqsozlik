@@ -1,121 +1,1040 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dizimnen ótiw</title>
-  <link rel="stylesheet" href="style1.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Dizimnen ótiw — Pro Auth</title>
+
+  <!-- ========== STYLES (single-file) ========== -->
   <style>
-    .google-btn {
-      background-color: #fff;
-      color: #444;
-      border: 1px solid #ccc;
-      padding: 10px;
-      width: 100%;
-      font-size: 16px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --line: rgba(255,255,255,.12);
+      --text:#EAF0FF;
+      --muted: rgba(234,240,255,.72);
+      --accent:#7C5CFF;
+      --accent2:#00D2FF;
+      --good:#2EE59D;
+      --warn:#FFCF5A;
+      --bad:#FF5C7A;
+      --shadow: 0 22px 70px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 14px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
     }
-    .google-btn img {
-      width: 20px;
-      height: 20px;
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(900px 500px at 15% 15%, rgba(124,92,255,.22), transparent 60%),
+        radial-gradient(900px 500px at 85% 25%, rgba(0,210,255,.18), transparent 55%),
+        radial-gradient(700px 400px at 50% 95%, rgba(46,229,157,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
     }
+
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .hero, .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:26px;
+      position:relative;
+      isolation:isolate;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(420px 260px at 25% 20%, rgba(124,92,255,.25), transparent 70%),
+        radial-gradient(420px 260px at 85% 35%, rgba(0,210,255,.20), transparent 70%),
+        radial-gradient(420px 260px at 55% 85%, rgba(46,229,157,.14), transparent 70%);
+      filter: blur(10px);
+      z-index:-1;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .logo{
+      width:44px; height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 14px 40px rgba(124,92,255,.25);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      letter-spacing:.5px;
+    }
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      line-height:1.2;
+    }
+    .brand p{
+      margin:2px 0 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .hero h2{
+      margin:18px 0 8px 0;
+      font-size:34px;
+      letter-spacing:-.3px;
+      line-height:1.12;
+    }
+    .hero .sub{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+    .feat{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      padding:12px;
+      background: rgba(255,255,255,.04);
+    }
+    .feat b{ display:block; margin-bottom:4px; }
+    .feat span{ color:var(--muted); font-size:13px; line-height:1.45; }
+
+    .card{
+      padding:18px;
+    }
+
+    .tabs{
+      display:flex;
+      gap:10px;
+      padding:8px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: rgba(0,0,0,.18);
+      margin-bottom:14px;
+    }
+    .tab{
+      flex:1;
+      border:0;
+      background:transparent;
+      color:var(--muted);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.15s ease;
+    }
+    .tab.active{
+      color:var(--text);
+      background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(0,210,255,.16));
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    form{ display:grid; gap:10px; }
+    .row{ display:grid; gap:10px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns:1fr; }
+      .row{ grid-template-columns:1fr; }
+    }
+
+    label{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:6px;
+      display:block;
+    }
+
+    .input{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+      color:var(--text);
+      padding:12px 12px;
+      outline:none;
+      transition:.15s ease;
+    }
+    .input:focus{
+      border-color: rgba(124,92,255,.55);
+      box-shadow: 0 0 0 4px rgba(124,92,255,.12);
+    }
+
+    .pw-wrap{ position:relative; }
+    .pw-toggle{
+      position:absolute;
+      right:10px;
+      top:50%;
+      transform: translateY(-50%);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color:var(--text);
+      border-radius:12px;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:12px;
+    }
+
+    .hint{
+      margin-top:-4px;
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+
+    .meter{
+      height:8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .meter > div{
+      height:100%;
+      width:0%;
+      transition:.2s ease;
+      background: linear-gradient(90deg, var(--bad), var(--warn), var(--good));
+    }
+
+    .btn{
+      border:0;
+      border-radius: 14px;
+      padding:12px 12px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.15s ease;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      user-select:none;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color:#06101c;
+      box-shadow: 0 18px 50px rgba(124,92,255,.24);
+    }
+    .btn-primary:hover{ transform: translateY(-1px); }
+    .btn-secondary{
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .btn:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      transform:none !important;
+    }
+
+    .divider{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color: var(--muted);
+      font-size:12px;
+      margin: 10px 0;
+    }
+    .divider:before, .divider:after{
+      content:"";
+      height:1px;
+      flex:1;
+      background: rgba(255,255,255,.12);
+    }
+
+    .provider-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .provider-grid{ grid-template-columns:1fr; }
+    }
+
+    .google-btn{
+      background:#fff;
+      color:#222;
+      border:1px solid #ddd;
+    }
+    .google-btn img{ width:18px; height:18px; }
+
+    .tg-btn{
+      background: linear-gradient(135deg, rgba(0,136,204,.92), rgba(0,210,255,.60));
+      color:#06101c;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .small{
+      font-size:12px;
+      color: var(--muted);
+      line-height:1.45;
+      margin-top:6px;
+    }
+
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      width:min(420px, calc(100% - 36px));
+      display:grid;
+      gap:10px;
+      z-index:9999;
+    }
+    .toast .item{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding:12px 14px;
+      box-shadow: var(--shadow);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      animation: pop .18s ease;
+    }
+    @keyframes pop{ from{ transform: translateY(6px); opacity:.0;} to{ transform: translateY(0); opacity:1;} }
+    .dot{
+      width:10px; height:10px;
+      border-radius:999px;
+      margin-top:4px;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(0,210,255,.12);
+    }
+    .dot.good{ background: var(--good); box-shadow: 0 0 0 4px rgba(46,229,157,.12); }
+    .dot.warn{ background: var(--warn); box-shadow: 0 0 0 4px rgba(255,207,90,.12); }
+    .dot.bad{ background: var(--bad); box-shadow: 0 0 0 4px rgba(255,92,122,.12); }
+    .item b{ display:block; margin-bottom:2px; }
+    .item p{ margin:0; color:var(--muted); font-size:13px; line-height:1.45; }
+
+    .profile{
+      border:1px solid var(--line);
+      border-radius: var(--radius2);
+      padding:12px;
+      background: rgba(255,255,255,.04);
+      display:none;
+      gap:10px;
+      margin-top:10px;
+    }
+    .profile.on{ display:grid; }
+    .avatar{
+      width:44px; height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(124,92,255,.25), rgba(0,210,255,.2));
+      border:1px solid rgba(255,255,255,.14);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+    }
+    .profile-top{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .profile-meta b{ display:block; }
+    .profile-meta span{ font-size:12px; color:var(--muted); }
+    .profile-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* Recaptcha container nice padding */
+    #recaptcha-container{
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding:10px;
+      background: rgba(0,0,0,.18);
+    }
+
+    .hidden{ display:none !important; }
   </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <!-- LEFT: HERO -->
+    <section class="hero">
+      <div class="brand">
+        <div class="logo">QA</div>
+        <div>
+          <h1>Qaraqalpaq Sózlik — Pro Auth</h1>
+          <p>Google • Telefon (OTP) • Email/Parol • Telegram</p>
+        </div>
+      </div>
 
-<!-- Ro'yxatdan o'tish bo'limi -->
-<section class="register-section" id="register">
-  <div class="register-wrapper">
-    <h2>Dizimnen ótiw</h2>
-    <form class="register-form" id="registerForm">
-      <div class="form-group">
-        <label for="name">Atıńız</label>
-        <input type="text" id="name" name="name" placeholder="Atınızdı kirgiziń" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Elektron pochta mánzilińiz</label>
-        <input type="email" id="email" name="email" placeholder="example@mail.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Parol</label>
-        <input type="password" id="password" name="password" placeholder="Parolińiz" required>
-      </div>
-      <div class="form-group">
-        <label for="confirm-password">Paroldı tastıyıqlaw</label>
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Paroldi qayta kirgiziń" required>
-      </div>
-      <button type="submit" class="submit-btn">Dizimnen ótiw</button>
-    </form>
+      <h2>Jozibador, tez va xavfsiz tizimge kirish ✨</h2>
+      <p class="sub">
+        Birgina sahifada barcha kirish usullari. Foydalanuvchi kirgandan keyin profil ko‘rinadi,
+        xabarlar toast ko‘rinishida chiqadi, telefon OTP va Google/Email bilan ishlaydi.
+      </p>
 
-    <div style="text-align: center; margin: 20px 0;">— yáki —</div>
+      <div class="feature-grid">
+        <div class="feat"><b>✅ Interaktiv UI</b><span>Tablar, loading, toast, parol kuchi indikatori.</span></div>
+        <div class="feat"><b>🔒 Firebase Auth</b><span>Google, Email/Password, Phone OTP qo‘llab-quvvatlanadi.</span></div>
+        <div class="feat"><b>📲 Telefon OTP</b><span>SMS kod bilan kirish — reCAPTCHA bilan himoyalangan.</span></div>
+        <div class="feat"><b>✈️ Telegram</b><span>Telegram Login Widget (serverda tasdiqlash tavsiya).</span></div>
+      </div>
 
-    <button class="google-btn" id="googleLoginBtn">
-      <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google logo">
-      Google arqalı kirıw
-    </button>
+      <p class="small" style="margin-top:14px;">
+        ⚙️ Eslatma: Telefon OTP ishlashi uchun domeningiz Firebase Auth’da “Authorized domains”ga qo‘shilgan bo‘lishi kerak.
+      </p>
+    </section>
+
+    <!-- RIGHT: AUTH CARD -->
+    <section class="card">
+      <div class="tabs">
+        <button class="tab active" data-tab="signup">Ro'yxatdan o'tish</button>
+        <button class="tab" data-tab="login">Kirish</button>
+        <button class="tab" data-tab="phone">Telefon (OTP)</button>
+        <button class="tab" data-tab="telegram">Telegram</button>
+      </div>
+
+      <!-- SIGNUP -->
+      <div class="panel" id="panel-signup">
+        <form id="signupForm">
+          <div class="row">
+            <div>
+              <label for="suName">Atıńız</label>
+              <input class="input" id="suName" type="text" placeholder="Atınızdı kirgiziń" required />
+            </div>
+            <div>
+              <label for="suEmail">Elektron pochta</label>
+              <input class="input" id="suEmail" type="email" placeholder="example@mail.com" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label for="suPassword">Parol</label>
+              <div class="pw-wrap">
+                <input class="input" id="suPassword" type="password" placeholder="Parolińiz" required />
+                <button type="button" class="pw-toggle" data-toggle="#suPassword">Ko'rsat</button>
+              </div>
+              <div class="hint">Kamida 8 belgi, harf+son tavsiya qilinadi.</div>
+              <div class="meter" title="Password strength"><div id="pwBar"></div></div>
+            </div>
+            <div>
+              <label for="suConfirm">Paroldı tastıyıqlaw</label>
+              <div class="pw-wrap">
+                <input class="input" id="suConfirm" type="password" placeholder="Paroldi qayta kirgiziń" required />
+                <button type="button" class="pw-toggle" data-toggle="#suConfirm">Ko'rsat</button>
+              </div>
+              <div class="hint" id="pwMatchHint">Parollar bir xil bo‘lishi kerak.</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="signupBtn">Dizimnen ótiw</button>
+
+          <div class="divider">— yáki —</div>
+
+          <div class="provider-grid">
+            <button class="btn google-btn" type="button" id="googleBtn1">
+              <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" />
+              Google arqalı kirıw
+            </button>
+            <button class="btn btn-secondary" type="button" id="goPhoneFromSignup">
+              📲 Telefon (OTP) arqalı
+            </button>
+          </div>
+
+          <div class="small">
+            Ro'yxatdan o‘tganingizdan keyin profil ma’lumoti pastda ko‘rinadi.
+          </div>
+        </form>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="panel hidden" id="panel-login">
+        <form id="loginForm">
+          <div>
+            <label for="liEmail">Elektron pochta</label>
+            <input class="input" id="liEmail" type="email" placeholder="example@mail.com" required />
+          </div>
+
+          <div>
+            <label for="liPassword">Parol</label>
+            <div class="pw-wrap">
+              <input class="input" id="liPassword" type="password" placeholder="Parolińiz" required />
+              <button type="button" class="pw-toggle" data-toggle="#liPassword">Ko'rsat</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit" id="loginBtn">Kirish</button>
+
+          <div class="divider">— yáki —</div>
+
+          <div class="provider-grid">
+            <button class="btn google-btn" type="button" id="googleBtn2">
+              <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" />
+              Google arqalı kirıw
+            </button>
+            <button class="btn btn-secondary" type="button" id="goPhoneFromLogin">
+              📲 Telefon (OTP) arqalı
+            </button>
+          </div>
+
+          <button class="btn btn-secondary" type="button" id="resetBtn">🔁 Parolni tiklash (email)</button>
+
+          <div class="small">
+            “Parolni tiklash” tugmasi emailga link yuboradi.
+          </div>
+        </form>
+      </div>
+
+      <!-- PHONE OTP -->
+      <div class="panel hidden" id="panel-phone">
+        <form id="phoneForm">
+          <div>
+            <label for="phNumber">Telefon raqam (E.164 format)</label>
+            <input class="input" id="phNumber" type="tel" placeholder="+998901234567" />
+            <div class="hint">Misol: <b>+998</b> bilan boshlang.</div>
+          </div>
+
+          <div id="recaptcha-container"></div>
+
+          <button class="btn btn-primary" type="button" id="sendOtpBtn">SMS kod yuborish</button>
+
+          <div class="divider">Kodni kiriting</div>
+
+          <div class="row">
+            <div>
+              <label for="otpCode">SMS kod</label>
+              <input class="input" id="otpCode" type="text" placeholder="123456" />
+            </div>
+            <div style="display:flex; align-items:end;">
+              <button class="btn btn-secondary" type="button" id="verifyOtpBtn">Tasdiqlash</button>
+            </div>
+          </div>
+
+          <div class="small">
+            ⚠️ Telefon Auth ba’zan hosting domeni va reCAPTCHA sozlamalariga juda bog‘liq. Domenni Firebase’da ruxsat qiling.
+          </div>
+        </form>
+      </div>
+
+      <!-- TELEGRAM -->
+      <div class="panel hidden" id="panel-telegram">
+        <div style="display:grid; gap:10px;">
+          <div style="border:1px solid var(--line); border-radius: var(--radius2); padding:12px; background: rgba(255,255,255,.04);">
+            <b>Telegram Login</b>
+            <p class="small" style="margin:6px 0 0 0;">
+              Bu usul Telegram akkauntdan login ma’lumotini oladi. <br/>
+              ✅ Demo sifatida ishlaydi. <br/>
+              🔒 Xavfsizlik uchun real loyihada bu ma’lumotni <b>serverda</b> bot token bilan tasdiqlash shart.
+            </p>
+          </div>
+
+          <!-- Telegram widget will render here -->
+          <div id="tgWidgetWrap" style="display:grid; place-items:center; padding:6px;"></div>
+
+          <button class="btn tg-btn" type="button" id="openBotBtn">🤖 Telegram bot orqali ro‘yxatdan o‘tish</button>
+          <div class="small">
+            Bot orqali: foydalanuvchini botga olib boradi (deep-link). Bot sizga kod qaytarishi mumkin.
+          </div>
+
+          <div style="border:1px dashed rgba(255,255,255,.18); border-radius: var(--radius2); padding:12px; background: rgba(0,0,0,.16);">
+            <b>Bot-kod (ixtiyoriy)</b>
+            <p class="small" style="margin:6px 0 10px 0;">
+              Agar siz botdan “login code” olsangiz, shu yerga kiritib tasdiqlatishingiz mumkin (server kerak bo‘ladi).
+            </p>
+            <div class="row">
+              <div>
+                <label for="tgCode">Bot bergan kod</label>
+                <input class="input" id="tgCode" placeholder="Masalan: 8F3K-29AA" />
+              </div>
+              <div style="display:flex; align-items:end;">
+                <button class="btn btn-secondary" type="button" id="verifyTgCodeBtn">Tasdiqlash</button>
+              </div>
+            </div>
+            <div class="small">
+              Bu qism server endpoint bo‘lmasa ishlamaydi. Pastda JS ichida `/telegram-auth` va `/telegram-code` joylari bor.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE / AUTH STATE -->
+      <div class="profile" id="profileBox">
+        <div class="profile-top">
+          <div class="avatar" id="avatar">U</div>
+          <div class="profile-meta">
+            <b id="pName">Foydalanuvchi</b>
+            <span id="pEmail">—</span>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-secondary" type="button" id="logoutBtn">🚪 Logout</button>
+          <button class="btn btn-secondary" type="button" id="copyUidBtn">📋 UID nusxa</button>
+        </div>
+      </div>
+    </section>
   </div>
-</section>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <!-- Toast container -->
+  <div class="toast" id="toast"></div>
 
-<script>
-  // Firebase konfiguratsiyasi
-  const firebaseConfig = {
-    apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
-    authDomain: "dizimnen-otiw.firebaseapp.com",
-    databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
-    projectId: "dizimnen-otiw",
-    storageBucket: "dizimnen-otiw.firebasestorage.app",
-    messagingSenderId: "254101190553",
-    appId: "1:254101190553:web:b6590cddbba1491da4c508",
-    measurementId: "G-R50M9DDWQH"
-  };
+  <!-- ========== Firebase SDK (compat) ========== -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 
-  // Firebase ishga tushurish
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+  <!-- ========== APP SCRIPT ========== -->
+  <script>
+    /***********************
+     * 1) Firebase Config
+     ***********************/
+    const firebaseConfig = {
+      apiKey: "AIzaSyBswBMDpNPgfpaOqY4S8Vu0PVLkFEqrjkk",
+      authDomain: "dizimnen-otiw.firebaseapp.com",
+      databaseURL: "https://dizimnen-otiw-default-rtdb.firebaseio.com",
+      projectId: "dizimnen-otiw",
+      storageBucket: "dizimnen-otiw.firebasestorage.app",
+      messagingSenderId: "254101190553",
+      appId: "1:254101190553:web:b6590cddbba1491da4c508",
+      measurementId: "G-R50M9DDWQH"
+    };
 
-  // Email orqali ro'yxatdan o'tish
-  document.getElementById('registerForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    if (password !== confirmPassword) {
-      alert("Parollar mos kelmeydi!");
-      return;
+    /***********************
+     * 2) Helpers (UI)
+     ***********************/
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function toast(type, title, msg){
+      const wrap = $("#toast");
+      const item = document.createElement("div");
+      item.className = "item";
+      const dot = document.createElement("div");
+      dot.className = "dot " + (type || "");
+      const content = document.createElement("div");
+      content.innerHTML = `<b>${escapeHtml(title || "Xabar")}</b><p>${escapeHtml(msg || "")}</p>`;
+      item.appendChild(dot);
+      item.appendChild(content);
+      wrap.appendChild(item);
+      setTimeout(()=> item.remove(), 4200);
     }
 
-    auth.createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        alert("Ro'yxatdan muvaffaqiyatli o'tildi!");
-        console.log(userCredential.user);
-      })
-      .catch((error) => {
-        alert("Xatolik: " + error.message);
-      });
-  });
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[s]));
+    }
 
-  // Google orqali tizimga kirish
-  document.getElementById('googleLoginBtn').addEventListener('click', function () {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        alert("Google orqali tizimge kirildi!");
-        console.log(result.user);
-      })
-      .catch((error) => {
-        alert("Google orqali kirishda xatolik: " + error.message);
-      });
-  });
-</script>
+    function setLoading(btn, on){
+      if(!btn) return;
+      btn.disabled = !!on;
+      if(on){
+        btn.dataset._txt = btn.textContent;
+        btn.textContent = "⏳ Kuting...";
+      }else{
+        btn.textContent = btn.dataset._txt || btn.textContent;
+      }
+    }
 
+    /***********************
+     * 3) Tabs
+     ***********************/
+    const panels = {
+      signup: $("#panel-signup"),
+      login: $("#panel-login"),
+      phone: $("#panel-phone"),
+      telegram: $("#panel-telegram"),
+    };
+
+    function openTab(name){
+      $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+      Object.keys(panels).forEach(k => panels[k].classList.toggle("hidden", k !== name));
+      if(name === "phone"){
+        // ensure recaptcha is ready
+        ensureRecaptcha();
+      }
+    }
+
+    $$(".tab").forEach(btn => {
+      btn.addEventListener("click", ()=> openTab(btn.dataset.tab));
+    });
+
+    $("#goPhoneFromSignup").addEventListener("click", ()=> openTab("phone"));
+    $("#goPhoneFromLogin").addEventListener("click", ()=> openTab("phone"));
+
+    /***********************
+     * 4) Password UX
+     ***********************/
+    $$(".pw-toggle").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        const sel = b.getAttribute("data-toggle");
+        const inp = $(sel);
+        if(!inp) return;
+        const isPw = inp.type === "password";
+        inp.type = isPw ? "text" : "password";
+        b.textContent = isPw ? "Yashir" : "Ko'rsat";
+      });
+    });
+
+    function pwStrength(pw){
+      let score = 0;
+      if(pw.length >= 8) score++;
+      if(/[A-Z]/.test(pw)) score++;
+      if(/[a-z]/.test(pw)) score++;
+      if(/[0-9]/.test(pw)) score++;
+      if(/[^A-Za-z0-9]/.test(pw)) score++;
+      // max 5
+      return score;
+    }
+
+    const suPassword = $("#suPassword");
+    const suConfirm  = $("#suConfirm");
+    const pwBar = $("#pwBar");
+    const pwMatchHint = $("#pwMatchHint");
+
+    function updatePwUI(){
+      const pw = suPassword.value || "";
+      const sc = pwStrength(pw);
+      const pct = Math.min(100, sc * 20);
+      pwBar.style.width = pct + "%";
+
+      const match = (suConfirm.value || "") === pw && pw.length > 0;
+      pwMatchHint.textContent = match ? "✅ Parollar mos." : "Parollar bir xil bo‘lishi kerak.";
+      pwMatchHint.style.color = match ? "rgba(46,229,157,.9)" : "var(--muted)";
+    }
+    suPassword.addEventListener("input", updatePwUI);
+    suConfirm.addEventListener("input", updatePwUI);
+
+    /***********************
+     * 5) Email/Password: Signup
+     ***********************/
+    $("#signupForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const name = $("#suName").value.trim();
+      const email = $("#suEmail").value.trim();
+      const pw = $("#suPassword").value;
+      const cpw = $("#suConfirm").value;
+
+      if(pw !== cpw){
+        toast("bad", "Xatolik", "Parollar mos kelmeydi!");
+        return;
+      }
+      if(pw.length < 6){
+        toast("warn", "Ogohlantirish", "Parol kamida 6 belgidan iborat bo‘lishi kerak (Firebase talabi).");
+        return;
+      }
+
+      const btn = $("#signupBtn");
+      setLoading(btn, true);
+
+      try{
+        const cred = await auth.createUserWithEmailAndPassword(email, pw);
+        // displayName set
+        await cred.user.updateProfile({ displayName: name || "User" });
+
+        toast("good", "Tayyor!", "Ro'yxatdan muvaffaqiyatli o'tildi!");
+      }catch(err){
+        toast("bad", "Xatolik", err.message || String(err));
+      }finally{
+        setLoading(btn, false);
+      }
+    });
+
+    /***********************
+     * 6) Email/Password: Login + Reset
+     ***********************/
+    $("#loginForm").addEventListener("submit", async (e)=>{
+      e.preventDefault();
+      const email = $("#liEmail").value.trim();
+      const pw = $("#liPassword").value;
+
+      const btn = $("#loginBtn");
+      setLoading(btn, true);
+
+      try{
+        await auth.signInWithEmailAndPassword(email, pw);
+        toast("good", "Xush kelibsiz!", "Tizimge kirildi.");
+      }catch(err){
+        toast("bad", "Xatolik", err.message || String(err));
+      }finally{
+        setLoading(btn, false);
+      }
+    });
+
+    $("#resetBtn").addEventListener("click", async ()=>{
+      const email = $("#liEmail").value.trim();
+      if(!email){
+        toast("warn", "Kerak", "Avval emailingizni kiriting.");
+        return;
+      }
+      try{
+        await auth.sendPasswordResetEmail(email);
+        toast("good", "Yuborildi", "Parolni tiklash linki emailingizga yuborildi.");
+      }catch(err){
+        toast("bad", "Xatolik", err.message || String(err));
+      }
+    });
+
+    /***********************
+     * 7) Google Login
+     ***********************/
+    async function googleLogin(){
+      const provider = new firebase.auth.GoogleAuthProvider();
+      try{
+        await auth.signInWithPopup(provider);
+        toast("good", "Google", "Google orqali tizimge kirildi!");
+      }catch(err){
+        toast("bad", "Google xatolik", err.message || String(err));
+      }
+    }
+    $("#googleBtn1").addEventListener("click", googleLogin);
+    $("#googleBtn2").addEventListener("click", googleLogin);
+
+    /***********************
+     * 8) Phone OTP (Firebase)
+     ***********************/
+    let recaptchaReady = false;
+    let confirmationResult = null;
+
+    function ensureRecaptcha(){
+      if(recaptchaReady) return;
+      try{
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
+          size: "normal"
+        });
+        recaptchaVerifier.render().then(()=> {
+          recaptchaReady = true;
+          toast("good", "reCAPTCHA", "Tayyor.");
+        });
+      }catch(e){
+        toast("bad", "reCAPTCHA xatolik", e.message || String(e));
+      }
+    }
+
+    $("#sendOtpBtn").addEventListener("click", async ()=>{
+      ensureRecaptcha();
+      const phone = ($("#phNumber").value || "").trim();
+      if(!phone.startsWith("+")){
+        toast("warn", "Telefon format", "Raqamni +998... formatda kiriting.");
+        return;
+      }
+
+      const btn = $("#sendOtpBtn");
+      setLoading(btn, true);
+
+      try{
+        confirmationResult = await auth.signInWithPhoneNumber(phone, window.recaptchaVerifier);
+        toast("good", "SMS yuborildi", "Kodni kiriting va tasdiqlang.");
+      }catch(err){
+        toast("bad", "OTP xatolik", err.message || String(err));
+      }finally{
+        setLoading(btn, false);
+      }
+    });
+
+    $("#verifyOtpBtn").addEventListener("click", async ()=>{
+      const code = ($("#otpCode").value || "").trim();
+      if(!confirmationResult){
+        toast("warn", "Avval", "Avval SMS kod yuboring.");
+        return;
+      }
+      if(code.length < 4){
+        toast("warn", "Kod", "SMS kodni to‘liq kiriting.");
+        return;
+      }
+      const btn = $("#verifyOtpBtn");
+      setLoading(btn, true);
+      try{
+        await confirmationResult.confirm(code);
+        toast("good", "Tasdiqlandi", "Telefon orqali tizimge kirildi.");
+      }catch(err){
+        toast("bad", "Kod xato", err.message || String(err));
+      }finally{
+        setLoading(btn, false);
+      }
+    });
+
+    /***********************
+     * 9) Telegram Login Widget
+     *  - Client-side widget provides user data
+     *  - Security: MUST verify on server with bot token.
+     ***********************/
+    const TELEGRAM_BOT_USERNAME = "YOUR_BOT_USERNAME_HERE"; // <-- masalan: "UniStartupBot"
+    const TELEGRAM_AUTH_ENDPOINT = "/telegram-auth"; // <-- serverda tekshirish endpoint
+    const TELEGRAM_CODE_ENDPOINT = "/telegram-code"; // <-- botdan olingan kodni tekshirish endpoint
+
+    function mountTelegramWidget(){
+      const wrap = $("#tgWidgetWrap");
+      wrap.innerHTML = "";
+
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
+        const box = document.createElement("div");
+        box.style.border = "1px solid rgba(255,255,255,.14)";
+        box.style.borderRadius = "14px";
+        box.style.padding = "12px";
+        box.style.background = "rgba(0,0,0,.18)";
+        box.innerHTML = `
+          <b>Telegram sozlama kerak</b>
+          <p class="small" style="margin:6px 0 0 0;">
+            TELEGRAM_BOT_USERNAME ni JS ichida bot usernamiga almashtiring.<br/>
+            Keyin sahifani yangilang.
+          </p>
+        `;
+        wrap.appendChild(box);
+        return;
+      }
+
+      // Telegram script
+      const s = document.createElement("script");
+      s.async = true;
+      s.src = "https://telegram.org/js/telegram-widget.js?22";
+      s.setAttribute("data-telegram-login", TELEGRAM_BOT_USERNAME);
+      s.setAttribute("data-size", "large");
+      s.setAttribute("data-userpic", "true");
+      s.setAttribute("data-radius", "14");
+      // callback
+      s.setAttribute("data-onauth", "onTelegramAuth(user)");
+      wrap.appendChild(s);
+    }
+
+    // Called by Telegram Widget
+    window.onTelegramAuth = async function(user){
+      // user: {id, first_name, last_name, username, photo_url, auth_date, hash}
+      toast("good", "Telegram", "Telegram ma’lumoti olindi. Serverda tasdiqlash tavsiya!");
+
+      // Real security: send to backend for verification
+      try{
+        const res = await fetch(TELEGRAM_AUTH_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type":"application/json" },
+          body: JSON.stringify(user)
+        });
+
+        if(!res.ok){
+          // If you don't have backend yet, this will fail — that's normal.
+          throw new Error("Server endpoint topilmadi yoki ruxsat yo‘q. (Demo holat)");
+        }
+
+        const data = await res.json();
+        // data could contain a custom token, then you can sign in with it:
+        // await auth.signInWithCustomToken(data.customToken);
+        toast("good", "Telegram", "Server tasdiqladi (endpoint ishlayapti).");
+      }catch(err){
+        toast("warn", "Telegram demo", err.message || String(err));
+      }
+    };
+
+    // Open bot deep-link
+    $("#openBotBtn").addEventListener("click", ()=>{
+      if(!TELEGRAM_BOT_USERNAME || TELEGRAM_BOT_USERNAME.includes("YOUR_BOT_USERNAME_HERE")){
+        toast("warn", "Bot username", "Avval TELEGRAM_BOT_USERNAME ni bot usernamiga almashtiring.");
+        return;
+      }
+      // deep link start param (ixtiyoriy)
+      const url = `https://t.me/${encodeURIComponent(TELEGRAM_BOT_USERNAME)}?start=web_register`;
+      window.open(url, "_blank");
+    });
+
+    // Verify bot code (needs backend)
+    $("#verifyTgCodeBtn").addEventListener("click", async ()=>{
+      const code = ($("#tgCode").value || "").trim();
+      if(!code){
+        toast("warn", "Kod", "Bot bergan kodni kiriting.");
+        return;
+      }
+      const btn = $("#verifyTgCodeBtn");
+      setLoading(btn, true);
+
+      try{
+        const res = await fetch(TELEGRAM_CODE_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type":"application/json" },
+          body: JSON.stringify({ code })
+        });
+        if(!res.ok) throw new Error("Server endpoint topilmadi yoki xato.");
+        const data = await res.json();
+
+        // Example: if backend returns Firebase custom token:
+        // await auth.signInWithCustomToken(data.customToken);
+
+        toast("good", "Tasdiq", "Telegram bot kodi tasdiqlandi (endpoint ishlayapti).");
+      }catch(err){
+        toast("warn", "Demo", (err.message || String(err)) + " (Server qo‘shilmaguncha normal)");
+      }finally{
+        setLoading(btn, false);
+      }
+    });
+
+    /***********************
+     * 10) Auth State (Profile)
+     ***********************/
+    auth.onAuthStateChanged((user)=>{
+      const box = $("#profileBox");
+      if(user){
+        const name = user.displayName || (user.phoneNumber ? "Phone User" : "User");
+        const email = user.email || user.phoneNumber || "—";
+        $("#pName").textContent = name;
+        $("#pEmail").textContent = email;
+        $("#avatar").textContent = (name || "U").trim().slice(0,1).toUpperCase();
+        box.classList.add("on");
+      }else{
+        box.classList.remove("on");
+      }
+    });
+
+    $("#logoutBtn").addEventListener("click", async ()=>{
+      try{
+        await auth.signOut();
+        toast("good", "Chiqildi", "Logout muvaffaqiyatli.");
+      }catch(err){
+        toast("bad", "Xatolik", err.message || String(err));
+      }
+    });
+
+    $("#copyUidBtn").addEventListener("click", async ()=>{
+      const user = auth.currentUser;
+      if(!user){ toast("warn", "Kirish", "Avval tizimga kiring."); return; }
+      try{
+        await navigator.clipboard.writeText(user.uid);
+        toast("good", "Nusxa", "UID clipboard’ga nusxalandi.");
+      }catch{
+        toast("warn", "Nusxa", "Clipboard ruxsat bermadi.");
+      }
+    });
+
+    /***********************
+     * 11) Init
+     ***********************/
+    mountTelegramWidget();
+    // Open default tab
+    openTab("signup");
+  </script>
 </body>
 </html>
