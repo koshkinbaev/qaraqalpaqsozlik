@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Jamoamiz — Interaktiv</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -33,6 +33,7 @@
     *{box-sizing:border-box}
     body{
       margin:0;
+      min-height: 100dvh;
       font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       background:
         radial-gradient(900px 500px at 20% 0%, rgba(47,124,255,.18), transparent 60%),
@@ -44,7 +45,8 @@
     .wrap{
       max-width: 1200px;
       margin:auto;
-      padding: 56px 18px 80px;
+      padding: calc(32px + env(safe-area-inset-top)) 18px calc(70px + env(safe-area-inset-bottom));
+      min-height: 100dvh;
     }
 
     .topbar{
@@ -103,6 +105,18 @@
       color: var(--text);
       font-size: 14px;
     }
+    .clear-btn{
+      border:none;
+      background: transparent;
+      color: var(--muted);
+      cursor:pointer;
+      font-size: 16px;
+      padding: 4px;
+      border-radius: 8px;
+      display:none;
+    }
+    .clear-btn.show{ display:inline-flex; }
+    .clear-btn:hover{ color: var(--accent); }
 
     select, .btn{
       border: 1px solid var(--line);
@@ -120,6 +134,9 @@
       transition: transform .15s ease;
     }
     .btn:active{ transform: scale(.98); }
+    .btn.secondary{
+      background: rgba(255,255,255,.06);
+    }
 
     .grid{
       margin-top: 24px;
@@ -258,6 +275,24 @@
       display:flex; align-items:center; gap:8px;
     }
 
+    .scroll-top{
+      position: fixed;
+      right: 18px;
+      bottom: calc(18px + env(safe-area-inset-bottom));
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      display:none;
+      align-items:center;
+      gap:8px;
+      z-index: 40;
+      box-shadow: var(--shadow);
+    }
+    .scroll-top.show{ display:flex; }
+
     /* Hover 3D (light) */
     .card:hover{
       transform: translateY(-2px);
@@ -288,11 +323,14 @@
     .modal.open{ display:flex; }
     .modal-box{
       width: min(760px, 100%);
+      max-height: min(90dvh, 760px);
       border-radius: 18px;
       border: 1px solid var(--line);
       background: var(--bg);
       box-shadow: 0 30px 90px rgba(0,0,0,.45);
       overflow:hidden;
+      display:flex;
+      flex-direction:column;
     }
     .modal-top{
       display:flex;
@@ -319,6 +357,7 @@
       gap: 16px;
       padding: 16px;
       flex-wrap:wrap;
+      overflow:auto;
     }
     .modal-body .big{
       width: 110px; height: 110px;
@@ -360,6 +399,17 @@
     @media (max-width: 980px){
       .card{ grid-column: span 6; }
     }
+    @media (max-width: 720px){
+      .topbar{ position: sticky; top: 0; padding: 12px 0; background: rgba(0,0,0,0); z-index: 10; }
+      .topbar::before{
+        content:"";
+        position:absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15,20,32,.9), rgba(15,20,32,0));
+        opacity: .06;
+        pointer-events:none;
+      }
+    }
     @media (max-width: 620px){
       .field{ min-width: 100%; }
       .card{ grid-column: span 12; }
@@ -367,6 +417,7 @@
       .title{ width:100%; justify-content:space-between; }
       .controls{ width:100%; }
       select, .btn{ width:100%; }
+      .modal-box{ max-height: 92dvh; }
     }
   </style>
 </head>
@@ -383,6 +434,9 @@
         <div class="field">
           <i class="fa-solid fa-magnifying-glass"></i>
           <input id="search" type="text" placeholder="Izlew: atı, rolı, málimeti..." />
+          <button class="clear-btn" id="clearSearch" aria-label="Izlewdi tazalaw">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
         </div>
 
         <select id="roleFilter" title="Rol boyınsha filter">
@@ -398,6 +452,11 @@
           <option value="za">Atı: Z–A</option>
         </select>
 
+        <button class="btn secondary" id="resetFilters" title="Bárin qayta ornatuw">
+          <i class="fa-solid fa-rotate-right"></i>
+          Qayta
+        </button>
+
         <button class="btn" id="themeBtn" title="Tema">
           <i class="fa-solid fa-moon"></i>
           Dark
@@ -407,6 +466,10 @@
 
     <section class="grid" id="grid"></section>
   </main>
+
+  <button class="scroll-top" id="scrollTop" aria-label="Joqarǵa qaytıw">
+    <i class="fa-solid fa-arrow-up"></i> Joqarǵa
+  </button>
 
   <!-- Modal -->
   <div class="modal" id="modal" aria-hidden="true">
@@ -475,10 +538,13 @@
     const $ = (s) => document.querySelector(s);
     const grid = $("#grid");
     const search = $("#search");
+    const clearSearch = $("#clearSearch");
     const roleFilter = $("#roleFilter");
     const sort = $("#sort");
     const countBadge = $("#countBadge");
     const themeBtn = $("#themeBtn");
+    const resetFilters = $("#resetFilters");
+    const scrollTop = $("#scrollTop");
 
     // Theme (localStorage)
     const savedTheme = localStorage.getItem("theme");
@@ -496,6 +562,18 @@
       themeBtn.innerHTML = dark
         ? `<i class="fa-solid fa-sun"></i> Light`
         : `<i class="fa-solid fa-moon"></i> Dark`;
+    }
+
+    function toggleClear(){
+      clearSearch.classList.toggle("show", Boolean(search.value.trim()));
+    }
+
+    function resetAll(){
+      search.value = "";
+      roleFilter.value = "all";
+      sort.value = "az";
+      toggleClear();
+      render();
     }
 
     // Render
@@ -650,10 +728,29 @@
     });
 
     // Controls
-    search.addEventListener("input", render);
+    search.addEventListener("input", () => {
+      toggleClear();
+      render();
+    });
+    clearSearch.addEventListener("click", () => {
+      search.value = "";
+      toggleClear();
+      render();
+      search.focus();
+    });
     roleFilter.addEventListener("change", render);
     sort.addEventListener("change", render);
+    resetFilters.addEventListener("click", resetAll);
 
+    // Scroll top
+    window.addEventListener("scroll", () => {
+      scrollTop.classList.toggle("show", window.scrollY > 260);
+    });
+    scrollTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    toggleClear();
     render();
   </script>
 </body>
