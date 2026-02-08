@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Biziń komanda — Interaktiv</title>
+  <title>Jamoamiz — Interaktiv</title>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
     :root{
       --bg: #f4f4f8;
-      --card: rgba(255,255,255,.86);
-      --text: #0f172a;
-      --muted: rgba(15,23,42,.72);
-      --line: rgba(15,23,42,.12);
+      --card: rgba(255,255,255,.85);
+      --text: #121826;
+      --muted: rgba(18,24,38,.72);
+      --line: rgba(18,24,38,.12);
       --accent: #2f7cff;
       --accent2: #00d4ff;
-      --good: #1fce8a;
-      --warn: #ffcc66;
       --shadow: 0 18px 45px rgba(0,0,0,.12);
       --radius: 18px;
     }
@@ -28,7 +27,7 @@
       --line: rgba(255,255,255,.14);
       --accent: #7c5cff;
       --accent2: #00d2ff;
-      --shadow: 0 22px 60px rgba(0,0,0,.45);
+      --shadow: 0 20px 55px rgba(0,0,0,.45);
     }
 
     *{box-sizing:border-box}
@@ -36,8 +35,8 @@
       margin:0;
       font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
       background:
-        radial-gradient(900px 520px at 18% 0%, rgba(47,124,255,.18), transparent 60%),
-        radial-gradient(900px 520px at 82% 10%, rgba(0,212,255,.14), transparent 60%),
+        radial-gradient(900px 500px at 20% 0%, rgba(47,124,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 80% 10%, rgba(0,212,255,.14), transparent 60%),
         var(--bg);
       color: var(--text);
     }
@@ -48,7 +47,6 @@
       padding: 56px 18px 80px;
     }
 
-    /* Header / Controls */
     .topbar{
       display:flex;
       gap:14px;
@@ -57,16 +55,16 @@
       flex-wrap:wrap;
       margin-bottom: 18px;
     }
+
     .title{
       display:flex;
       align-items:flex-end;
       gap:12px;
-      flex-wrap:wrap;
     }
     .title h1{
       margin:0;
       font-size: clamp(28px, 3vw, 40px);
-      letter-spacing:.2px;
+      letter-spacing: .2px;
     }
     .badge{
       font-size: 13px;
@@ -98,8 +96,11 @@
     }
     .field i{color: var(--muted)}
     .field input{
-      border:none; outline:none; width:100%;
-      background:transparent; color: var(--text);
+      border:none;
+      outline:none;
+      width:100%;
+      background:transparent;
+      color: var(--text);
       font-size: 14px;
     }
 
@@ -117,11 +118,9 @@
     .btn{
       display:flex; align-items:center; gap:10px;
       transition: transform .15s ease;
-      user-select:none;
     }
     .btn:active{ transform: scale(.98); }
 
-    /* Layout */
     .grid{
       margin-top: 24px;
       display:grid;
@@ -129,28 +128,29 @@
       gap: 18px;
     }
 
-    /* Card */
     .card{
       grid-column: span 4;
       position:relative;
       border-radius: var(--radius);
       overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
       border: 1px solid var(--line);
       box-shadow: var(--shadow);
-      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
       transform: translateY(14px);
       opacity: 0;
       transition: transform .5s ease, opacity .5s ease;
     }
-    .card.show{ transform: translateY(0); opacity:1; }
-    .card:hover{ transform: translateY(-2px); }
+    .card.show{
+      transform: translateY(0);
+      opacity: 1;
+    }
 
     .card::before{
       content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(420px 220px at 20% 0%, rgba(47,124,255,.35), transparent 60%),
-        radial-gradient(420px 220px at 80% 20%, rgba(0,212,255,.28), transparent 60%);
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(400px 200px at 20% 0%, rgba(47,124,255,.35), transparent 60%),
+                  radial-gradient(400px 200px at 80% 20%, rgba(0,212,255,.28), transparent 60%);
       opacity:.35;
       pointer-events:none;
     }
@@ -165,40 +165,6 @@
       background: rgba(255,255,255,.06);
       backdrop-filter: blur(10px);
     }
-
-    .toprow{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-    }
-
-    .rank{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color: var(--muted);
-      font-size: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.08);
-      padding: 6px 10px;
-      border-radius: 999px;
-    }
-    .rank i{ color: var(--warn); }
-
-    .top-mentor{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(31,206,138,.35);
-      background: rgba(31,206,138,.12);
-      color: var(--text);
-      white-space:nowrap;
-    }
-    .top-mentor i{ color: var(--good); }
 
     .head{
       display:flex;
@@ -217,7 +183,8 @@
       background: rgba(255,255,255,.10);
     }
     .avatar img{
-      width:100%; height:100%;
+      width:100%;
+      height:100%;
       object-fit: cover;
       display:block;
     }
@@ -289,7 +256,11 @@
       cursor:pointer;
       font-size: 13px;
       display:flex; align-items:center; gap:8px;
-      user-select:none;
+    }
+
+    /* Hover 3D (light) */
+    .card:hover{
+      transform: translateY(-2px);
     }
 
     /* Empty state */
@@ -302,100 +273,6 @@
       background: rgba(255,255,255,.06);
       text-align:center;
     }
-
-    /* Join form section */
-    .join{
-      margin-top: 28px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,.08);
-      backdrop-filter: blur(10px);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-    }
-    .join-top{
-      padding: 16px 16px;
-      border-bottom: 1px solid var(--line);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      flex-wrap:wrap;
-    }
-    .join-top h3{ margin:0; font-size: 18px; }
-    .join-top p{ margin:0; color: var(--muted); font-size: 13px; }
-
-    .join-body{
-      padding: 16px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 12px;
-    }
-
-    .input{
-      grid-column: span 6;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .input.full{ grid-column: 1 / -1; }
-    .input label{ font-size: 13px; color: var(--muted); }
-    .input input, .input textarea{
-      width:100%;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.10);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 12px 12px;
-      outline:none;
-      font-size: 14px;
-    }
-    .input textarea{ min-height: 110px; resize: vertical; }
-
-    .join-actions{
-      grid-column: 1 / -1;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      padding-top: 6px;
-    }
-    .hint{
-      font-size: 12px;
-      color: var(--muted);
-      line-height:1.5;
-    }
-    .send{
-      border: 1px solid rgba(47,124,255,.35);
-      background: linear-gradient(90deg, rgba(47,124,255,.22), rgba(0,212,255,.18));
-      color: var(--text);
-      padding: 12px 14px;
-      border-radius: 14px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight: 600;
-      user-select:none;
-    }
-    .send:disabled{
-      opacity:.6;
-      cursor:not-allowed;
-    }
-
-    .status{
-      grid-column: 1 / -1;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      display:none;
-    }
-    .status.show{ display:block; }
-    .status.ok{ border-color: rgba(31,206,138,.35); color: var(--text); }
-    .status.bad{ border-color: rgba(255,92,122,.35); color: var(--text); }
 
     /* Modal */
     .modal{
@@ -477,14 +354,11 @@
       gap: 10px;
       align-items:center;
       font-size: 14px;
-      min-width: 170px;
     }
     .chip i{ color: var(--muted); }
-    .chip:hover{ border-color: rgba(47,124,255,.35); }
 
-    @media (max-width: 980px){ .card{ grid-column: span 6; } }
-    @media (max-width: 720px){
-      .input{ grid-column: 1 / -1; }
+    @media (max-width: 980px){
+      .card{ grid-column: span 6; }
     }
     @media (max-width: 620px){
       .field{ min-width: 100%; }
@@ -522,67 +396,16 @@
         <select id="sort" title="Sortelew">
           <option value="az">Atı: A–Z</option>
           <option value="za">Atı: Z–A</option>
-          <option value="rating">Reyting: joqarı</option>
         </select>
 
         <button class="btn" id="themeBtn" title="Tema">
-          <i class="fa-solid fa-moon"></i> Dark
+          <i class="fa-solid fa-moon"></i>
+          Dark
         </button>
       </div>
     </div>
 
-    <!-- Cards -->
     <section class="grid" id="grid"></section>
-
-    <!-- Join form -->
-    <section class="join" id="join">
-      <div class="join-top">
-        <div>
-          <h3>📩 Bizge qosılıń (arza)</h3>
-          <p>Forma toltırıń — arza Telegram arqalı jiberiledi.</p>
-        </div>
-        <span class="badge">Tez jaýap qaytarıw</span>
-      </div>
-
-      <form class="join-body" id="joinForm">
-        <div class="input">
-          <label>Atıńız</label>
-          <input name="name" required placeholder="Mısal: Atabek" />
-        </div>
-
-        <div class="input">
-          <label>Telefon</label>
-          <input name="phone" required placeholder="+998 90 123 45 67" />
-        </div>
-
-        <div class="input">
-          <label>Qaysı roldı qálesiz?</label>
-          <input name="role" required placeholder="Frontend / Backend / Mentor..." />
-        </div>
-
-        <div class="input">
-          <label>Telegram username</label>
-          <input name="tg" placeholder="@username" />
-        </div>
-
-        <div class="input full">
-          <label>Qısqa xat / ózińiz haqqında</label>
-          <textarea name="msg" required placeholder="Ózińizdi qısqa tanıstırıń..."></textarea>
-        </div>
-
-        <div class="join-actions">
-          <div class="hint">
-            ⚠️ GitHub Pages’da bot token’ni ashıq qaldırıw qawipsiz emes.<br/>
-            Token bolmasa — avtomat “share link” arqalı jiberedi.
-          </div>
-          <button class="send" id="sendBtn" type="submit">
-            <i class="fa-solid fa-paper-plane"></i> Arzanı jiberiw
-          </button>
-        </div>
-
-        <div class="status" id="statusBox"></div>
-      </form>
-    </section>
   </main>
 
   <!-- Modal -->
@@ -606,41 +429,7 @@
   </div>
 
   <script>
-    // =======================
-    // 1) Telegram settings
-    // =======================
-    // ⚠️ XAVFSIZLIK: Tokenni frontend ichida saqlash tavsiya etilmaydi.
-    // Agar baribir ishlatsangiz, token/chat_id ni shu yerga yozing.
-    // Aks holda, sistemada fallback ishlaydi (share link).
-    const 6716412448:AAHMnqyy1pBDYUSkp1bcl_ozGQLYyfj6-Rk = ""; // masalan: "123456:ABC..."
-    const 6578193442 = "";   // masalan: "-1001234567890" (kanal/guruh) yoki "123456789" (shaxs)
-
-    // Share link (token bo'lmasa ham ishlaydi)
-    const TELEGRAM_SHARE_TO = "https://t.me/share/url?url=";
-
-    // =======================
-    // 2) Default avatar (svg)
-    // =======================
-    const DEFAULT_AVATAR =
-      'data:image/svg+xml;utf8,' +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240">
-          <defs>
-            <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#2f7cff" stop-opacity="0.9"/>
-              <stop offset="1" stop-color="#00d4ff" stop-opacity="0.9"/>
-            </linearGradient>
-          </defs>
-          <rect width="100%" height="100%" rx="32" fill="url(#g)"/>
-          <circle cx="120" cy="92" r="42" fill="rgba(255,255,255,0.92)"/>
-          <path d="M52 206c10-44 44-68 68-68s58 24 68 68" fill="rgba(255,255,255,0.92)"/>
-          <text x="120" y="30" text-anchor="middle" font-size="16" fill="rgba(255,255,255,0.95)" font-family="Segoe UI, Arial">UNI TEAM</text>
-        </svg>
-      `);
-
-    // =======================
-    // 3) Team data
-    // =======================
+    // ====== DATA (keyin xohlasangiz ko'paytiramiz) ======
     const team = [
       {
         id: "atabek",
@@ -648,13 +437,11 @@
         role: "Joybar tiykarshısı & Frontend programmist",
         category: "frontend",
         img: "atabek.jfif",
-        rating: 4.9,
-        topMentor: true,
         tags: ["Frontend", "UI/UX", "Founder"],
         desc: `Qaraqalpaq mámleketlik universiteti 2-kurs studenti, "UNI academy" klubında kompyuter sawatqanlıǵı kursı mentori. "Qaraqalpaq Sózlik" joybarınıń ideya avtorı hám basshısı. Sayt dizayneri, paydalanıwshı interfeysi hám frontend programmist.`,
         links: [
-          { fa: "fa-telegram", label: "Telegram", url: "https://t.me/atabek_offical01" },
-          { fa: "fa-instagram", label: "Instagram", url: "https://instagram.com/atabekkoshkinbaev?igsh=MTYweGdmZTJ2eTM2ZA==" }
+          { icon: "fa-telegram", label: "Telegram", url: "https://t.me/atabek_offical01" },
+          { icon: "fa-instagram", label: "Instagram", url: "https://instagram.com/atabekkoshkinbaev?igsh=MTYweGdmZTJ2eTM2ZA==" }
         ]
       },
       {
@@ -663,20 +450,28 @@
         role: "Backend programmist & texnik xizmetker",
         category: "backend",
         img: "abdirasul.jfif",
-        rating: 4.7,
-        topMentor: false,
         tags: ["Backend", "Firebase", "DevOps"],
         desc: `Qaraqalpaq mámleketlik universiteti 2-kurs studenti, joybar sheńberinde backend sistemalar hám texnikalıq jumıslar menen shuǵıllanadı. Firebase maǵlıwmatlar bazasın integraciyalaw, sózler hám túsinikler bazasın basqaradı.`,
         links: [
-          { fa: "fa-telegram", label: "Telegram", url: "https://t.me/Abdirasul_Otebaev" },
-          { fa: "fa-instagram", label: "Instagram", url: "https://www.instagram.com/abdirasul_otebaev?igsh=MWJjeG01NnFqamhrOQ==" }
+          { icon: "fa-telegram", label: "Telegram", url: "https://t.me/Abdirasul_Otebaev" },
+          { icon: "fa-instagram", label: "Instagram", url: "https://www.instagram.com/abdirasul_otebaev?igsh=MWJjeG01NnFqamhrOQ==" }
         ]
-      }
+      },
+
+      // Namuna: yana odam qo'shish uchun shuni copy/paste qiling:
+      // {
+      //   id:"name",
+      //   name:"Familiya Ism",
+      //   role:"Lavozim",
+      //   category:"mentor",
+      //   img:"avatar.jpg",
+      //   tags:["Mentor","SMM"],
+      //   desc:"...",
+      //   links:[{icon:"fa-telegram", label:"Telegram", url:"https://t.me/..."}]
+      // }
     ];
 
-    // =======================
-    // 4) DOM helpers
-    // =======================
+    // ====== Helpers ======
     const $ = (s) => document.querySelector(s);
     const grid = $("#grid");
     const search = $("#search");
@@ -685,9 +480,7 @@
     const countBadge = $("#countBadge");
     const themeBtn = $("#themeBtn");
 
-    // =======================
-    // 5) Theme (localStorage)
-    // =======================
+    // Theme (localStorage)
     const savedTheme = localStorage.getItem("theme");
     if(savedTheme === "dark") document.body.classList.add("dark");
     updateThemeBtn();
@@ -705,37 +498,37 @@
         : `<i class="fa-solid fa-moon"></i> Dark`;
     }
 
-    // =======================
-    // 6) Render cards
-    // =======================
+    // Render
     function render(){
       const q = search.value.trim().toLowerCase();
       const cat = roleFilter.value;
 
       let list = [...team];
 
-      if(cat !== "all") list = list.filter(p => p.category === cat);
+      // filter category
+      if(cat !== "all"){
+        list = list.filter(p => p.category === cat);
+      }
 
+      // search
       if(q){
         list = list.filter(p =>
           (p.name + " " + p.role + " " + p.desc + " " + (p.tags||[]).join(" "))
-            .toLowerCase().includes(q)
+            .toLowerCase()
+            .includes(q)
         );
       }
 
-      if(sort.value === "rating"){
-        list.sort((a,b) => (b.rating ?? 0) - (a.rating ?? 0));
-      }else{
-        list.sort((a,b) => {
-          const A = a.name.toLowerCase();
-          const B = b.name.toLowerCase();
-          return sort.value === "az" ? A.localeCompare(B) : B.localeCompare(A);
-        });
-      }
+      // sort
+      list.sort((a,b) => {
+        const A = a.name.toLowerCase();
+        const B = b.name.toLowerCase();
+        return sort.value === "az" ? A.localeCompare(B) : B.localeCompare(A);
+      });
 
       countBadge.textContent = `${list.length} adam`;
-      grid.innerHTML = "";
 
+      grid.innerHTML = "";
       if(!list.length){
         grid.innerHTML = `<div class="empty">Hech nárse tabılmadı 😕 Qıdırıw so'zlerin ózgertip kóriń.</div>`;
         return;
@@ -748,22 +541,8 @@
 
         card.innerHTML = `
           <div class="card-inner">
-            <div class="toprow">
-              <div class="rank" title="Reyting">
-                <i class="fa-solid fa-star"></i>
-                <span>${(p.rating ?? 0).toFixed(1)}</span>
-              </div>
-              ${p.topMentor ? `
-                <div class="top-mentor" title="Top mentor">
-                  <i class="fa-solid fa-crown"></i> Top mentor
-                </div>` : ``}
-            </div>
-
             <div class="head">
-              <div class="avatar">
-                <img src="${p.img}" alt="${p.name}" loading="lazy"
-                     onerror="this.onerror=null; this.src='${DEFAULT_AVATAR}'">
-              </div>
+              <div class="avatar"><img src="${p.img}" alt="${p.name}"></div>
               <div class="meta">
                 <h2>${p.name}</h2>
                 <div class="role">${p.role}</div>
@@ -777,13 +556,12 @@
 
             <div class="footer">
               <div class="social">
-                ${(p.links||[]).slice(0,3).map(l => `
-                  <a href="${l.url}" target="_blank" rel="noopener" title="${l.label}">
-                    <i class="fab ${l.fa}"></i>
+                ${(p.links||[]).slice(0,2).map(l => `
+                  <a href="${l.url}" target="_blank" rel="noopener">
+                    <i class="fab ${l.icon}"></i>
                   </a>
                 `).join("")}
               </div>
-
               <button class="more" data-open="${p.id}">
                 Batafsil <i class="fa-solid fa-arrow-right"></i>
               </button>
@@ -797,9 +575,7 @@
       observeCards();
     }
 
-    // =======================
-    // 7) Scroll reveal
-    // =======================
+    // Scroll reveal with IntersectionObserver
     let observer;
     function observeCards(){
       if(observer) observer.disconnect();
@@ -818,9 +594,7 @@
       });
     }
 
-    // =======================
-    // 8) Modal
-    // =======================
+    // Modal logic
     const modal = $("#modal");
     const closeModal = $("#closeModal");
     const mImg = $("#mImg");
@@ -836,17 +610,15 @@
 
       mImg.src = p.img;
       mImg.alt = p.name;
-      mImg.onerror = () => { mImg.src = DEFAULT_AVATAR; };
-
       mName.textContent = p.name;
-      mRole.textContent = `${p.role} • ⭐ ${ (p.rating ?? 0).toFixed(1) }`;
+      mRole.textContent = p.role;
       mDesc.textContent = p.desc;
 
       mTags.innerHTML = (p.tags||[]).map(t => `<span class="tag">${t}</span>`).join("");
 
       mLinks.innerHTML = (p.links||[]).map(l => `
         <a class="chip" href="${l.url}" target="_blank" rel="noopener">
-          <i class="fab ${l.fa}"></i>
+          <i class="fab ${l.icon}"></i>
           ${l.label}
           <i class="fa-solid fa-up-right-from-square" style="margin-left:auto; opacity:.75"></i>
         </a>
@@ -856,105 +628,28 @@
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
     }
+
     function close(){
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
     }
-    closeModal.addEventListener("click", close);
-    modal.addEventListener("click", (e) => { if(e.target === modal) close(); });
-    window.addEventListener("keydown", (e) => { if(e.key === "Escape") close(); });
 
+    closeModal.addEventListener("click", close);
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) close();
+    });
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") close();
+    });
+
+    // Delegation for "Batafsil"
     document.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-open]");
       if(btn) openModal(btn.dataset.open);
     });
 
-    // =======================
-    // 9) Join form -> Telegram
-    // =======================
-    const joinForm = $("#joinForm");
-    const sendBtn = $("#sendBtn");
-    const statusBox = $("#statusBox");
-
-    function setStatus(type, text){
-      statusBox.className = "status show " + (type || "");
-      statusBox.textContent = text;
-    }
-
-    function buildMessage(data){
-      const lines = [
-        "📩 *Yangi arza (Komanda)*",
-        "",
-        `👤 *Atı:* ${data.name}`,
-        `📞 *Telefon:* ${data.phone}`,
-        `🧩 *Rol:* ${data.role}`,
-        `💬 *Telegram:* ${data.tg || "-"}`,
-        "",
-        `📝 *Xat:*`,
-        `${data.msg}`
-      ];
-      return lines.join("\n");
-    }
-
-    async function sendToTelegramBot(text){
-      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const payload = {
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: "Markdown"
-      };
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if(!res.ok){
-        const err = await res.text().catch(()=> "");
-        throw new Error("Telegram API error: " + err);
-      }
-      return true;
-    }
-
-    function fallbackShareLink(text){
-      // share url telegram
-      const share = TELEGRAM_SHARE_TO + encodeURIComponent("https://uni.academy") + "&text=" + encodeURIComponent(text);
-      window.open(share, "_blank");
-    }
-
-    joinForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(joinForm);
-      const data = Object.fromEntries(formData.entries());
-      const text = buildMessage(data);
-
-      sendBtn.disabled = true;
-      setStatus("", "⏳ Jiberilip atır...");
-
-      try{
-        if(TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID){
-          await sendToTelegramBot(text);
-          setStatus("ok", "✅ Arza Telegramǵa jiberildi!");
-          joinForm.reset();
-        } else {
-          setStatus("bad", "⚠️ Token/Chat ID joq. Telegram share link ashıldı (forma matni tayyor).");
-          fallbackShareLink(text);
-        }
-      } catch(err){
-        setStatus("bad", "❌ Qátelik: " + (err?.message || "Jiberilmedi"));
-        // fallback ham beramiz
-        fallbackShareLink(text);
-      } finally{
-        sendBtn.disabled = false;
-      }
-    });
-
-    // =======================
-    // 10) Controls listeners
-    // =======================
+    // Controls
     search.addEventListener("input", render);
     roleFilter.addEventListener("change", render);
     sort.addEventListener("change", render);
@@ -963,4 +658,3 @@
   </script>
 </body>
 </html>
-
