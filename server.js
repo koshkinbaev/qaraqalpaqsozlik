@@ -14,7 +14,7 @@ const app = express();
 
 // ====== Config ======
 const PORT = Number(process.env.PORT || 3000);
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
+const GEMINI_API_KEY = process.env.AIzaSyBQ6Pzg0TeAZuZuurPtP-8lxoZTIUf5upk || "";
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 // PROD: domenlaringizni yozing. DEV: bo'sh qolsin, hammasiga ruxsat beradi.
@@ -96,7 +96,7 @@ function systemPromptByLang(lang) {
 
 async function geminiGenerate({ lang, message, context, history }) {
   if (!GEMINI_API_KEY) {
-    const err = new Error("GEMINI_API_KEY sozlanmagan (.env da yo'q)");
+    const err = new Error("AIzaSyBQ6Pzg0TeAZuZuurPtP-8lxoZTIUf5upk sozlanmagan (.env da yo'q)");
     err.status = 500;
     throw err;
   }
@@ -162,7 +162,7 @@ async function geminiGenerate({ lang, message, context, history }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-goog-api-key": GEMINI_API_KEY
+        "x-goog-api-key": AIzaSyBQ6Pzg0TeAZuZuurPtP-8lxoZTIUf5upk
       },
       body: JSON.stringify(body),
       signal: ctrl.signal
@@ -189,7 +189,7 @@ app.get("/health", (req, res) => {
   res.json({
     ok: true,
     model: MODEL,
-    hasKey: Boolean(GEMINI_API_KEY),
+    hasKey: Boolean(AIzaSyBQ6Pzg0TeAZuZuurPtP-8lxoZTIUf5upk),
     time: new Date().toISOString()
   });
 });
@@ -219,7 +219,7 @@ app.post("/api/gemini", geminiLimiter, async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`✅ Server ishga tushdi: http://localhost:${PORT}`);
-  if (!GEMINI_API_KEY) console.log("⚠️ GEMINI_API_KEY yo'q. .env faylni tekshiring.");
+  if (!GEMINI_API_KEY) console.log("⚠️ AIzaSyBQ6Pzg0TeAZuZuurPtP-8lxoZTIUf5upk yo'q. .env faylni tekshiring.");
   if (ALLOWED_ORIGINS.length) console.log("🔒 CORS allowlist:", ALLOWED_ORIGINS);
 });
 
